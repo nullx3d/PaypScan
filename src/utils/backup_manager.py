@@ -14,7 +14,7 @@ import logging
 from src.utils.log_manager import log_manager
 
 class BackupManager:
-    """Database ve log dosyalarını yedekleme yöneticisi"""
+    """Database and log files backup manager"""
     
     def __init__(self):
         self.backup_dir = Path("backups")
@@ -26,7 +26,7 @@ class BackupManager:
         # Logs path
         self.logs_path = Path("logs")
         
-        # Backup retention (son 5 backup)
+        # Backup retention (last 5 backups)
         self.max_backups = 5
         
         # Backup format
@@ -35,7 +35,7 @@ class BackupManager:
         print("✅ Backup Manager started")
     
     def create_backup(self, backup_type: str = "manual", description: str = "") -> Dict:
-        """Yeni backup oluşturur"""
+        """Create new backup"""
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             backup_name = self.backup_format.format(
@@ -54,7 +54,7 @@ class BackupManager:
                 "total_size": 0
             }
             
-            # Zip dosyası oluştur
+            # Create zip file
             with zipfile.ZipFile(backup_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
                 
                 # Database backup
@@ -70,16 +70,16 @@ class BackupManager:
                         zipf.write(log_file, log_backup_name)
                         metadata["logs_size"] += log_file.stat().st_size
                 
-                # Metadata dosyası ekle
+                # Add metadata file
                 metadata["total_size"] = metadata["database_size"] + metadata["logs_size"]
                 zipf.writestr("backup_metadata.json", json.dumps(metadata, indent=2))
             
-            # Backup listesini temizle
+            # Cleanup old backups
             self._cleanup_old_backups()
             
             # Log
             log_manager.log_audit(
-                "Backup oluşturuldu",
+                "Backup created",
                 backup_name=backup_name,
                 backup_type=backup_type,
                 description=description,
@@ -99,7 +99,7 @@ class BackupManager:
             }
             
         except Exception as e:
-            error_msg = f"Backup oluşturma hatası: {e}"
+            error_msg = f"Backup creation error: {e}"
             log_manager.log_error(error_msg, backup_type=backup_type)
             print(f"❌ {error_msg}")
             return {
@@ -108,42 +108,42 @@ class BackupManager:
             }
     
     def _cleanup_old_backups(self):
-        """Eski backup'ları temizler"""
+        """Clean old backups"""
         try:
-            # Backup dosyalarını listele
+            # List backup files
             backup_files = list(self.backup_dir.glob("backup_*.zip"))
             backup_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
             
-            # Son max_backups kadarını tut
+            # Keep only last max_backups
             if len(backup_files) > self.max_backups:
                 files_to_delete = backup_files[self.max_backups:]
                 
                 for backup_file in files_to_delete:
                     backup_file.unlink()
                     log_manager.log_audit(
-                        "Eski backup silindi",
+                        "Old backup deleted",
                         backup_name=backup_file.name
                     )
                 
                 print(f"🗑️ {len(files_to_delete)} old backups deleted")
                 
         except Exception as e:
-            log_manager.log_error("Backup temizleme hatası", error=str(e))
+            log_manager.log_error("Backup cleanup error", error=str(e))
     
     def list_backups(self) -> List[Dict]:
-        """Mevcut backup'ları listeler"""
+        """List existing backups"""
         backups = []
         
         try:
             for backup_file in self.backup_dir.glob("backup_*.zip"):
                 try:
-                    # Metadata oku
+                    # Read metadata
                     with zipfile.ZipFile(backup_file, 'r') as zipf:
                         if "backup_metadata.json" in zipf.namelist():
                             metadata_content = zipf.read("backup_metadata.json")
                             metadata = json.loads(metadata_content)
                         else:
-                            # Eski backup'lar için basit metadata
+                            # Simple metadata for old backups
                             metadata = {
                                 "backup_type": "unknown",
                                 "created_at": datetime.fromtimestamp(backup_file.stat().st_mtime).isoformat(),
@@ -163,36 +163,36 @@ class BackupManager:
                 except Exception as e:
                     print(f"⚠️ Backup metadata read error: {backup_file.name} - {e}")
             
-            # Tarihe göre sırala
+            # Sort by date
             backups.sort(key=lambda x: x["created_at"], reverse=True)
             
         except Exception as e:
-            log_manager.log_error("Backup listesi okuma hatası", error=str(e))
+            log_manager.log_error("Backup list read error", error=str(e))
         
         return backups
     
     def restore_backup(self, backup_name: str, restore_path: Optional[Path] = None) -> Dict:
-        """Backup'ı geri yükler"""
+        """Restore backup"""
         try:
             backup_file = self.backup_dir / backup_name
             
             if not backup_file.exists():
                 return {
                     "success": False,
-                    "error": f"Backup dosyası bulunamadı: {backup_name}"
+                    "error": f"Backup file not found: {backup_name}"
                 }
             
-            # Restore dizini
+            # Restore directory
             if restore_path is None:
                 restore_path = Path("restore") / datetime.now().strftime("%Y%m%d_%H%M%S")
             
             restore_path.mkdir(parents=True, exist_ok=True)
             
-            # Backup'ı aç
+            # Extract backup
             with zipfile.ZipFile(backup_file, 'r') as zipf:
                 zipf.extractall(restore_path)
             
-            # Metadata oku
+            # Read metadata
             metadata_file = restore_path / "backup_metadata.json"
             if metadata_file.exists():
                 with open(metadata_file, 'r') as f:
@@ -201,7 +201,7 @@ class BackupManager:
                 metadata = {"backup_type": "unknown"}
             
             log_manager.log_audit(
-                "Backup geri yüklendi",
+                "Backup restored",
                 backup_name=backup_name,
                 restore_path=str(restore_path),
                 backup_type=metadata.get("backup_type", "unknown")
@@ -217,7 +217,7 @@ class BackupManager:
             }
             
         except Exception as e:
-            error_msg = f"Backup geri yükleme hatası: {e}"
+            error_msg = f"Backup restore error: {e}"
             log_manager.log_error(error_msg, backup_name=backup_name)
             return {
                 "success": False,
@@ -225,14 +225,14 @@ class BackupManager:
             }
     
     def get_backup_stats(self) -> Dict:
-        """Backup istatistiklerini döndürür"""
+        """Return backup statistics"""
         try:
             backups = self.list_backups()
             
             total_backups = len(backups)
             total_size_mb = sum(backup["size_mb"] for backup in backups)
             
-            # Backup türlerine göre sayım
+            # Count by backup type
             backup_types = {}
             for backup in backups:
                 backup_type = backup["backup_type"]
@@ -247,7 +247,7 @@ class BackupManager:
             }
             
         except Exception as e:
-            log_manager.log_error("Backup istatistikleri hatası", error=str(e))
+            log_manager.log_error("Backup statistics error", error=str(e))
             return {"error": str(e)}
 
 # Global backup manager instance
