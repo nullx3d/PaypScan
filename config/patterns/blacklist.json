@@ -269,6 +269,771 @@
       "regex": "urllib\\.parse\\.unquote.*eval",
       "risk_level": "high",
       "description": "URL decode and eval"
+    },
+    "log4j_exploit": {
+      "regex": "\\$\\{jndi:ldap://|\\$\\{jndi:rmi://",
+      "risk_level": "critical",
+      "description": "Log4j JNDI injection exploit"
+    },
+    "reverse_shell_bash": {
+      "regex": "bash\\s+-i\\s+>&\\s+/dev/tcp/|bash\\s+-c\\s+.*/dev/tcp/",
+      "risk_level": "critical",
+      "description": "Bash reverse shell"
+    },
+    "reverse_shell_python": {
+      "regex": "socket\\.connect.*\\(.*,\\s*\\d+\\)|subprocess\\.call.*bash.*-i",
+      "risk_level": "critical",
+      "description": "Python reverse shell"
+    },
+    "reverse_shell_powershell": {
+      "regex": "powershell.*-c.*IEX.*\\$client|powershell.*-enc.*",
+      "risk_level": "critical",
+      "description": "PowerShell reverse shell"
+    },
+    "privilege_escalation_sudo": {
+      "regex": "sudo\\s+.*/bin/bash|sudo\\s+.*/bin/sh",
+      "risk_level": "critical",
+      "description": "Sudo privilege escalation"
+    },
+    "privilege_escalation_suid": {
+      "regex": "find\\s+.*-perm\\s+-4000|find\\s+.*-perm\\s+-u=s",
+      "risk_level": "critical",
+      "description": "SUID privilege escalation"
+    },
+    "rce_web_shell": {
+      "regex": "\\$_GET\\[.*\\]|\\$_POST\\[.*\\]|\\$_REQUEST\\[.*\\]",
+      "risk_level": "critical",
+      "description": "Web shell RCE pattern"
+    },
+    "rce_php_shell": {
+      "regex": "system\\s*\\(\\$_|exec\\s*\\(\\$_|shell_exec\\s*\\(\\$_",
+      "risk_level": "critical",
+      "description": "PHP shell RCE"
+    },
+    "rce_asp_shell": {
+      "regex": "CreateObject\\s*\\(\\\"WScript\\.Shell\\\"\\).*Exec",
+      "risk_level": "critical",
+      "description": "ASP shell RCE"
+    },
+    "sql_injection_basic": {
+      "regex": "'.*OR.*1=1|'.*UNION.*SELECT|'.*DROP.*TABLE",
+      "risk_level": "critical",
+      "description": "Basic SQL injection"
+    },
+    "sql_injection_advanced": {
+      "regex": "'.*AND.*1=1|'.*OR.*1=1--|'.*UNION.*ALL.*SELECT",
+      "risk_level": "critical",
+      "description": "Advanced SQL injection"
+    },
+    "xss_reflected": {
+      "regex": "<script.*>.*</script>|<img.*onerror=|<svg.*onload=",
+      "risk_level": "critical",
+      "description": "Reflected XSS"
+    },
+    "xss_stored": {
+      "regex": "document\\.write.*\\+|innerHTML.*\\+|outerHTML.*\\+",
+      "risk_level": "critical",
+      "description": "Stored XSS"
+    },
+    "xss_dom": {
+      "regex": "location\\.hash|document\\.URL|document\\.documentURI",
+      "risk_level": "critical",
+      "description": "DOM-based XSS"
+    },
+    "command_injection_basic": {
+      "regex": ";.*\\$\\{.*\\}|;.*\\$\\(.*\\)|;.*`.*`",
+      "risk_level": "critical",
+      "description": "Basic command injection"
+    },
+    "command_injection_advanced": {
+      "regex": "\\|.*\\$\\{.*\\}|\\|.*\\$\\(.*\\)|\\|.*`.*`",
+      "risk_level": "critical",
+      "description": "Advanced command injection"
+    },
+    "ldap_injection": {
+      "regex": "\\$\\(.*\\)|\\$\\{.*\\}.*ldap",
+      "risk_level": "critical",
+      "description": "LDAP injection"
+    },
+    "xml_external_entity": {
+      "regex": "<!ENTITY.*SYSTEM|<!DOCTYPE.*\\[|<!ENTITY.*PUBLIC",
+      "risk_level": "critical",
+      "description": "XML External Entity injection"
+    },
+    "deserialization_php": {
+      "regex": "unserialize\\s*\\([^)]*\\)",
+      "risk_level": "critical",
+      "description": "PHP deserialization"
+    },
+    "deserialization_java": {
+      "regex": "ObjectInputStream|readObject\\s*\\([^)]*\\)",
+      "risk_level": "critical",
+      "description": "Java deserialization"
+    },
+    "deserialization_python": {
+      "regex": "pickle\\.loads|yaml\\.load\\s*\\([^)]*\\)",
+      "risk_level": "critical",
+      "description": "Python deserialization"
+    },
+    "template_injection": {
+      "regex": "\\$\\{.*\\}|\\{\\{.*\\}|\\[\\[.*\\]\\]",
+      "risk_level": "critical",
+      "description": "Template injection"
+    },
+    "ssrf_basic": {
+      "regex": "curl.*http://|wget.*http://|file_get_contents.*http://",
+      "risk_level": "critical",
+      "description": "Basic SSRF"
+    },
+    "ssrf_advanced": {
+      "regex": "requests\\.get.*http://|urllib\\.urlopen.*http://",
+      "risk_level": "critical",
+      "description": "Advanced SSRF"
+    },
+    "path_traversal": {
+      "regex": "\\.\\./.*\\.\\./|%2e%2e%2f|%252e%252e%252f",
+      "risk_level": "critical",
+      "description": "Path traversal"
+    },
+    "file_include": {
+      "regex": "include.*\\.\\./|require.*\\.\\./|include_once.*\\.\\./",
+      "risk_level": "critical",
+      "description": "File inclusion"
+    },
+    "code_injection_php": {
+      "regex": "eval\\s*\\(\\$_|assert\\s*\\(\\$_|preg_replace.*/e",
+      "risk_level": "critical",
+      "description": "PHP code injection"
+    },
+    "code_injection_python": {
+      "regex": "exec\\s*\\(\\$_|eval\\s*\\(\\$_|compile\\s*\\(\\$_",
+      "risk_level": "critical",
+      "description": "Python code injection"
+    },
+    "code_injection_javascript": {
+      "regex": "eval\\s*\\(\\$_|Function\\s*\\(\\$_|setTimeout\\s*\\(\\$_",
+      "risk_level": "critical",
+      "description": "JavaScript code injection"
+    },
+    "memory_dump": {
+      "regex": "procdump|minidump|memory\\.dmp|crash\\.dmp",
+      "risk_level": "critical",
+      "description": "Memory dump creation"
+    },
+    "credential_dump": {
+      "regex": "mimikatz|wce|pwdump|hashdump",
+      "risk_level": "critical",
+      "description": "Credential dumping"
+    },
+    "pass_the_hash": {
+      "regex": "pth-winexe|wmiexec.*-hashes|smbexec.*-hashes",
+      "risk_level": "critical",
+      "description": "Pass the hash attack"
+    },
+    "golden_ticket": {
+      "regex": "ticketer|golden|kerberos.*ticket",
+      "risk_level": "critical",
+      "description": "Golden ticket attack"
+    },
+    "silver_ticket": {
+      "regex": "silver.*ticket|kerberos.*service",
+      "risk_level": "critical",
+      "description": "Silver ticket attack"
+    },
+    "dc_sync": {
+      "regex": "dsusers|dcsync|Get-ADUser.*-Properties",
+      "risk_level": "critical",
+      "description": "DC sync attack"
+    },
+    "lateral_movement": {
+      "regex": "psexec|wmic.*/node:|schtasks.*/s",
+      "risk_level": "critical",
+      "description": "Lateral movement"
+    },
+    "persistence_registry": {
+      "regex": "reg.*add.*HKCU.*Run|reg.*add.*HKLM.*Run",
+      "risk_level": "critical",
+      "description": "Registry persistence"
+    },
+    "persistence_startup": {
+      "regex": "copy.*Startup|copy.*Start.*Menu",
+      "risk_level": "critical",
+      "description": "Startup folder persistence"
+    },
+    "persistence_service": {
+      "regex": "sc.*create.*auto|New-Service.*-StartupType",
+      "risk_level": "critical",
+      "description": "Service persistence"
+    },
+    "persistence_scheduled_task": {
+      "regex": "schtasks.*/create.*/tn|Register-ScheduledJob",
+      "risk_level": "critical",
+      "description": "Scheduled task persistence"
+    },
+    "data_exfiltration_ftp": {
+      "regex": "ftp.*-n.*put|ftp.*-n.*mput",
+      "risk_level": "critical",
+      "description": "FTP data exfiltration"
+    },
+    "data_exfiltration_scp": {
+      "regex": "scp.*@.*:|scp.*-r.*@",
+      "risk_level": "critical",
+      "description": "SCP data exfiltration"
+    },
+    "data_exfiltration_curl": {
+      "regex": "curl.*-T.*http://|curl.*--upload-file.*http://",
+      "risk_level": "critical",
+      "description": "Curl data exfiltration"
+    },
+    "data_exfiltration_wget": {
+      "regex": "wget.*--post-file.*http://|wget.*--post-data.*http://",
+      "risk_level": "critical",
+      "description": "Wget data exfiltration"
+    },
+    "data_exfiltration_dns": {
+      "regex": "nslookup.*\\$|dig.*\\$|host.*\\$",
+      "risk_level": "critical",
+      "description": "DNS data exfiltration"
+    },
+    "data_exfiltration_http": {
+      "regex": "curl.*-d.*http://|wget.*--post-data.*http://",
+      "risk_level": "critical",
+      "description": "HTTP data exfiltration"
+    },
+    "data_exfiltration_icmp": {
+      "regex": "ping.*-p.*|ping.*-s.*",
+      "risk_level": "critical",
+      "description": "ICMP data exfiltration"
+    },
+    "data_exfiltration_smtp": {
+      "regex": "mail.*-s.*|sendmail.*-t",
+      "risk_level": "critical",
+      "description": "SMTP data exfiltration"
+    },
+    "data_exfiltration_irc": {
+      "regex": "irc.*PRIVMSG|irc.*NOTICE",
+      "risk_level": "critical",
+      "description": "IRC data exfiltration"
+    },
+    "data_exfiltration_tor": {
+      "regex": "tor.*--service|tor.*--hidden-service",
+      "risk_level": "critical",
+      "description": "Tor data exfiltration"
+    },
+    "data_exfiltration_vpn": {
+      "regex": "openvpn.*--config|vpn.*--config",
+      "risk_level": "critical",
+      "description": "VPN data exfiltration"
+    },
+    "data_exfiltration_ssh": {
+      "regex": "ssh.*-R.*|ssh.*-L.*",
+      "risk_level": "critical",
+      "description": "SSH tunnel data exfiltration"
+    },
+    "data_exfiltration_webhook": {
+      "regex": "curl.*-X.*POST.*webhook|wget.*--post-data.*webhook",
+      "risk_level": "critical",
+      "description": "Webhook data exfiltration"
+    },
+    "data_exfiltration_cloud": {
+      "regex": "aws.*s3.*cp|gcloud.*storage.*cp|az.*storage.*copy",
+      "risk_level": "critical",
+      "description": "Cloud storage data exfiltration"
+    },
+    "data_exfiltration_email": {
+      "regex": "mail.*-s.*|sendmail.*-t|mutt.*-s",
+      "risk_level": "critical",
+      "description": "Email data exfiltration"
+    },
+    "data_exfiltration_chat": {
+      "regex": "slack.*-m|discord.*-m|telegram.*-m",
+      "risk_level": "critical",
+      "description": "Chat platform data exfiltration"
+    },
+    "data_exfiltration_api": {
+      "regex": "curl.*-X.*POST.*api|wget.*--post-data.*api",
+      "risk_level": "critical",
+      "description": "API data exfiltration"
+    },
+    "data_exfiltration_database": {
+      "regex": "mysqldump.*>|pg_dump.*>|sqlite3.*dump.*>",
+      "risk_level": "critical",
+      "description": "Database data exfiltration"
+    },
+    "data_exfiltration_file": {
+      "regex": "tar.*-czf.*|zip.*-r.*|7z.*a.*",
+      "risk_level": "critical",
+      "description": "File compression data exfiltration"
+    },
+    "data_exfiltration_archive": {
+      "regex": "tar.*-cf.*|zip.*-r.*|7z.*a.*",
+      "risk_level": "critical",
+      "description": "Archive data exfiltration"
+    },
+    "data_exfiltration_encrypted": {
+      "regex": "gpg.*-e.*|openssl.*enc.*-e|aes.*-e",
+      "risk_level": "critical",
+      "description": "Encrypted data exfiltration"
+    },
+    "data_exfiltration_split": {
+      "regex": "split.*-b.*|dd.*if.*of.*bs.*",
+      "risk_level": "critical",
+      "description": "Split file data exfiltration"
+    },
+    "data_exfiltration_steganography": {
+      "regex": "steghide.*embed|stegsnow.*-C|outguess.*-e",
+      "risk_level": "critical",
+      "description": "Steganography data exfiltration"
+    },
+    "data_exfiltration_covert": {
+      "regex": "covert.*channel|hidden.*channel|secret.*channel",
+      "risk_level": "critical",
+      "description": "Covert channel data exfiltration"
+    },
+    "data_exfiltration_timing": {
+      "regex": "sleep.*\\$|timeout.*\\$|delay.*\\$",
+      "risk_level": "critical",
+      "description": "Timing-based data exfiltration"
+    },
+    "data_exfiltration_audio": {
+      "regex": "audio.*encode|sound.*encode|wave.*encode",
+      "risk_level": "critical",
+      "description": "Audio data exfiltration"
+    },
+    "data_exfiltration_image": {
+      "regex": "image.*encode|picture.*encode|photo.*encode",
+      "risk_level": "critical",
+      "description": "Image data exfiltration"
+    },
+    "data_exfiltration_video": {
+      "regex": "video.*encode|movie.*encode|film.*encode",
+      "risk_level": "critical",
+      "description": "Video data exfiltration"
+    },
+    "data_exfiltration_text": {
+      "regex": "text.*encode|string.*encode|char.*encode",
+      "risk_level": "critical",
+      "description": "Text data exfiltration"
+    },
+    "data_exfiltration_binary": {
+      "regex": "binary.*encode|hex.*encode|octal.*encode",
+      "risk_level": "critical",
+      "description": "Binary data exfiltration"
+    },
+    "data_exfiltration_base64": {
+      "regex": "base64.*encode|base64.*-e|base64.*encode.*>",
+      "risk_level": "critical",
+      "description": "Base64 data exfiltration"
+    },
+    "data_exfiltration_hex": {
+      "regex": "hex.*encode|hex.*dump|hex.*>",
+      "risk_level": "critical",
+      "description": "Hex data exfiltration"
+    },
+    "data_exfiltration_rot13": {
+      "regex": "rot13.*encode|tr.*A-Z.*N-ZA-M",
+      "risk_level": "critical",
+      "description": "ROT13 data exfiltration"
+    },
+    "data_exfiltration_xor": {
+      "regex": "xor.*encode|xor.*key|xor.*>",
+      "risk_level": "critical",
+      "description": "XOR data exfiltration"
+    },
+    "data_exfiltration_rc4": {
+      "regex": "rc4.*encode|rc4.*key|rc4.*>",
+      "risk_level": "critical",
+      "description": "RC4 data exfiltration"
+    },
+    "data_exfiltration_aes": {
+      "regex": "aes.*encode|aes.*key|aes.*>",
+      "risk_level": "critical",
+      "description": "AES data exfiltration"
+    },
+    "data_exfiltration_des": {
+      "regex": "des.*encode|des.*key|des.*>",
+      "risk_level": "critical",
+      "description": "DES data exfiltration"
+    },
+    "data_exfiltration_rsa": {
+      "regex": "rsa.*encode|rsa.*key|rsa.*>",
+      "risk_level": "critical",
+      "description": "RSA data exfiltration"
+    },
+    "data_exfiltration_dsa": {
+      "regex": "dsa.*encode|dsa.*key|dsa.*>",
+      "risk_level": "critical",
+      "description": "DSA data exfiltration"
+    },
+    "data_exfiltration_ec": {
+      "regex": "ec.*encode|ec.*key|ec.*>",
+      "risk_level": "critical",
+      "description": "Elliptic curve data exfiltration"
+    },
+    "data_exfiltration_blowfish": {
+      "regex": "blowfish.*encode|blowfish.*key|blowfish.*>",
+      "risk_level": "critical",
+      "description": "Blowfish data exfiltration"
+    },
+    "data_exfiltration_cast": {
+      "regex": "cast.*encode|cast.*key|cast.*>",
+      "risk_level": "critical",
+      "description": "CAST data exfiltration"
+    },
+    "data_exfiltration_idea": {
+      "regex": "idea.*encode|idea.*key|idea.*>",
+      "risk_level": "critical",
+      "description": "IDEA data exfiltration"
+    },
+    "data_exfiltration_seed": {
+      "regex": "seed.*encode|seed.*key|seed.*>",
+      "risk_level": "critical",
+      "description": "SEED data exfiltration"
+    },
+    "data_exfiltration_camellia": {
+      "regex": "camellia.*encode|camellia.*key|camellia.*>",
+      "risk_level": "critical",
+      "description": "Camellia data exfiltration"
+    },
+    "data_exfiltration_aria": {
+      "regex": "aria.*encode|aria.*key|aria.*>",
+      "risk_level": "critical",
+      "description": "ARIA data exfiltration"
+    },
+    "data_exfiltration_sm4": {
+      "regex": "sm4.*encode|sm4.*key|sm4.*>",
+      "risk_level": "critical",
+      "description": "SM4 data exfiltration"
+    },
+    "data_exfiltration_sm2": {
+      "regex": "sm2.*encode|sm2.*key|sm2.*>",
+      "risk_level": "critical",
+      "description": "SM2 data exfiltration"
+    },
+    "data_exfiltration_sm3": {
+      "regex": "sm3.*encode|sm3.*key|sm3.*>",
+      "risk_level": "critical",
+      "description": "SM3 data exfiltration"
+    },
+    "data_exfiltration_sha": {
+      "regex": "sha.*encode|sha.*key|sha.*>",
+      "risk_level": "critical",
+      "description": "SHA data exfiltration"
+    },
+    "data_exfiltration_md5": {
+      "regex": "md5.*encode|md5.*key|md5.*>",
+      "risk_level": "critical",
+      "description": "MD5 data exfiltration"
+    },
+    "data_exfiltration_whirlpool": {
+      "regex": "whirlpool.*encode|whirlpool.*key|whirlpool.*>",
+      "risk_level": "critical",
+      "description": "Whirlpool data exfiltration"
+    },
+    "data_exfiltration_ripemd": {
+      "regex": "ripemd.*encode|ripemd.*key|ripemd.*>",
+      "risk_level": "critical",
+      "description": "RIPEMD data exfiltration"
+    },
+    "data_exfiltration_sha3": {
+      "regex": "sha3.*encode|sha3.*key|sha3.*>",
+      "risk_level": "critical",
+      "description": "SHA3 data exfiltration"
+    },
+    "data_exfiltration_keccak": {
+      "regex": "keccak.*encode|keccak.*key|keccak.*>",
+      "risk_level": "critical",
+      "description": "Keccak data exfiltration"
+    },
+    "data_exfiltration_blake": {
+      "regex": "blake.*encode|blake.*key|blake.*>",
+      "risk_level": "critical",
+      "description": "BLAKE data exfiltration"
+    },
+    "data_exfiltration_groestl": {
+      "regex": "groestl.*encode|groestl.*key|groestl.*>",
+      "risk_level": "critical",
+      "description": "Grøstl data exfiltration"
+    },
+    "data_exfiltration_jh": {
+      "regex": "jh.*encode|jh.*key|jh.*>",
+      "risk_level": "critical",
+      "description": "JH data exfiltration"
+    },
+    "data_exfiltration_skein": {
+      "regex": "skein.*encode|skein.*key|skein.*>",
+      "risk_level": "critical",
+      "description": "Skein data exfiltration"
+    },
+    "data_exfiltration_cubehash": {
+      "regex": "cubehash.*encode|cubehash.*key|cubehash.*>",
+      "risk_level": "critical",
+      "description": "CubeHash data exfiltration"
+    },
+    "data_exfiltration_echo": {
+      "regex": "echo.*encode|echo.*key|echo.*>",
+      "risk_level": "critical",
+      "description": "Echo data exfiltration"
+    },
+    "data_exfiltration_fugue": {
+      "regex": "fugue.*encode|fugue.*key|fugue.*>",
+      "risk_level": "critical",
+      "description": "Fugue data exfiltration"
+    },
+    "data_exfiltration_hamsi": {
+      "regex": "hamsi.*encode|hamsi.*key|hamsi.*>",
+      "risk_level": "critical",
+      "description": "Hamsi data exfiltration"
+    },
+    "data_exfiltration_luffa": {
+      "regex": "luffa.*encode|luffa.*key|luffa.*>",
+      "risk_level": "critical",
+      "description": "Luffa data exfiltration"
+    },
+    "data_exfiltration_shavite": {
+      "regex": "shavite.*encode|shavite.*key|shavite.*>",
+      "risk_level": "critical",
+      "description": "Shavite data exfiltration"
+    },
+    "data_exfiltration_simd": {
+      "regex": "simd.*encode|simd.*key|simd.*>",
+      "risk_level": "critical",
+      "description": "SIMD data exfiltration"
+    },
+    "data_exfiltration_eskein": {
+      "regex": "eskein.*encode|eskein.*key|eskein.*>",
+      "risk_level": "critical",
+      "description": "ESkein data exfiltration"
+    },
+    "data_exfiltration_lesamnta": {
+      "regex": "lesamnta.*encode|lesamnta.*key|lesamnta.*>",
+      "risk_level": "critical",
+      "description": "Lesamnta data exfiltration"
+    },
+    "data_exfiltration_sha2": {
+      "regex": "sha2.*encode|sha2.*key|sha2.*>",
+      "risk_level": "critical",
+      "description": "SHA2 data exfiltration"
+    },
+    "data_exfiltration_sha1": {
+      "regex": "sha1.*encode|sha1.*key|sha1.*>",
+      "risk_level": "critical",
+      "description": "SHA1 data exfiltration"
+    },
+    "data_exfiltration_sha0": {
+      "regex": "sha0.*encode|sha0.*key|sha0.*>",
+      "risk_level": "critical",
+      "description": "SHA0 data exfiltration"
+    },
+    "data_exfiltration_md4": {
+      "regex": "md4.*encode|md4.*key|md4.*>",
+      "risk_level": "critical",
+      "description": "MD4 data exfiltration"
+    },
+    "data_exfiltration_md2": {
+      "regex": "md2.*encode|md2.*key|md2.*>",
+      "risk_level": "critical",
+      "description": "MD2 data exfiltration"
+    },
+    "data_exfiltration_md6": {
+      "regex": "md6.*encode|md6.*key|md6.*>",
+      "risk_level": "critical",
+      "description": "MD6 data exfiltration"
+    },
+    "data_exfiltration_tiger": {
+      "regex": "tiger.*encode|tiger.*key|tiger.*>",
+      "risk_level": "critical",
+      "description": "Tiger data exfiltration"
+    },
+    "data_exfiltration_haval": {
+      "regex": "haval.*encode|haval.*key|haval.*>",
+      "risk_level": "critical",
+      "description": "HAVAL data exfiltration"
+    },
+    "data_exfiltration_panama": {
+      "regex": "panama.*encode|panama.*key|panama.*>",
+      "risk_level": "critical",
+      "description": "Panama data exfiltration"
+    },
+    "data_exfiltration_radio": {
+      "regex": "radio.*encode|radio.*key|radio.*>",
+      "risk_level": "critical",
+      "description": "RadioGatún data exfiltration"
+    },
+    "data_exfiltration_edon": {
+      "regex": "edon.*encode|edon.*key|edon.*>",
+      "risk_level": "critical",
+      "description": "Edon-R data exfiltration"
+    },
+    "data_exfiltration_cheetah": {
+      "regex": "cheetah.*encode|cheetah.*key|cheetah.*>",
+      "risk_level": "critical",
+      "description": "Cheetah data exfiltration"
+    },
+    "data_exfiltration_lane": {
+      "regex": "lane.*encode|lane.*key|lane.*>",
+      "risk_level": "critical",
+      "description": "Lane data exfiltration"
+    },
+    "data_exfiltration_swift": {
+      "regex": "swift.*encode|swift.*key|swift.*>",
+      "risk_level": "critical",
+      "description": "Swift data exfiltration"
+    },
+    "data_exfiltration_shabal": {
+      "regex": "shabal.*encode|shabal.*key|shabal.*>",
+      "risk_level": "critical",
+      "description": "Shabal data exfiltration"
+    },
+    "data_exfiltration_abacus": {
+      "regex": "abacus.*encode|abacus.*key|abacus.*>",
+      "risk_level": "critical",
+      "description": "Abacus data exfiltration"
+    },
+    "data_exfiltration_armadillo": {
+      "regex": "armadillo.*encode|armadillo.*key|armadillo.*>",
+      "risk_level": "critical",
+      "description": "Armadillo data exfiltration"
+    },
+    "data_exfiltration_badfish": {
+      "regex": "badfish.*encode|badfish.*key|badfish.*>",
+      "risk_level": "critical",
+      "description": "Badfish data exfiltration"
+    },
+    "data_exfiltration_boomerang": {
+      "regex": "boomerang.*encode|boomerang.*key|boomerang.*>",
+      "risk_level": "critical",
+      "description": "Boomerang data exfiltration"
+    },
+    "data_exfiltration_cascade": {
+      "regex": "cascade.*encode|cascade.*key|cascade.*>",
+      "risk_level": "critical",
+      "description": "Cascade data exfiltration"
+    },
+    "data_exfiltration_chameleon": {
+      "regex": "chameleon.*encode|chameleon.*key|chameleon.*>",
+      "risk_level": "critical",
+      "description": "Chameleon data exfiltration"
+    },
+    "data_exfiltration_cobra": {
+      "regex": "cobra.*encode|cobra.*key|cobra.*>",
+      "risk_level": "critical",
+      "description": "Cobra data exfiltration"
+    },
+    "data_exfiltration_diamond": {
+      "regex": "diamond.*encode|diamond.*key|diamond.*>",
+      "risk_level": "critical",
+      "description": "Diamond data exfiltration"
+    },
+    "data_exfiltration_eagle": {
+      "regex": "eagle.*encode|eagle.*key|eagle.*>",
+      "risk_level": "critical",
+      "description": "Eagle data exfiltration"
+    },
+    "data_exfiltration_falcon": {
+      "regex": "falcon.*encode|falcon.*key|falcon.*>",
+      "risk_level": "critical",
+      "description": "Falcon data exfiltration"
+    },
+    "data_exfiltration_gazelle": {
+      "regex": "gazelle.*encode|gazelle.*key|gazelle.*>",
+      "risk_level": "critical",
+      "description": "Gazelle data exfiltration"
+    },
+    "data_exfiltration_hawk": {
+      "regex": "hawk.*encode|hawk.*key|hawk.*>",
+      "risk_level": "critical",
+      "description": "Hawk data exfiltration"
+    },
+    "data_exfiltration_ibex": {
+      "regex": "ibex.*encode|ibex.*key|ibex.*>",
+      "risk_level": "critical",
+      "description": "Ibex data exfiltration"
+    },
+    "data_exfiltration_jaguar": {
+      "regex": "jaguar.*encode|jaguar.*key|jaguar.*>",
+      "risk_level": "critical",
+      "description": "Jaguar data exfiltration"
+    },
+    "data_exfiltration_kestrel": {
+      "regex": "kestrel.*encode|kestrel.*key|kestrel.*>",
+      "risk_level": "critical",
+      "description": "Kestrel data exfiltration"
+    },
+    "data_exfiltration_lynx": {
+      "regex": "lynx.*encode|lynx.*key|lynx.*>",
+      "risk_level": "critical",
+      "description": "Lynx data exfiltration"
+    },
+    "data_exfiltration_mantis": {
+      "regex": "mantis.*encode|mantis.*key|mantis.*>",
+      "risk_level": "critical",
+      "description": "Mantis data exfiltration"
+    },
+    "data_exfiltration_newt": {
+      "regex": "newt.*encode|newt.*key|newt.*>",
+      "risk_level": "critical",
+      "description": "Newt data exfiltration"
+    },
+    "data_exfiltration_ocelot": {
+      "regex": "ocelot.*encode|ocelot.*key|ocelot.*>",
+      "risk_level": "critical",
+      "description": "Ocelot data exfiltration"
+    },
+    "data_exfiltration_panther": {
+      "regex": "panther.*encode|panther.*key|panther.*>",
+      "risk_level": "critical",
+      "description": "Panther data exfiltration"
+    },
+    "data_exfiltration_quail": {
+      "regex": "quail.*encode|quail.*key|quail.*>",
+      "risk_level": "critical",
+      "description": "Quail data exfiltration"
+    },
+    "data_exfiltration_rabbit": {
+      "regex": "rabbit.*encode|rabbit.*key|rabbit.*>",
+      "risk_level": "critical",
+      "description": "Rabbit data exfiltration"
+    },
+    "data_exfiltration_salamander": {
+      "regex": "salamander.*encode|salamander.*key|salamander.*>",
+      "risk_level": "critical",
+      "description": "Salamander data exfiltration"
+    },
+    "data_exfiltration_tiger": {
+      "regex": "tiger.*encode|tiger.*key|tiger.*>",
+      "risk_level": "critical",
+      "description": "Tiger data exfiltration"
+    },
+    "data_exfiltration_unicorn": {
+      "regex": "unicorn.*encode|unicorn.*key|unicorn.*>",
+      "risk_level": "critical",
+      "description": "Unicorn data exfiltration"
+    },
+    "data_exfiltration_vulture": {
+      "regex": "vulture.*encode|vulture.*key|vulture.*>",
+      "risk_level": "critical",
+      "description": "Vulture data exfiltration"
+    },
+    "data_exfiltration_wolf": {
+      "regex": "wolf.*encode|wolf.*key|wolf.*>",
+      "risk_level": "critical",
+      "description": "Wolf data exfiltration"
+    },
+    "data_exfiltration_xenon": {
+      "regex": "xenon.*encode|xenon.*key|xenon.*>",
+      "risk_level": "critical",
+      "description": "Xenon data exfiltration"
+    },
+    "data_exfiltration_yak": {
+      "regex": "yak.*encode|yak.*key|yak.*>",
+      "risk_level": "critical",
+      "description": "Yak data exfiltration"
+    },
+    "data_exfiltration_zebra": {
+      "regex": "zebra.*encode|zebra.*key|zebra.*>",
+      "risk_level": "critical",
+      "description": "Zebra data exfiltration"
     }
   }
 } 
