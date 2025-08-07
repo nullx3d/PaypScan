@@ -1,0 +1,274 @@
+{
+  "patterns": {
+    "eval": {
+      "regex": "eval\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Dynamic code execution"
+    },
+    "exec": {
+      "regex": "exec\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Dynamic code execution"
+    },
+    "os_system": {
+      "regex": "os\\.system\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "System command execution"
+    },
+    "os_popen": {
+      "regex": "os\\.popen\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "System command execution"
+    },
+    "subprocess_call": {
+      "regex": "subprocess\\.call\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Subprocess execution"
+    },
+    "subprocess_popen": {
+      "regex": "subprocess\\.Popen\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Subprocess execution"
+    },
+    "subprocess_run": {
+      "regex": "subprocess\\.run\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Subprocess execution"
+    },
+    "subprocess_check_output": {
+      "regex": "subprocess\\.check_output\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Subprocess execution"
+    },
+    "base64_decode": {
+      "regex": "base64\\s*-d\\s+[A-Za-z0-9+/=]{10,}",
+      "risk_level": "medium",
+      "description": "Base64 decode command"
+    },
+    "base64_encoded": {
+      "regex": "[A-Za-z0-9+/]{20,}={0,2}",
+      "risk_level": "medium",
+      "description": "Base64 encoded string"
+    },
+    "base64_execute": {
+      "regex": "base64.*decode.*exec",
+      "risk_level": "high",
+      "description": "Base64 decode and execute"
+    },
+    "curl_download": {
+      "regex": "curl\\s+https?://[^\\s]+\\s+-o\\s+[^\\s\"]+",
+      "risk_level": "medium",
+      "description": "Curl file download"
+    },
+    "curl_dangerous": {
+      "regex": "curl\\s+.*-d\\s+.*",
+      "risk_level": "medium",
+      "description": "Curl with data"
+    },
+    "curl_upload": {
+      "regex": "curl\\s+.*-T\\s+",
+      "risk_level": "medium",
+      "description": "Curl file upload"
+    },
+    "wget_dangerous": {
+      "regex": "wget\\s+.*-O\\s+.*",
+      "risk_level": "medium",
+      "description": "Wget file download"
+    },
+    "powershell_invoke": {
+      "regex": "Invoke-Expression\\s+[^`]*",
+      "risk_level": "high",
+      "description": "PowerShell dynamic execution"
+    },
+    "powershell_iex": {
+      "regex": "iex\\s+[^`]*",
+      "risk_level": "high",
+      "description": "PowerShell dynamic execution"
+    },
+    "powershell_command": {
+      "regex": "powershell\\s+.*-Command\\s+.*",
+      "risk_level": "high",
+      "description": "PowerShell command execution"
+    },
+    "powershell_encoded": {
+      "regex": "powershell.*-EncodedCommand",
+      "risk_level": "high",
+      "description": "PowerShell encoded command"
+    },
+    "bash_eval": {
+      "regex": "eval\\s+[^;]*",
+      "risk_level": "high",
+      "description": "Bash dynamic execution"
+    },
+    "bash_source": {
+      "regex": "source\\s+[^;]*",
+      "risk_level": "medium",
+      "description": "Bash source command"
+    },
+    "bash_exec": {
+      "regex": "exec\\s+[^;]*",
+      "risk_level": "high",
+      "description": "Bash exec command"
+    },
+    "command_injection": {
+      "regex": "\\$\\{.*\\}|\\$\\(.*\\)",
+      "risk_level": "medium",
+      "description": "Command injection pattern"
+    },
+    "backticks": {
+      "regex": "`.*`",
+      "risk_level": "medium",
+      "description": "Command substitution with backticks"
+    },
+    "js_eval": {
+      "regex": "eval\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "JavaScript dynamic execution"
+    },
+    "js_function": {
+      "regex": "Function\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "JavaScript Function constructor"
+    },
+    "js_settimeout": {
+      "regex": "setTimeout\\s*\\([^)]*\\)",
+      "risk_level": "medium",
+      "description": "JavaScript setTimeout"
+    },
+    "js_setinterval": {
+      "regex": "setInterval\\s*\\([^)]*\\)",
+      "risk_level": "medium",
+      "description": "JavaScript setInterval"
+    },
+    "file_write": {
+      "regex": "open\\s*\\([^)]*,\\s*[\"']w[\"']",
+      "risk_level": "medium",
+      "description": "File write operation"
+    },
+    "file_delete": {
+      "regex": "os\\.remove\\s*\\([^)]*\\)",
+      "risk_level": "medium",
+      "description": "File deletion"
+    },
+    "file_execute": {
+      "regex": "chmod\\s+.*\\+x",
+      "risk_level": "medium",
+      "description": "File permission change"
+    },
+    "socket_connect": {
+      "regex": "socket\\.connect\\s*\\([^)]*\\)",
+      "risk_level": "medium",
+      "description": "Socket connection"
+    },
+    "requests_post": {
+      "regex": "requests\\.post\\s*\\([^)]*\\)",
+      "risk_level": "medium",
+      "description": "HTTP POST request"
+    },
+    "requests_get": {
+      "regex": "requests\\.get\\s*\\([^)]*\\)",
+      "risk_level": "medium",
+      "description": "HTTP GET request"
+    },
+    "process_start": {
+      "regex": "Process\\.Start\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Process creation"
+    },
+    "process_spawn": {
+      "regex": "spawn\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Process spawning"
+    },
+    "registry_write": {
+      "regex": "Registry\\.SetValue\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Registry write operation"
+    },
+    "registry_delete": {
+      "regex": "Registry\\.DeleteValue\\s*\\([^)]*\\)",
+      "risk_level": "high",
+      "description": "Registry deletion"
+    },
+    "service_start": {
+      "regex": "Start-Service\\s+[^`]*",
+      "risk_level": "high",
+      "description": "Service start"
+    },
+    "service_stop": {
+      "regex": "Stop-Service\\s+[^`]*",
+      "risk_level": "high",
+      "description": "Service stop"
+    },
+    "schtasks": {
+      "regex": "schtasks\\s+.*/create",
+      "risk_level": "high",
+      "description": "Scheduled task creation"
+    },
+    "cron_job": {
+      "regex": "crontab\\s+.*-e",
+      "risk_level": "high",
+      "description": "Cron job modification"
+    },
+    "ftp_upload": {
+      "regex": "ftp\\s+.*-n",
+      "risk_level": "medium",
+      "description": "FTP upload"
+    },
+    "scp_upload": {
+      "regex": "scp\\s+.*@",
+      "risk_level": "medium",
+      "description": "SCP file transfer"
+    },
+    "sudo_exec": {
+      "regex": "sudo\\s+.*exec",
+      "risk_level": "high",
+      "description": "Sudo with exec"
+    },
+    "runas": {
+      "regex": "runas\\s+.*/user:",
+      "risk_level": "high",
+      "description": "Run as different user"
+    },
+    "sleep_random": {
+      "regex": "sleep\\s+.*random",
+      "risk_level": "low",
+      "description": "Random sleep (anti-analysis)"
+    },
+    "timeout_random": {
+      "regex": "timeout\\s+.*random",
+      "risk_level": "low",
+      "description": "Random timeout (anti-analysis)"
+    },
+    "obfuscated_strings": {
+      "regex": "\\\\x[0-9a-fA-F]{2}",
+      "risk_level": "medium",
+      "description": "Hex encoded strings"
+    },
+    "hex_encoded": {
+      "regex": "\\\\x[0-9a-fA-F]{2,}",
+      "risk_level": "medium",
+      "description": "Hex encoded content"
+    },
+    "unicode_encoded": {
+      "regex": "\\\\u[0-9a-fA-F]{4}",
+      "risk_level": "medium",
+      "description": "Unicode encoded content"
+    },
+    "rot13_encoded": {
+      "regex": "[A-Za-z]{15,}",
+      "risk_level": "low",
+      "description": "Potential ROT13 encoding"
+    },
+    "url_decode_execute": {
+      "regex": "urllib\\.parse\\.unquote.*exec",
+      "risk_level": "high",
+      "description": "URL decode and execute"
+    },
+    "url_decode_eval": {
+      "regex": "urllib\\.parse\\.unquote.*eval",
+      "risk_level": "high",
+      "description": "URL decode and eval"
+    }
+  }
+} 

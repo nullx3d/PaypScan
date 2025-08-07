@@ -1,0 +1,26 @@
+# Test Pipeline - Eval Pattern
+# This pipeline demonstrates dangerous eval usage
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    # Dangerous eval usage
+    eval('console.log("Hello from eval")')
+    eval('process.exit(0)')
+  displayName: 'Dangerous Eval Script'
+
+- script: |
+    # Another eval example
+    code = 'print("Hello from Python eval")'
+    eval(code)
+  displayName: 'Python Eval Example' 

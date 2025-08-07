@@ -1,0 +1,29 @@
+# Test Pipeline - PowerShell Dangerous Patterns
+# This pipeline demonstrates dangerous PowerShell usage
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Dangerous PowerShell patterns
+      Invoke-Expression "Write-Host 'Dangerous IEX'"
+      iex "Get-Process"
+      powershell -Command "Write-Host 'Dangerous Command'"
+      powershell -EncodedCommand "V3JpdGUtSG9zdCAnRW5jb2RlZCBDb21tYW5kJw=="
+  displayName: 'Dangerous PowerShell Script'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # More PowerShell examples
+      $code = "Write-Host 'Dynamic PowerShell'"
+      Invoke-Expression $code
+  displayName: 'Dynamic PowerShell Execution' 

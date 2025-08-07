@@ -1,0 +1,33 @@
+# Test Pipeline - Base64 Dangerous Patterns
+# This pipeline demonstrates dangerous base64 usage
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    # Dangerous base64 patterns
+    echo "SGVsbG8gZnJvbSBiYXNlNjQ=" | base64 -d
+    echo "ZWNobyAiRGFuZ2Vyb3VzIGJhc2U2NCI=" | base64 -d | bash
+  displayName: 'Dangerous Base64 Script'
+
+- script: |
+    # Python base64 examples
+    import base64
+    encoded = "cHJpbnQoIkRhbmdlcm91cyBQeXRob24iKQ=="
+    decoded = base64.b64decode(encoded)
+    exec(decoded)
+  displayName: 'Python Base64 Execution'
+
+- script: |
+    # More base64 examples
+    echo "ZWNobyAiVGVzdCI=" | base64 -d | eval
+  displayName: 'Base64 with Eval' 

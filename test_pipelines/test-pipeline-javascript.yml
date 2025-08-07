@@ -1,0 +1,28 @@
+# Test Pipeline - JavaScript Dangerous Patterns
+# This pipeline demonstrates dangerous JavaScript usage
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    # Dangerous JavaScript patterns
+    eval('console.log("Dangerous eval")')
+    Function('console.log("Dangerous Function")')()
+    setTimeout('console.log("Dangerous setTimeout")', 1000)
+    setInterval('console.log("Dangerous setInterval")', 2000)
+  displayName: 'Dangerous JavaScript Script'
+
+- script: |
+    # More JavaScript examples
+    const code = 'console.log("Dynamic code execution")'
+    eval(code)
+  displayName: 'Dynamic Code Execution' 

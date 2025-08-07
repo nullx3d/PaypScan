@@ -1,0 +1,26 @@
+# Test Pipeline - Exec Pattern
+# This pipeline demonstrates dangerous exec usage
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    # Dangerous exec usage
+    exec('ls -la')
+    exec('rm -rf /tmp/test')
+  displayName: 'Dangerous Exec Script'
+
+- script: |
+    # Python exec example
+    code = 'print("Hello from exec")'
+    exec(code)
+  displayName: 'Python Exec Example' 
