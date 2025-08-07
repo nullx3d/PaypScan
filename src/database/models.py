@@ -11,7 +11,7 @@ import json
 Base = declarative_base()
 
 class WebhookEvent(Base):
-    """Webhook event'lerini saklar"""
+    """Stores webhook events"""
     __tablename__ = 'webhook_events'
     
     id = Column(Integer, primary_key=True)
@@ -32,7 +32,7 @@ class WebhookEvent(Base):
         return f"<WebhookEvent(id={self.id}, build_number='{self.build_number}', event_type='{self.event_type}')>"
 
 class SecurityFinding(Base):
-    """Güvenlik bulgularını saklar"""
+    """Stores security findings"""
     __tablename__ = 'security_findings'
     
     id = Column(Integer, primary_key=True)
@@ -40,7 +40,7 @@ class SecurityFinding(Base):
     pattern_name = Column(String(100), nullable=False)
     pattern_count = Column(Integer, default=0)
     risk_score = Column(Float, default=0.0)
-    examples = Column(Text)  # JSON string - ilk 3 örnek
+    examples = Column(Text)  # JSON string - first 3 examples
     timestamp = Column(DateTime, default=datetime.utcnow)
     severity = Column(String(20), default='MEDIUM')  # LOW, MEDIUM, HIGH, CRITICAL
     
@@ -51,7 +51,7 @@ class SecurityFinding(Base):
         return f"<SecurityFinding(id={self.id}, pattern='{self.pattern_name}', count={self.pattern_count}, severity='{self.severity}')>"
 
 class PipelineAnalysis(Base):
-    """Pipeline analiz sonuçlarını saklar"""
+    """Stores pipeline analysis results"""
     __tablename__ = 'pipeline_analysis'
     
     id = Column(Integer, primary_key=True)
@@ -71,7 +71,7 @@ class PipelineAnalysis(Base):
         return f"<PipelineAnalysis(id={self.id}, status='{self.analysis_status}', patterns={self.total_patterns_found})>"
 
 class PatternStatistic(Base):
-    """Pattern istatistiklerini saklar"""
+    """Stores pattern statistics"""
     __tablename__ = 'pattern_statistics'
     
     id = Column(Integer, primary_key=True)

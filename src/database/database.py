@@ -15,7 +15,7 @@ from .models import Base, WebhookEvent, SecurityFinding, PipelineAnalysis, Patte
 logger = logging.getLogger(__name__)
 
 class DatabaseManager:
-    """Database işlemlerini yöneten sınıf"""
+    """Database operations manager class"""
     
     def __init__(self):
         self.engine = None
@@ -23,33 +23,33 @@ class DatabaseManager:
         self._initialize_database()
     
     def _initialize_database(self):
-        """Database'i başlatır ve tabloları oluşturur"""
+        """Initialize database and create tables"""
         try:
-            # Engine oluştur
+            # Create engine
             self.engine = create_engine(DATABASE_URL, **DATABASE_CONFIG)
             
-            # Session factory oluştur
+            # Create session factory
             self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
             
-            # Tabloları oluştur
+            # Create tables
             Base.metadata.create_all(bind=self.engine)
             
-            logger.info("✅ Database başarıyla başlatıldı")
+            logger.info("✅ Database successfully initialized")
             
         except Exception as e:
-            logger.error(f"❌ Database başlatma hatası: {e}")
+            logger.error(f"❌ Database initialization error: {e}")
             raise
     
     def get_session(self):
-        """Database session'ı döndürür"""
+        """Return database session"""
         return self.SessionLocal()
     
     def save_webhook_event(self, event_data):
-        """Webhook event'ini kaydeder"""
+        """Save webhook event"""
         try:
             session = self.get_session()
             
-            # Event'i oluştur
+            # Create event
             webhook_event = WebhookEvent(
                 event_type=event_data['event_type'],
                 build_id=event_data['build_id'],
@@ -63,18 +63,18 @@ class DatabaseManager:
             session.add(webhook_event)
             session.commit()
             
-            logger.info(f"✅ Webhook event kaydedildi: {webhook_event.build_number}")
+            logger.info(f"✅ Webhook event saved: {webhook_event.build_number}")
             return webhook_event.id
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Webhook event kaydetme hatası: {e}")
+            logger.error(f"❌ Webhook event save error: {e}")
             session.rollback()
             raise
         finally:
             session.close()
     
     def save_security_findings(self, webhook_event_id, findings):
-        """Güvenlik bulgularını kaydeder"""
+        """Save security findings"""
         try:
             session = self.get_session()
             
@@ -84,24 +84,24 @@ class DatabaseManager:
                     pattern_name=finding['pattern'],
                     pattern_count=finding['count'],
                     risk_score=self._calculate_risk_score(finding['pattern']),
-                    examples=json.dumps(finding['matches'][:3]),  # İlk 3 örnek
+                    examples=json.dumps(finding['matches'][:3]),  # First 3 examples
                     severity=self._determine_severity(finding['pattern'])
                 )
                 
                 session.add(security_finding)
             
             session.commit()
-            logger.info(f"✅ {len(findings)} güvenlik bulgusu kaydedildi")
+            logger.info(f"✅ {len(findings)} security findings saved")
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Güvenlik bulguları kaydetme hatası: {e}")
+            logger.error(f"❌ Security findings save error: {e}")
             session.rollback()
             raise
         finally:
             session.close()
     
     def save_pipeline_analysis(self, webhook_event_id, yaml_content, yaml_filename, total_patterns, total_risk_score):
-        """Pipeline analiz sonuçlarını kaydeder"""
+        """Save pipeline analysis results"""
         try:
             session = self.get_session()
             
@@ -117,17 +117,17 @@ class DatabaseManager:
             session.add(pipeline_analysis)
             session.commit()
             
-            logger.info(f"✅ Pipeline analizi kaydedildi")
+            logger.info(f"✅ Pipeline analysis saved")
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Pipeline analizi kaydetme hatası: {e}")
+            logger.error(f"❌ Pipeline analysis save error: {e}")
             session.rollback()
             raise
         finally:
             session.close()
     
     def update_webhook_event_processed(self, webhook_event_id):
-        """Webhook event'i işlenmiş olarak işaretler"""
+        """Mark webhook event as processed"""
         try:
             session = self.get_session()
             
@@ -135,17 +135,17 @@ class DatabaseManager:
             if event:
                 event.processed = True
                 session.commit()
-                logger.info(f"✅ Webhook event işlenmiş olarak işaretlendi: {event.build_number}")
+                logger.info(f"✅ Webhook event marked as processed: {event.build_number}")
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Webhook event güncelleme hatası: {e}")
+            logger.error(f"❌ Webhook event update error: {e}")
             session.rollback()
             raise
         finally:
             session.close()
     
     def get_recent_events(self, limit=10):
-        """Son event'leri getirir"""
+        """Get recent events"""
         try:
             session = self.get_session()
             
@@ -153,13 +153,13 @@ class DatabaseManager:
             return events
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Event'ler getirme hatası: {e}")
+            logger.error(f"❌ Get events error: {e}")
             return []
         finally:
             session.close()
     
     def get_security_findings_by_event(self, webhook_event_id):
-        """Event'e ait güvenlik bulgularını getirir"""
+        """Get security findings for event"""
         try:
             session = self.get_session()
             
@@ -170,17 +170,17 @@ class DatabaseManager:
             return findings
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Güvenlik bulguları getirme hatası: {e}")
+            logger.error(f"❌ Get security findings error: {e}")
             return []
         finally:
             session.close()
     
     def get_pattern_statistics(self):
-        """Pattern istatistiklerini getirir"""
+        """Get pattern statistics"""
         try:
             session = self.get_session()
             
-            # Pattern'leri grupla ve say
+            # Group and count patterns
             result = session.execute(text("""
                 SELECT 
                     pattern_name,
@@ -195,13 +195,13 @@ class DatabaseManager:
             return [dict(row) for row in result]
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Pattern istatistikleri getirme hatası: {e}")
+            logger.error(f"❌ Get pattern statistics error: {e}")
             return []
         finally:
             session.close()
     
     def _calculate_risk_score(self, pattern_name):
-        """Pattern için risk skoru hesaplar"""
+        """Calculate risk score for pattern"""
         risk_scores = {
             'eval': 10.0,
             'exec': 10.0,
@@ -216,7 +216,7 @@ class DatabaseManager:
         return risk_scores.get(pattern_name, 5.0)
     
     def _determine_severity(self, pattern_name):
-        """Pattern için severity belirler"""
+        """Determine severity for pattern"""
         high_risk_patterns = ['eval', 'exec', 'base64_execute', 'powershell_invoke']
         medium_risk_patterns = ['subprocess_call', 'curl_dangerous', 'file_write']
         
@@ -228,11 +228,11 @@ class DatabaseManager:
             return 'MEDIUM'
     
     def event_exists(self, build_id, build_number):
-        """Event'in daha önce kaydedilip kaydedilmediğini kontrol eder"""
+        """Check if event was previously saved"""
         try:
             session = self.get_session()
             
-            # Build ID ve build number ile kontrol et
+            # Check with build ID and build number
             existing_event = session.query(WebhookEvent).filter(
                 WebhookEvent.build_id == build_id,
                 WebhookEvent.build_number == build_number
@@ -241,7 +241,7 @@ class DatabaseManager:
             return existing_event is not None
             
         except SQLAlchemyError as e:
-            logger.error(f"❌ Event kontrol hatası: {e}")
+            logger.error(f"❌ Event check error: {e}")
             return False
         finally:
             session.close() 
