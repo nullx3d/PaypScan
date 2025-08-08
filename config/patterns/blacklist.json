@@ -2404,6 +2404,3016 @@
        "regex": "tailgating.*\\$\\{.*\\}|piggybacking.*\\$\\{.*\\}|door.*sneaking.*\\$\\{.*\\}",
        "risk_level": "medium",
        "description": "Tailgating patterns"
-     }
-   }
-} 
+     },
+     "docker_container_escape": {
+       "regex": "docker.*run.*--privileged|docker.*run.*--cap-add.*ALL|docker.*run.*--security-opt.*privileged",
+       "risk_level": "critical",
+       "description": "Docker container escape attempt"
+     },
+     "docker_socket_mount": {
+       "regex": "docker.*run.*-v.*/var/run/docker.sock|docker.*run.*--volume.*docker.sock",
+       "risk_level": "critical",
+       "description": "Docker socket mount"
+     },
+     "docker_host_network": {
+       "regex": "docker.*run.*--network.*host|docker.*run.*--net.*host",
+       "risk_level": "high",
+       "description": "Docker host network mode"
+     },
+     "docker_root_user": {
+       "regex": "docker.*run.*-u.*0|docker.*run.*--user.*root",
+       "risk_level": "high",
+       "description": "Docker root user execution"
+     },
+     "docker_volume_escape": {
+       "regex": "docker.*run.*-v.*/:/host|docker.*run.*--volume.*/:/host",
+       "risk_level": "critical",
+       "description": "Docker volume escape"
+     },
+     "kubernetes_privileged_pod": {
+       "regex": "privileged.*true|securityContext.*privileged.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes privileged pod"
+     },
+     "kubernetes_host_path": {
+       "regex": "hostPath.*path.*/|volumeMounts.*hostPath",
+       "risk_level": "high",
+       "description": "Kubernetes host path mount"
+     },
+     "kubernetes_host_network": {
+       "regex": "hostNetwork.*true|hostPort.*\\d+",
+       "risk_level": "high",
+       "description": "Kubernetes host network"
+     },
+     "kubernetes_service_account_token": {
+       "regex": "automountServiceAccountToken.*true|serviceAccountName.*default",
+       "risk_level": "medium",
+       "description": "Kubernetes service account token"
+     },
+     "aws_cli_credentials": {
+       "regex": "aws.*configure.*set.*aws_access_key_id|aws.*configure.*set.*aws_secret_access_key",
+       "risk_level": "critical",
+       "description": "AWS CLI credentials exposure"
+     },
+     "aws_iam_escalation": {
+       "regex": "aws.*iam.*create-access-key|aws.*iam.*attach-user-policy",
+       "risk_level": "critical",
+       "description": "AWS IAM privilege escalation"
+     },
+     "aws_s3_public_access": {
+       "regex": "aws.*s3.*put-bucket-acl.*--grant-read.*uri.*http://acs.amazonaws.com/groups/global/AllUsers",
+       "risk_level": "high",
+       "description": "AWS S3 public access"
+     },
+     "aws_ec2_metadata": {
+       "regex": "curl.*169.254.169.254|wget.*169.254.169.254",
+       "risk_level": "medium",
+       "description": "AWS EC2 metadata access"
+     },
+     "azure_service_principal": {
+       "regex": "az.*ad.*sp.*create-for-rbac|az.*account.*get-access-token",
+       "risk_level": "critical",
+       "description": "Azure service principal creation"
+     },
+     "azure_vm_extension": {
+       "regex": "az.*vm.*extension.*set|az.*vm.*run-command",
+       "risk_level": "high",
+       "description": "Azure VM extension execution"
+     },
+     "azure_key_vault_access": {
+       "regex": "az.*keyvault.*secret.*download|az.*keyvault.*certificate.*download",
+       "risk_level": "critical",
+       "description": "Azure Key Vault access"
+     },
+     "gcp_service_account_key": {
+       "regex": "gcloud.*iam.*service-accounts.*keys.*create|gcloud.*auth.*activate-service-account",
+       "risk_level": "critical",
+       "description": "GCP service account key creation"
+     },
+     "gcp_compute_instance": {
+       "regex": "gcloud.*compute.*instances.*create|gcloud.*compute.*instances.*set-metadata",
+       "risk_level": "high",
+       "description": "GCP compute instance manipulation"
+     },
+     "terraform_state_manipulation": {
+       "regex": "terraform.*state.*mv|terraform.*state.*rm|terraform.*import",
+       "risk_level": "high",
+       "description": "Terraform state manipulation"
+     },
+     "terraform_provider_config": {
+       "regex": "terraform.*init.*-backend-config|terraform.*backend.*config",
+       "risk_level": "medium",
+       "description": "Terraform provider configuration"
+     },
+     "ansible_vault_password": {
+       "regex": "ansible-vault.*decrypt|ansible-vault.*view",
+       "risk_level": "critical",
+       "description": "Ansible vault password exposure"
+     },
+     "ansible_playbook_injection": {
+       "regex": "ansible-playbook.*-e.*\\$\\{.*\\}|ansible-playbook.*--extra-vars.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ansible playbook injection"
+     },
+     "helm_chart_injection": {
+       "regex": "helm.*install.*--set.*\\$\\{.*\\}|helm.*upgrade.*--set.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Helm chart injection"
+     },
+     "spring4shell_cve_2022_22965": {
+       "regex": "class.*\\$\\{.*\\}|method.*\\$\\{.*\\}|field.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22965"
+     },
+     "spring4shell_cve_2022_22963": {
+       "regex": "spring.*cloud.*function.*\\$\\{.*\\}|function.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22963"
+     },
+     "spring4shell_cve_2022_22950": {
+       "regex": "spring.*cloud.*gateway.*\\$\\{.*\\}|gateway.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22950"
+     },
+     "log4shell_cve_2021_44228": {
+       "regex": "\\$\\{jndi:ldap://|\\$\\{jndi:rmi://|\\$\\{jndi:dns://",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-44228"
+     },
+     "log4shell_cve_2021_45046": {
+       "regex": "\\$\\{jndi:ldap://.*\\$\\{.*\\}|\\$\\{jndi:rmi://.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-45046"
+     },
+     "log4shell_cve_2021_45105": {
+       "regex": "\\$\\{jndi:.*\\$\\{.*\\}.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-45105"
+     },
+     "proxyshell_cve_2021_34473": {
+       "regex": "powershell.*-enc.*[A-Za-z0-9+/]{20,}|powershell.*-encodedcommand.*[A-Za-z0-9+/]{20,}",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-34473"
+     },
+     "proxyshell_cve_2021_34523": {
+       "regex": "exchange.*powershell.*-enc|exchange.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-34523"
+     },
+     "proxyshell_cve_2021_31207": {
+       "regex": "exchange.*autodiscover.*powershell|exchange.*ecp.*powershell",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-31207"
+     },
+     "proxylogon_cve_2021_26855": {
+       "regex": "exchange.*autodiscover.*authentication.*bypass|exchange.*ecp.*authentication.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26855"
+     },
+     "proxylogon_cve_2021_26857": {
+       "regex": "exchange.*autodiscover.*deserialization|exchange.*ecp.*deserialization",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26857"
+     },
+     "proxylogon_cve_2021_26858": {
+       "regex": "exchange.*autodiscover.*post.*authentication|exchange.*ecp.*post.*authentication",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26858"
+     },
+     "zerologon_cve_2020_1472": {
+       "regex": "netlogon.*privilege.*escalation|netlogon.*authentication.*bypass",
+       "risk_level": "critical",
+       "description": "ZeroLogon CVE-2020-1472"
+     },
+     "printnightmare_cve_2021_1675": {
+       "regex": "spoolsv.*privilege.*escalation|print.*spooler.*exploit",
+       "risk_level": "critical",
+       "description": "PrintNightmare CVE-2021-1675"
+     },
+     "printnightmare_cve_2021_34527": {
+       "regex": "windows.*print.*spooler.*rce|print.*spooler.*remote.*code.*execution",
+       "risk_level": "critical",
+       "description": "PrintNightmare CVE-2021-34527"
+     },
+     "eternalblue_ms17_010": {
+       "regex": "smb.*eternalblue|ms17_010.*exploit|smb.*vulnerability.*exploitation",
+       "risk_level": "critical",
+       "description": "EternalBlue MS17-010"
+     },
+     "wannacry_ransomware": {
+       "regex": "wannacry.*encrypt|wannacry.*ransomware|wannacry.*bitcoin.*address",
+       "risk_level": "critical",
+       "description": "WannaCry ransomware"
+     },
+     "notpetya_ransomware": {
+       "regex": "notpetya.*encrypt|notpetya.*ransomware|notpetya.*mbr.*overwrite",
+       "risk_level": "critical",
+       "description": "NotPetya ransomware"
+     },
+     "ryuk_ransomware": {
+       "regex": "ryuk.*encrypt|ryuk.*ransomware|ryuk.*bitcoin.*wallet",
+       "risk_level": "critical",
+       "description": "Ryuk ransomware"
+     },
+     "revil_ransomware": {
+       "regex": "revil.*encrypt|revil.*ransomware|revil.*double.*extortion",
+       "risk_level": "critical",
+       "description": "REvil ransomware"
+     },
+     "heartbleed_cve_2014_0160": {
+       "regex": "openssl.*heartbleed|heartbleed.*exploit|openssl.*vulnerability",
+       "risk_level": "critical",
+       "description": "Heartbleed CVE-2014-0160"
+     },
+     "shellshock_cve_2014_6271": {
+       "regex": "bash.*shellshock|shellshock.*exploit|bash.*vulnerability",
+       "risk_level": "critical",
+       "description": "Shellshock CVE-2014-6271"
+     },
+     "struts_cve_2017_5638": {
+       "regex": "struts.*cve.*2017.*5638|struts.*ognl.*injection|struts.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2017-5638"
+     },
+     "struts_cve_2017_9805": {
+       "regex": "struts.*cve.*2017.*9805|struts.*rest.*plugin.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2017-9805"
+     },
+     "struts_cve_2018_11776": {
+       "regex": "struts.*cve.*2018.*11776|struts.*namespace.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2018-11776"
+     },
+     "spring_expression_injection": {
+       "regex": "spel.*\\$\\{.*\\}|spring.*expression.*\\$\\{.*\\}|@spel.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring expression injection"
+     },
+     "spring_ognl_injection": {
+       "regex": "ognl.*\\$\\{.*\\}|@ognl.*\\$\\{.*\\}|spring.*ognl.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring OGNL injection"
+     },
+     "django_template_injection": {
+       "regex": "django.*template.*\\$\\{.*\\}|jinja2.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django template injection"
+     },
+     "django_orm_injection": {
+       "regex": "django.*orm.*\\$\\{.*\\}|queryset.*\\$\\{.*\\}|model.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django ORM injection"
+     },
+     "laravel_artisan_injection": {
+       "regex": "artisan.*\\$\\{.*\\}|php.*artisan.*\\$\\{.*\\}|laravel.*command.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Artisan injection"
+     },
+     "laravel_eloquent_injection": {
+       "regex": "eloquent.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Eloquent injection"
+     },
+     "express_route_injection": {
+       "regex": "express.*route.*\\$\\{.*\\}|app\\.get.*\\$\\{.*\\}|app\\.post.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js route injection"
+     },
+     "express_middleware_bypass": {
+       "regex": "express.*middleware.*bypass|app\\.use.*\\$\\{.*\\}|middleware.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js middleware bypass"
+     },
+     "rails_erb_injection": {
+       "regex": "erb.*\\$\\{.*\\}|rails.*erb.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ERB injection"
+     },
+     "rails_active_record_injection": {
+       "regex": "activerecord.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ActiveRecord injection"
+     },
+     "aspnet_viewstate_manipulation": {
+       "regex": "viewstate.*\\$\\{.*\\}|__viewstate.*\\$\\{.*\\}|aspnet.*viewstate.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET ViewState manipulation"
+     },
+     "aspnet_form_authentication_bypass": {
+       "regex": "forms.*authentication.*bypass|aspnet.*auth.*bypass|authentication.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET form authentication bypass"
+     },
+     "flask_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|flask.*template.*\\$\\{.*\\}|render_template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flask Jinja2 injection"
+     },
+     "fastapi_dependency_injection": {
+       "regex": "fastapi.*dependency.*\\$\\{.*\\}|depends.*\\$\\{.*\\}|dependency.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "FastAPI dependency injection abuse"
+     },
+     "anti_debugging_detection": {
+       "regex": "isdebuggerpresent|checkremotedebuggerpresent|debugger.*detection",
+       "risk_level": "medium",
+       "description": "Anti-debugging detection"
+     },
+     "anti_vm_detection": {
+       "regex": "virtualbox|vmware|vbox|vm.*detection|sandbox.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM detection"
+     },
+     "code_obfuscation_string_encryption": {
+       "regex": "string.*encryption|obfuscate.*string|encrypt.*string",
+       "risk_level": "medium",
+       "description": "Code obfuscation string encryption"
+     },
+     "code_obfuscation_variable_renaming": {
+       "regex": "variable.*renaming|rename.*variable|obfuscate.*variable",
+       "risk_level": "medium",
+       "description": "Code obfuscation variable renaming"
+     },
+     "api_hooking_function_hooking": {
+       "regex": "hook.*function|api.*hooking|function.*hook",
+       "risk_level": "high",
+       "description": "API hooking function hooking"
+     },
+     "api_hooking_system_call_interception": {
+       "regex": "system.*call.*interception|syscall.*hook|intercept.*syscall",
+       "risk_level": "high",
+       "description": "API hooking system call interception"
+     },
+     "process_injection_dll_injection": {
+       "regex": "dll.*injection|inject.*dll|loadlibrary.*injection",
+       "risk_level": "critical",
+       "description": "Process injection DLL injection"
+     },
+     "process_injection_code_cave_injection": {
+       "regex": "code.*cave.*injection|cave.*injection|inject.*cave",
+       "risk_level": "critical",
+       "description": "Process injection code cave injection"
+     },
+     "memory_scanning_process_memory_manipulation": {
+       "regex": "process.*memory.*manipulation|memory.*scanning|manipulate.*memory",
+       "risk_level": "high",
+       "description": "Memory scanning process memory manipulation"
+     },
+     "ssh_tunneling_port_forwarding": {
+       "regex": "ssh.*-L.*\\d+:.*:\\d+|ssh.*-D.*\\d+|ssh.*tunnel",
+       "risk_level": "medium",
+       "description": "SSH tunneling port forwarding"
+     },
+     "ssh_tunneling_reverse_tunneling": {
+       "regex": "ssh.*-R.*\\d+:.*:\\d+|reverse.*tunnel|ssh.*reverse",
+       "risk_level": "medium",
+       "description": "SSH tunneling reverse tunneling"
+     },
+     "vpn_proxy_abuse_tunnel_manipulation": {
+       "regex": "vpn.*tunnel.*manipulation|proxy.*tunnel|tunnel.*manipulation",
+       "risk_level": "medium",
+       "description": "VPN/proxy abuse tunnel manipulation"
+     },
+     "port_scanning_network_reconnaissance": {
+       "regex": "nmap.*-sS|nmap.*-sU|nmap.*-p.*\\d+",
+       "risk_level": "medium",
+       "description": "Port scanning network reconnaissance"
+     },
+     "network_reconnaissance_host_discovery": {
+       "regex": "host.*discovery|network.*scanning|reconnaissance.*scan",
+       "risk_level": "medium",
+       "description": "Network reconnaissance host discovery"
+     },
+     "session_hijacking_cookie_manipulation": {
+       "regex": "cookie.*manipulation|session.*hijacking|hijack.*session",
+       "risk_level": "high",
+       "description": "Session hijacking cookie manipulation"
+     },
+     "clickjacking_ui_redressing": {
+       "regex": "ui.*redressing|clickjacking|frame.*injection",
+       "risk_level": "medium",
+       "description": "Clickjacking UI redressing"
+     },
+     "open_redirects_url_redirection_abuse": {
+       "regex": "redirect.*\\$\\{.*\\}|url.*redirection.*\\$\\{.*\\}|redirect.*parameter",
+       "risk_level": "medium",
+       "description": "Open redirects URL redirection abuse"
+     },
+     "ssrf_server_side_request_forgery": {
+       "regex": "ssrf.*\\$\\{.*\\}|server.*side.*request.*forgery|internal.*service.*access",
+       "risk_level": "high",
+       "description": "SSRF server-side request forgery"
+     },
+     "xml_injection_data_format_manipulation": {
+       "regex": "xml.*\\$\\{.*\\}|xml.*injection|data.*format.*manipulation",
+       "risk_level": "high",
+       "description": "XML injection data format manipulation"
+     },
+     "json_injection_query_injection": {
+       "regex": "json.*\\$\\{.*\\}|json.*injection|query.*injection",
+       "risk_level": "high",
+       "description": "JSON injection query injection"
+     },
+     "graphql_injection_query_injection": {
+       "regex": "graphql.*\\$\\{.*\\}|graphql.*injection|query.*injection",
+       "risk_level": "high",
+       "description": "GraphQL injection query injection"
+     },
+     "android_bypass_root_detection_bypass": {
+       "regex": "root.*detection.*bypass|android.*root.*bypass|bypass.*root.*detection",
+       "risk_level": "medium",
+       "description": "Android bypass root detection bypass"
+     },
+     "ios_bypass_jailbreak_detection_bypass": {
+       "regex": "jailbreak.*detection.*bypass|ios.*jailbreak.*bypass|bypass.*jailbreak.*detection",
+       "risk_level": "medium",
+       "description": "iOS bypass jailbreak detection bypass"
+     },
+     "react_native_javascript_bridge_abuse": {
+       "regex": "react.*native.*bridge.*abuse|javascript.*bridge.*\\$\\{.*\\}|native.*module.*injection",
+       "risk_level": "high",
+       "description": "React Native JavaScript bridge abuse"
+     },
+     "flutter_dart_code_injection": {
+       "regex": "flutter.*dart.*injection|dart.*code.*\\$\\{.*\\}|platform.*channel.*abuse",
+       "risk_level": "high",
+       "description": "Flutter Dart code injection"
+     },
+     "smart_home_device_hijacking": {
+       "regex": "smart.*home.*hijacking|device.*hijacking|automation.*abuse",
+       "risk_level": "medium",
+       "description": "Smart home device hijacking"
+     },
+     "industrial_iot_scada_manipulation": {
+       "regex": "scada.*manipulation|plc.*programming|industrial.*iot.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Industrial IoT SCADA manipulation"
+     },
+     "medical_device_patient_data_access": {
+       "regex": "medical.*device.*data.*access|patient.*data.*\\$\\{.*\\}|device.*control.*bypass",
+       "risk_level": "critical",
+       "description": "Medical device patient data access"
+     },
+     "automotive_can_bus_manipulation": {
+       "regex": "can.*bus.*manipulation|ecu.*reprogramming|automotive.*security.*bypass",
+       "risk_level": "critical",
+       "description": "Automotive CAN bus manipulation"
+     },
+     "wearable_health_data_access": {
+       "regex": "wearable.*health.*data.*access|device.*synchronization.*abuse|health.*data.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Wearable health data access"
+     },
+     "mining_malware_coinhive": {
+       "regex": "coinhive.*mining|coinhive.*script|mining.*malware.*coinhive",
+       "risk_level": "high",
+       "description": "Mining malware Coinhive"
+     },
+     "mining_malware_xmrig": {
+       "regex": "xmrig.*mining|xmrig.*malware|mining.*malware.*xmrig",
+       "risk_level": "high",
+       "description": "Mining malware XMRig"
+     },
+     "mining_pool_manipulation": {
+       "regex": "mining.*pool.*manipulation|pool.*hijacking|hash.*rate.*theft",
+       "risk_level": "high",
+       "description": "Mining pool manipulation"
+     },
+     "wallet_theft_private_key_extraction": {
+       "regex": "private.*key.*extraction|wallet.*theft|wallet\\.dat.*access",
+       "risk_level": "critical",
+       "description": "Wallet theft private key extraction"
+     },
+     "blockchain_51_attack": {
+       "regex": "51.*attack|blockchain.*attack|double.*spending.*attempt",
+       "risk_level": "critical",
+       "description": "Blockchain 51% attack"
+     },
+     "defi_flash_loan_attack": {
+       "regex": "flash.*loan.*attack|defi.*exploit|smart.*contract.*manipulation",
+       "risk_level": "high",
+       "description": "DeFi flash loan attack"
+     },
+     "nft_token_manipulation": {
+       "regex": "nft.*token.*manipulation|marketplace.*abuse|token.*manipulation",
+       "risk_level": "medium",
+       "description": "NFT token manipulation"
+     },
+     "exchange_trading_bot_manipulation": {
+       "regex": "trading.*bot.*manipulation|order.*book.*abuse|exchange.*attack",
+       "risk_level": "critical",
+       "description": "Exchange trading bot manipulation"
+     },
+     "phishing_email_spoofing": {
+       "regex": "email.*spoofing|phishing.*email|credential.*harvesting",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing"
+     },
+     "spear_phishing_targeted_attacks": {
+       "regex": "spear.*phishing.*targeted|targeted.*phishing|executive.*impersonation",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attacks"
+     },
+     "whaling_ceo_fraud": {
+       "regex": "ceo.*fraud|whaling.*attack|business.*email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud"
+     },
+     "smishing_sms_phishing": {
+       "regex": "sms.*phishing|smishing.*attack|text.*scam",
+       "risk_level": "medium",
+       "description": "Smishing SMS phishing"
+     },
+     "pretexting_false_identity": {
+       "regex": "false.*identity.*creation|pretexting.*attack|information.*gathering",
+       "risk_level": "medium",
+       "description": "Pretexting false identity"
+     },
+     "baiting_physical_device": {
+       "regex": "physical.*device.*placement|usb.*drop.*attack|baiting.*attack",
+       "risk_level": "medium",
+       "description": "Baiting physical device"
+     },
+     "quid_pro_quo_service_exchange": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*attack|something.*for.*something",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange"
+     },
+     "tailgating_physical_access": {
+       "regex": "physical.*access.*abuse|door.*manipulation|tailgating.*attack",
+       "risk_level": "medium",
+       "description": "Tailgating physical access"
+     },
+     "docker_container_privilege_escalation": {
+       "regex": "docker.*run.*--cap-add.*SYS_ADMIN|docker.*run.*--cap-add.*NET_ADMIN",
+       "risk_level": "critical",
+       "description": "Docker container privilege escalation"
+     },
+     "docker_container_resource_abuse": {
+       "regex": "docker.*run.*--memory.*0|docker.*run.*--cpus.*0",
+       "risk_level": "high",
+       "description": "Docker container resource abuse"
+     },
+     "kubernetes_pod_security_context_bypass": {
+       "regex": "runAsUser.*0|runAsGroup.*0|fsGroup.*0",
+       "risk_level": "critical",
+       "description": "Kubernetes pod security context bypass"
+     },
+     "kubernetes_pod_privilege_escalation": {
+       "regex": "allowPrivilegeEscalation.*true|privileged.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod privilege escalation"
+     },
+     "aws_cloudformation_template_injection": {
+       "regex": "cloudformation.*template.*\\$\\{.*\\}|cfn.*template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "AWS CloudFormation template injection"
+     },
+     "aws_lambda_function_injection": {
+       "regex": "lambda.*function.*\\$\\{.*\\}|aws.*lambda.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "AWS Lambda function injection"
+     },
+     "azure_arm_template_injection": {
+       "regex": "arm.*template.*\\$\\{.*\\}|azure.*template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Azure ARM template injection"
+     },
+     "azure_function_app_injection": {
+       "regex": "function.*app.*\\$\\{.*\\}|azure.*function.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Azure Function App injection"
+     },
+     "gcp_cloud_function_injection": {
+       "regex": "cloud.*function.*\\$\\{.*\\}|gcp.*function.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "GCP Cloud Function injection"
+     },
+     "terraform_remote_state_manipulation": {
+       "regex": "terraform.*remote.*state.*\\$\\{.*\\}|backend.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform remote state manipulation"
+     },
+     "ansible_vault_password_file": {
+       "regex": "ansible-vault.*decrypt|ansible-vault.*view",
+       "risk_level": "critical",
+       "description": "Ansible vault password file exposure"
+     },
+     "helm_secret_injection": {
+       "regex": "helm.*secret.*\\$\\{.*\\}|--set.*secret.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Helm secret injection"
+     },
+     "spring_cloud_function_injection": {
+       "regex": "spring.*cloud.*function.*\\$\\{.*\\}|function.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring Cloud Function injection"
+     },
+     "spring_cloud_gateway_injection": {
+       "regex": "spring.*cloud.*gateway.*\\$\\{.*\\}|gateway.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring Cloud Gateway injection"
+     },
+     "log4j_jndi_injection_variants": {
+       "regex": "\\$\\{jndi:ldaps://|\\$\\{jndi:corba://|\\$\\{jndi:iiop://",
+       "risk_level": "critical",
+       "description": "Log4j JNDI injection variants"
+     },
+     "log4j_lookup_injection": {
+       "regex": "\\$\\{java:runtime|\\$\\{java:vm|\\$\\{java:os",
+       "risk_level": "critical",
+       "description": "Log4j lookup injection"
+     },
+     "proxyshell_exchange_autodiscover": {
+       "regex": "autodiscover.*powershell.*-enc|autodiscover.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell Exchange Autodiscover"
+     },
+     "proxyshell_exchange_ecp": {
+       "regex": "ecp.*powershell.*-enc|ecp.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell Exchange ECP"
+     },
+     "proxylogon_exchange_autodiscover_auth": {
+       "regex": "autodiscover.*authentication.*bypass|autodiscover.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon Exchange Autodiscover authentication bypass"
+     },
+     "proxylogon_exchange_ecp_auth": {
+       "regex": "ecp.*authentication.*bypass|ecp.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon Exchange ECP authentication bypass"
+     },
+     "zerologon_netlogon_privilege_escalation": {
+       "regex": "netlogon.*privilege.*escalation|netlogon.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ZeroLogon Netlogon privilege escalation"
+     },
+     "printnightmare_spoolsv_exploit": {
+       "regex": "spoolsv.*exploit|print.*spooler.*rce|spooler.*vulnerability",
+       "risk_level": "critical",
+       "description": "PrintNightmare spoolsv exploit"
+     },
+     "eternalblue_smb_exploit": {
+       "regex": "smb.*eternalblue|ms17_010.*smb|smb.*vulnerability",
+       "risk_level": "critical",
+       "description": "EternalBlue SMB exploit"
+     },
+     "wannacry_encryption": {
+       "regex": "wannacry.*encrypt|wannacry.*encryption|wannacry.*ransomware",
+       "risk_level": "critical",
+       "description": "WannaCry encryption"
+     },
+     "notpetya_mbr_overwrite": {
+       "regex": "notpetya.*mbr.*overwrite|notpetya.*boot.*sector|notpetya.*encryption",
+       "risk_level": "critical",
+       "description": "NotPetya MBR overwrite"
+     },
+     "ryuk_encryption": {
+       "regex": "ryuk.*encrypt|ryuk.*encryption|ryuk.*bitcoin.*wallet",
+       "risk_level": "critical",
+       "description": "Ryuk encryption"
+     },
+     "revil_double_extortion": {
+       "regex": "revil.*double.*extortion|revil.*encrypt|revil.*ransomware",
+       "risk_level": "critical",
+       "description": "REvil double extortion"
+     },
+     "heartbleed_openssl_vulnerability": {
+       "regex": "openssl.*heartbleed|heartbleed.*openssl|openssl.*vulnerability",
+       "risk_level": "critical",
+       "description": "Heartbleed OpenSSL vulnerability"
+     },
+     "shellshock_bash_vulnerability": {
+       "regex": "bash.*shellshock|shellshock.*bash|bash.*vulnerability",
+       "risk_level": "critical",
+       "description": "Shellshock Bash vulnerability"
+     },
+     "struts_ognl_injection": {
+       "regex": "struts.*ognl.*injection|ognl.*struts|struts.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts OGNL injection"
+     },
+     "struts_rest_plugin_vulnerability": {
+       "regex": "struts.*rest.*plugin.*vulnerability|rest.*plugin.*struts",
+       "risk_level": "critical",
+       "description": "Struts REST plugin vulnerability"
+     },
+     "struts_namespace_vulnerability": {
+       "regex": "struts.*namespace.*vulnerability|namespace.*struts",
+       "risk_level": "critical",
+       "description": "Struts namespace vulnerability"
+     },
+     "spring_spel_injection": {
+       "regex": "spel.*\\$\\{.*\\}|spring.*spel.*\\$\\{.*\\}|@spel.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring SpEL injection"
+     },
+     "spring_ognl_injection_variants": {
+       "regex": "ognl.*\\$\\{.*\\}|@ognl.*\\$\\{.*\\}|spring.*ognl.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring OGNL injection variants"
+     },
+     "django_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|django.*jinja2.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django Jinja2 injection"
+     },
+     "django_orm_injection": {
+       "regex": "django.*orm.*\\$\\{.*\\}|queryset.*\\$\\{.*\\}|model.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django ORM injection"
+     },
+     "laravel_artisan_injection": {
+       "regex": "artisan.*\\$\\{.*\\}|php.*artisan.*\\$\\{.*\\}|laravel.*command.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Artisan injection"
+     },
+     "laravel_eloquent_injection": {
+       "regex": "eloquent.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Eloquent injection"
+     },
+     "express_route_injection": {
+       "regex": "express.*route.*\\$\\{.*\\}|app\\.get.*\\$\\{.*\\}|app\\.post.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js route injection"
+     },
+     "express_middleware_bypass": {
+       "regex": "express.*middleware.*bypass|app\\.use.*\\$\\{.*\\}|middleware.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js middleware bypass"
+     },
+     "rails_erb_injection": {
+       "regex": "erb.*\\$\\{.*\\}|rails.*erb.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ERB injection"
+     },
+     "rails_active_record_injection": {
+       "regex": "activerecord.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ActiveRecord injection"
+     },
+     "aspnet_viewstate_manipulation": {
+       "regex": "viewstate.*\\$\\{.*\\}|__viewstate.*\\$\\{.*\\}|aspnet.*viewstate.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET ViewState manipulation"
+     },
+     "aspnet_form_authentication_bypass": {
+       "regex": "forms.*authentication.*bypass|aspnet.*auth.*bypass|authentication.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET form authentication bypass"
+     },
+     "flask_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|flask.*template.*\\$\\{.*\\}|render_template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flask Jinja2 injection"
+     },
+     "fastapi_dependency_injection": {
+       "regex": "fastapi.*dependency.*\\$\\{.*\\}|depends.*\\$\\{.*\\}|dependency.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "FastAPI dependency injection abuse"
+     },
+     "anti_debugging_isdebuggerpresent": {
+       "regex": "isdebuggerpresent|checkremotedebuggerpresent|debugger.*present",
+       "risk_level": "medium",
+       "description": "Anti-debugging IsDebuggerPresent"
+     },
+     "anti_debugging_breakpoint_detection": {
+       "regex": "breakpoint.*detection|debugger.*breakpoint|anti.*debug.*breakpoint",
+       "risk_level": "medium",
+       "description": "Anti-debugging breakpoint detection"
+     },
+     "anti_vm_virtualbox_detection": {
+       "regex": "virtualbox.*detection|vbox.*detection|vmware.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM VirtualBox detection"
+     },
+     "anti_vm_sandbox_detection": {
+       "regex": "sandbox.*detection|vm.*detection|virtual.*machine.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM sandbox detection"
+     },
+     "code_obfuscation_dead_code": {
+       "regex": "dead.*code.*injection|obfuscate.*dead.*code|inject.*dead.*code",
+       "risk_level": "medium",
+       "description": "Code obfuscation dead code injection"
+     },
+     "code_obfuscation_string_encryption_variants": {
+       "regex": "string.*encryption.*variant|obfuscate.*string.*variant|encrypt.*string.*variant",
+       "risk_level": "medium",
+       "description": "Code obfuscation string encryption variants"
+     },
+     "api_hooking_function_hooking_variants": {
+       "regex": "hook.*function.*variant|api.*hooking.*variant|function.*hook.*variant",
+       "risk_level": "high",
+       "description": "API hooking function hooking variants"
+     },
+     "api_hooking_syscall_interception": {
+       "regex": "syscall.*interception|intercept.*syscall|system.*call.*hook",
+       "risk_level": "high",
+       "description": "API hooking syscall interception"
+     },
+     "process_injection_thread_hijacking": {
+       "regex": "thread.*hijacking|hijack.*thread|process.*thread.*injection",
+       "risk_level": "critical",
+       "description": "Process injection thread hijacking"
+     },
+     "process_injection_apc_injection": {
+       "regex": "apc.*injection|asynchronous.*procedure.*call.*injection|apc.*hook",
+       "risk_level": "critical",
+       "description": "Process injection APC injection"
+     },
+     "memory_scanning_heap_spraying": {
+       "regex": "heap.*spraying|memory.*heap.*spray|spray.*heap.*memory",
+       "risk_level": "high",
+       "description": "Memory scanning heap spraying"
+     },
+     "memory_scanning_stack_pivot": {
+       "regex": "stack.*pivot|pivot.*stack|memory.*stack.*manipulation",
+       "risk_level": "high",
+       "description": "Memory scanning stack pivot"
+     },
+     "ssh_tunneling_socks_proxy": {
+       "regex": "ssh.*-D.*\\d+|socks.*proxy.*ssh|ssh.*socks.*proxy",
+       "risk_level": "medium",
+       "description": "SSH tunneling SOCKS proxy"
+     },
+     "ssh_tunneling_dynamic_port_forwarding": {
+       "regex": "ssh.*-D.*\\d+:.*:\\d+|dynamic.*port.*forwarding|ssh.*dynamic",
+       "risk_level": "medium",
+       "description": "SSH tunneling dynamic port forwarding"
+     },
+     "vpn_tunnel_manipulation": {
+       "regex": "vpn.*tunnel.*manipulation|tunnel.*vpn.*manipulation|vpn.*manipulation",
+       "risk_level": "medium",
+       "description": "VPN tunnel manipulation"
+     },
+     "proxy_tunnel_manipulation": {
+       "regex": "proxy.*tunnel.*manipulation|tunnel.*proxy.*manipulation|proxy.*manipulation",
+       "risk_level": "medium",
+       "description": "Proxy tunnel manipulation"
+     },
+     "port_scanning_syn_scan": {
+       "regex": "nmap.*-sS.*\\d+|syn.*scan|tcp.*syn.*scan",
+       "risk_level": "medium",
+       "description": "Port scanning SYN scan"
+     },
+     "port_scanning_udp_scan": {
+       "regex": "nmap.*-sU.*\\d+|udp.*scan|udp.*port.*scan",
+       "risk_level": "medium",
+       "description": "Port scanning UDP scan"
+     },
+     "network_reconnaissance_service_enumeration": {
+       "regex": "service.*enumeration|network.*service.*scan|reconnaissance.*service",
+       "risk_level": "medium",
+       "description": "Network reconnaissance service enumeration"
+     },
+     "network_reconnaissance_os_fingerprinting": {
+       "regex": "os.*fingerprinting|operating.*system.*detection|os.*detection",
+       "risk_level": "medium",
+       "description": "Network reconnaissance OS fingerprinting"
+     },
+     "session_hijacking_session_fixation": {
+       "regex": "session.*fixation|fixation.*attack|session.*hijacking.*fixation",
+       "risk_level": "high",
+       "description": "Session hijacking session fixation"
+     },
+     "session_hijacking_session_prediction": {
+       "regex": "session.*prediction|predict.*session|session.*hijacking.*prediction",
+       "risk_level": "high",
+       "description": "Session hijacking session prediction"
+     },
+     "clickjacking_frame_injection": {
+       "regex": "frame.*injection|iframe.*injection|clickjacking.*frame",
+       "risk_level": "medium",
+       "description": "Clickjacking frame injection"
+     },
+     "clickjacking_overlay_attack": {
+       "regex": "overlay.*attack|clickjacking.*overlay|ui.*redressing.*overlay",
+       "risk_level": "medium",
+       "description": "Clickjacking overlay attack"
+     },
+     "open_redirects_parameter_manipulation": {
+       "regex": "redirect.*parameter.*\\$\\{.*\\}|url.*parameter.*redirect|redirect.*url.*parameter",
+       "risk_level": "medium",
+       "description": "Open redirects parameter manipulation"
+     },
+     "open_redirects_header_injection": {
+       "regex": "redirect.*header.*\\$\\{.*\\}|header.*redirect|redirect.*header.*injection",
+       "risk_level": "medium",
+       "description": "Open redirects header injection"
+     },
+     "ssrf_internal_service_access": {
+       "regex": "internal.*service.*access|ssrf.*internal|server.*side.*internal",
+       "risk_level": "high",
+       "description": "SSRF internal service access"
+     },
+     "ssrf_cloud_metadata_access": {
+       "regex": "cloud.*metadata.*access|ssrf.*metadata|server.*side.*metadata",
+       "risk_level": "high",
+       "description": "SSRF cloud metadata access"
+     },
+     "xml_injection_xxe_injection": {
+       "regex": "xxe.*injection|xml.*external.*entity|external.*entity.*injection",
+       "risk_level": "high",
+       "description": "XML injection XXE injection"
+     },
+     "xml_injection_xpath_injection": {
+       "regex": "xpath.*injection|xml.*path.*injection|xpath.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "XML injection XPath injection"
+     },
+     "json_injection_jsonp_injection": {
+       "regex": "jsonp.*injection|json.*with.*padding.*injection|jsonp.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "JSON injection JSONP injection"
+     },
+     "json_injection_json_schema_injection": {
+       "regex": "json.*schema.*injection|schema.*injection|json.*schema.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "JSON injection JSON schema injection"
+     },
+     "graphql_introspection_abuse": {
+       "regex": "graphql.*introspection.*abuse|introspection.*abuse|graphql.*introspection",
+       "risk_level": "high",
+       "description": "GraphQL introspection abuse"
+     },
+     "graphql_field_suggestion_abuse": {
+       "regex": "graphql.*field.*suggestion.*abuse|field.*suggestion.*abuse|graphql.*suggestion",
+       "risk_level": "high",
+       "description": "GraphQL field suggestion abuse"
+     },
+     "android_root_detection_bypass_variants": {
+       "regex": "root.*detection.*bypass.*variant|android.*root.*bypass.*variant|bypass.*root.*variant",
+       "risk_level": "medium",
+       "description": "Android root detection bypass variants"
+     },
+     "android_su_binary_detection": {
+       "regex": "su.*binary.*detection|android.*su.*detection|root.*su.*detection",
+       "risk_level": "medium",
+       "description": "Android su binary detection"
+     },
+     "ios_jailbreak_detection_bypass_variants": {
+       "regex": "jailbreak.*detection.*bypass.*variant|ios.*jailbreak.*bypass.*variant|bypass.*jailbreak.*variant",
+       "risk_level": "medium",
+       "description": "iOS jailbreak detection bypass variants"
+     },
+     "ios_sandbox_escape": {
+       "regex": "sandbox.*escape|ios.*sandbox.*escape|jailbreak.*sandbox.*escape",
+       "risk_level": "critical",
+       "description": "iOS sandbox escape"
+     },
+     "react_native_native_module_injection": {
+       "regex": "native.*module.*injection|react.*native.*module.*injection|module.*injection",
+       "risk_level": "high",
+       "description": "React Native native module injection"
+     },
+     "react_native_bridge_abuse_variants": {
+       "regex": "bridge.*abuse.*variant|react.*native.*bridge.*variant|javascript.*bridge.*variant",
+       "risk_level": "high",
+       "description": "React Native bridge abuse variants"
+     },
+     "flutter_platform_channel_abuse": {
+       "regex": "platform.*channel.*abuse|flutter.*channel.*abuse|channel.*abuse",
+       "risk_level": "high",
+       "description": "Flutter platform channel abuse"
+     },
+     "flutter_dart_code_injection_variants": {
+       "regex": "dart.*code.*injection.*variant|flutter.*dart.*variant|dart.*injection.*variant",
+       "risk_level": "high",
+       "description": "Flutter Dart code injection variants"
+     },
+     "smart_home_automation_abuse": {
+       "regex": "automation.*abuse|smart.*home.*automation.*abuse|home.*automation.*abuse",
+       "risk_level": "medium",
+       "description": "Smart home automation abuse"
+     },
+     "smart_home_device_control_bypass": {
+       "regex": "device.*control.*bypass|smart.*home.*control.*bypass|home.*control.*bypass",
+       "risk_level": "medium",
+       "description": "Smart home device control bypass"
+     },
+     "industrial_iot_plc_programming": {
+       "regex": "plc.*programming|industrial.*plc.*programming|programmable.*logic.*controller",
+       "risk_level": "critical",
+       "description": "Industrial IoT PLC programming"
+     },
+     "industrial_iot_hmi_manipulation": {
+       "regex": "hmi.*manipulation|human.*machine.*interface.*manipulation|hmi.*attack",
+       "risk_level": "critical",
+       "description": "Industrial IoT HMI manipulation"
+     },
+     "medical_device_control_bypass": {
+       "regex": "medical.*device.*control.*bypass|device.*control.*bypass|medical.*control.*bypass",
+       "risk_level": "critical",
+       "description": "Medical device control bypass"
+     },
+     "medical_device_patient_monitor_access": {
+       "regex": "patient.*monitor.*access|medical.*monitor.*access|monitor.*access",
+       "risk_level": "critical",
+       "description": "Medical device patient monitor access"
+     },
+     "automotive_ecu_reprogramming": {
+       "regex": "ecu.*reprogramming|engine.*control.*unit.*reprogramming|ecu.*attack",
+       "risk_level": "critical",
+       "description": "Automotive ECU reprogramming"
+     },
+     "automotive_obd_manipulation": {
+       "regex": "obd.*manipulation|on.*board.*diagnostics.*manipulation|obd.*attack",
+       "risk_level": "critical",
+       "description": "Automotive OBD manipulation"
+     },
+     "wearable_device_synchronization_abuse": {
+       "regex": "device.*synchronization.*abuse|wearable.*sync.*abuse|sync.*abuse",
+       "risk_level": "medium",
+       "description": "Wearable device synchronization abuse"
+     },
+     "wearable_health_data_exfiltration": {
+       "regex": "health.*data.*exfiltration|wearable.*data.*exfiltration|health.*exfiltration",
+       "risk_level": "medium",
+       "description": "Wearable health data exfiltration"
+     },
+     "mining_malware_cryptojacking": {
+       "regex": "cryptojacking|mining.*malware.*cryptojacking|crypto.*jacking",
+       "risk_level": "high",
+       "description": "Mining malware cryptojacking"
+     },
+     "mining_malware_mining_pool_hijacking": {
+       "regex": "mining.*pool.*hijacking|pool.*hijacking|mining.*hijacking",
+       "risk_level": "high",
+       "description": "Mining malware mining pool hijacking"
+     },
+     "mining_pool_hash_rate_theft": {
+       "regex": "hash.*rate.*theft|mining.*hash.*theft|pool.*hash.*theft",
+       "risk_level": "high",
+       "description": "Mining pool hash rate theft"
+     },
+     "wallet_theft_seed_phrase_extraction": {
+       "regex": "seed.*phrase.*extraction|wallet.*seed.*extraction|seed.*extraction",
+       "risk_level": "critical",
+       "description": "Wallet theft seed phrase extraction"
+     },
+     "wallet_theft_private_key_bruteforce": {
+       "regex": "private.*key.*bruteforce|wallet.*bruteforce|key.*bruteforce",
+       "risk_level": "critical",
+       "description": "Wallet theft private key bruteforce"
+     },
+     "blockchain_double_spending_attack": {
+       "regex": "double.*spending.*attack|blockchain.*double.*spending|double.*spending",
+       "risk_level": "critical",
+       "description": "Blockchain double spending attack"
+     },
+     "blockchain_race_condition_attack": {
+       "regex": "race.*condition.*attack|blockchain.*race.*condition|race.*condition",
+       "risk_level": "critical",
+       "description": "Blockchain race condition attack"
+     },
+     "defi_smart_contract_reentrancy": {
+       "regex": "smart.*contract.*reentrancy|reentrancy.*attack|defi.*reentrancy",
+       "risk_level": "high",
+       "description": "DeFi smart contract reentrancy"
+     },
+     "defi_flash_loan_attack_variants": {
+       "regex": "flash.*loan.*attack.*variant|defi.*flash.*variant|loan.*attack.*variant",
+       "risk_level": "high",
+       "description": "DeFi flash loan attack variants"
+     },
+     "nft_marketplace_abuse": {
+       "regex": "marketplace.*abuse|nft.*marketplace.*abuse|marketplace.*attack",
+       "risk_level": "medium",
+       "description": "NFT marketplace abuse"
+     },
+     "nft_token_manipulation_variants": {
+       "regex": "token.*manipulation.*variant|nft.*token.*variant|manipulation.*variant",
+       "risk_level": "medium",
+       "description": "NFT token manipulation variants"
+     },
+     "exchange_order_book_manipulation": {
+       "regex": "order.*book.*manipulation|exchange.*order.*manipulation|book.*manipulation",
+       "risk_level": "critical",
+       "description": "Exchange order book manipulation"
+     },
+     "exchange_trading_bot_manipulation_variants": {
+       "regex": "trading.*bot.*manipulation.*variant|exchange.*bot.*variant|bot.*manipulation.*variant",
+       "risk_level": "critical",
+       "description": "Exchange trading bot manipulation variants"
+     },
+     "phishing_credential_harvesting": {
+       "regex": "credential.*harvesting|phishing.*credential|harvesting.*credential",
+       "risk_level": "medium",
+       "description": "Phishing credential harvesting"
+     },
+     "phishing_email_spoofing_variants": {
+       "regex": "email.*spoofing.*variant|phishing.*email.*variant|spoofing.*variant",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing variants"
+     },
+     "spear_phishing_executive_impersonation": {
+       "regex": "executive.*impersonation|spear.*phishing.*executive|impersonation.*executive",
+       "risk_level": "high",
+       "description": "Spear phishing executive impersonation"
+     },
+     "spear_phishing_targeted_attack_variants": {
+       "regex": "targeted.*attack.*variant|spear.*phishing.*variant|targeted.*variant",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attack variants"
+     },
+     "whaling_business_email_compromise": {
+       "regex": "business.*email.*compromise|whaling.*business.*email|email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling business email compromise"
+     },
+     "whaling_ceo_fraud_variants": {
+       "regex": "ceo.*fraud.*variant|whaling.*ceo.*variant|fraud.*variant",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud variants"
+     },
+     "smishing_text_scam": {
+       "regex": "text.*scam|smishing.*text.*scam|sms.*scam",
+       "risk_level": "medium",
+       "description": "Smishing text scam"
+     },
+     "smishing_mobile_device_targeting": {
+       "regex": "mobile.*device.*targeting|smishing.*mobile.*targeting|device.*targeting",
+       "risk_level": "medium",
+       "description": "Smishing mobile device targeting"
+     },
+     "pretexting_fake_identity": {
+       "regex": "fake.*identity.*creation|pretexting.*fake.*identity|identity.*creation",
+       "risk_level": "medium",
+       "description": "Pretexting fake identity"
+     },
+     "pretexting_information_gathering": {
+       "regex": "information.*gathering|pretexting.*information|gathering.*information",
+       "risk_level": "medium",
+       "description": "Pretexting information gathering"
+     },
+     "baiting_usb_drop_attack": {
+       "regex": "usb.*drop.*attack|baiting.*usb.*drop|drop.*attack",
+       "risk_level": "medium",
+       "description": "Baiting USB drop attack"
+     },
+     "baiting_physical_device_placement": {
+       "regex": "physical.*device.*placement|baiting.*physical.*device|device.*placement",
+       "risk_level": "medium",
+       "description": "Baiting physical device placement"
+     },
+     "quid_pro_quo_something_for_something": {
+       "regex": "something.*for.*something|quid.*pro.*quo.*something|exchange.*manipulation",
+       "risk_level": "medium",
+       "description": "Quid pro quo something for something"
+     },
+     "quid_pro_quo_service_exchange_manipulation": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*service|exchange.*manipulation",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange manipulation"
+     },
+     "tailgating_piggybacking": {
+       "regex": "piggybacking|tailgating.*piggybacking|door.*sneaking",
+       "risk_level": "medium",
+       "description": "Tailgating piggybacking"
+     },
+     "tailgating_door_manipulation": {
+       "regex": "door.*manipulation|tailgating.*door.*manipulation|door.*sneaking",
+       "risk_level": "medium",
+       "description": "Tailgating door manipulation"
+     },
+     "docker_container_capabilities_abuse": {
+       "regex": "docker.*run.*--cap-add.*SYS_PTRACE|docker.*run.*--cap-add.*SYS_ADMIN",
+       "risk_level": "critical",
+       "description": "Docker container capabilities abuse"
+     },
+     "docker_container_security_opts_bypass": {
+       "regex": "docker.*run.*--security-opt.*no-new-privileges.*false|docker.*run.*--security-opt.*apparmor.*unconfined",
+       "risk_level": "critical",
+       "description": "Docker container security opts bypass"
+     },
+     "docker_container_device_access": {
+       "regex": "docker.*run.*--device.*/dev/|docker.*run.*--privileged.*true",
+       "risk_level": "critical",
+       "description": "Docker container device access"
+     },
+     "kubernetes_pod_host_pid": {
+       "regex": "hostPID.*true|hostPid.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod host PID"
+     },
+     "kubernetes_pod_host_ipc": {
+       "regex": "hostIPC.*true|hostIpc.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod host IPC"
+     },
+     "kubernetes_pod_host_network": {
+       "regex": "hostNetwork.*true|hostPort.*\\d+",
+       "risk_level": "high",
+       "description": "Kubernetes pod host network"
+     },
+     "aws_ec2_instance_metadata_access": {
+       "regex": "curl.*169.254.169.254|wget.*169.254.169.254",
+       "risk_level": "medium",
+       "description": "AWS EC2 instance metadata access"
+     },
+     "aws_s3_bucket_policy_bypass": {
+       "regex": "aws.*s3.*put-bucket-policy.*--policy.*\\$\\{.*\\}|s3.*bucket.*policy.*bypass",
+       "risk_level": "high",
+       "description": "AWS S3 bucket policy bypass"
+     },
+     "aws_iam_role_assumption": {
+       "regex": "aws.*sts.*assume-role|aws.*iam.*assume-role|role.*assumption",
+       "risk_level": "critical",
+       "description": "AWS IAM role assumption"
+     },
+     "azure_vm_custom_script_extension": {
+       "regex": "az.*vm.*extension.*set|az.*vm.*run-command",
+       "risk_level": "high",
+       "description": "Azure VM custom script extension"
+     },
+     "azure_key_vault_secret_access": {
+       "regex": "az.*keyvault.*secret.*download|az.*keyvault.*certificate.*download",
+       "risk_level": "critical",
+       "description": "Azure Key Vault access"
+     },
+     "azure_storage_account_access": {
+       "regex": "az.*storage.*account.*show-connection-string|az.*storage.*blob.*download",
+       "risk_level": "high",
+       "description": "Azure storage account access"
+     },
+     "gcp_compute_instance_metadata_access": {
+       "regex": "curl.*metadata.google.internal|gcloud.*compute.*instances.*add-metadata",
+       "risk_level": "medium",
+       "description": "GCP compute instance metadata access"
+     },
+     "gcp_storage_bucket_access": {
+       "regex": "gsutil.*cp.*gs://|gcloud.*storage.*buckets.*list",
+       "risk_level": "high",
+       "description": "GCP storage bucket access"
+     },
+     "terraform_backend_config_injection": {
+       "regex": "terraform.*backend.*config.*\\$\\{.*\\}|backend.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform backend config injection"
+     },
+     "terraform_provider_config_injection": {
+       "regex": "terraform.*provider.*config.*\\$\\{.*\\}|provider.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform provider config injection"
+     },
+     "ansible_vault_password": {
+       "regex": "ansible-vault.*decrypt|ansible-vault.*view",
+       "risk_level": "critical",
+       "description": "Ansible vault password exposure"
+     },
+     "ansible_playbook_injection": {
+       "regex": "ansible-playbook.*-e.*\\$\\{.*\\}|ansible-playbook.*--extra-vars.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ansible playbook injection"
+     },
+     "helm_chart_injection": {
+       "regex": "helm.*install.*--set.*\\$\\{.*\\}|helm.*upgrade.*--set.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Helm chart injection"
+     },
+     "spring4shell_cve_2022_22965": {
+       "regex": "class.*\\$\\{.*\\}|method.*\\$\\{.*\\}|field.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22965"
+     },
+     "spring4shell_cve_2022_22963": {
+       "regex": "spring.*cloud.*function.*\\$\\{.*\\}|function.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22963"
+     },
+     "spring4shell_cve_2022_22950": {
+       "regex": "spring.*cloud.*gateway.*\\$\\{.*\\}|gateway.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22950"
+     },
+     "log4shell_cve_2021_44228": {
+       "regex": "\\$\\{jndi:ldap://|\\$\\{jndi:rmi://|\\$\\{jndi:dns://",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-44228"
+     },
+     "log4shell_cve_2021_45046": {
+       "regex": "\\$\\{jndi:ldap://.*\\$\\{.*\\}|\\$\\{jndi:rmi://.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-45046"
+     },
+     "log4shell_cve_2021_45105": {
+       "regex": "\\$\\{jndi:.*\\$\\{.*\\}.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-45105"
+     },
+     "proxyshell_cve_2021_34473": {
+       "regex": "powershell.*-enc.*[A-Za-z0-9+/]{20,}|powershell.*-encodedcommand.*[A-Za-z0-9+/]{20,}",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-34473"
+     },
+     "proxyshell_cve_2021_34523": {
+       "regex": "exchange.*powershell.*-enc|exchange.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-34523"
+     },
+     "proxyshell_cve_2021_31207": {
+       "regex": "exchange.*autodiscover.*powershell|exchange.*ecp.*powershell",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-31207"
+     },
+     "proxylogon_cve_2021_26855": {
+       "regex": "exchange.*autodiscover.*authentication.*bypass|exchange.*ecp.*authentication.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26855"
+     },
+     "proxylogon_cve_2021_26857": {
+       "regex": "exchange.*autodiscover.*deserialization|exchange.*ecp.*deserialization",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26857"
+     },
+     "proxylogon_cve_2021_26858": {
+       "regex": "exchange.*autodiscover.*post.*authentication|exchange.*ecp.*post.*authentication",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26858"
+     },
+     "zerologon_cve_2020_1472": {
+       "regex": "netlogon.*privilege.*escalation|netlogon.*authentication.*bypass",
+       "risk_level": "critical",
+       "description": "ZeroLogon CVE-2020-1472"
+     },
+     "printnightmare_cve_2021_1675": {
+       "regex": "spoolsv.*privilege.*escalation|print.*spooler.*exploit",
+       "risk_level": "critical",
+       "description": "PrintNightmare CVE-2021-1675"
+     },
+     "printnightmare_cve_2021_34527": {
+       "regex": "windows.*print.*spooler.*rce|print.*spooler.*remote.*code.*execution",
+       "risk_level": "critical",
+       "description": "PrintNightmare CVE-2021-34527"
+     },
+     "eternalblue_ms17_010": {
+       "regex": "smb.*eternalblue|ms17_010.*exploit|smb.*vulnerability.*exploitation",
+       "risk_level": "critical",
+       "description": "EternalBlue MS17-010"
+     },
+     "wannacry_ransomware": {
+       "regex": "wannacry.*encrypt|wannacry.*ransomware|wannacry.*bitcoin.*address",
+       "risk_level": "critical",
+       "description": "WannaCry ransomware"
+     },
+     "notpetya_ransomware": {
+       "regex": "notpetya.*encrypt|notpetya.*ransomware|notpetya.*mbr.*overwrite",
+       "risk_level": "critical",
+       "description": "NotPetya ransomware"
+     },
+     "ryuk_ransomware": {
+       "regex": "ryuk.*encrypt|ryuk.*ransomware|ryuk.*bitcoin.*wallet",
+       "risk_level": "critical",
+       "description": "Ryuk ransomware"
+     },
+     "revil_ransomware": {
+       "regex": "revil.*encrypt|revil.*ransomware|revil.*double.*extortion",
+       "risk_level": "critical",
+       "description": "REvil ransomware"
+     },
+     "heartbleed_cve_2014_0160": {
+       "regex": "openssl.*heartbleed|heartbleed.*exploit|openssl.*vulnerability",
+       "risk_level": "critical",
+       "description": "Heartbleed CVE-2014-0160"
+     },
+     "shellshock_cve_2014_6271": {
+       "regex": "bash.*shellshock|shellshock.*exploit|bash.*vulnerability",
+       "risk_level": "critical",
+       "description": "Shellshock CVE-2014-6271"
+     },
+     "struts_cve_2017_5638": {
+       "regex": "struts.*cve.*2017.*5638|struts.*ognl.*injection|struts.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2017-5638"
+     },
+     "struts_cve_2017_9805": {
+       "regex": "struts.*cve.*2017.*9805|struts.*rest.*plugin.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2017-9805"
+     },
+     "struts_cve_2018_11776": {
+       "regex": "struts.*cve.*2018.*11776|struts.*namespace.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2018-11776"
+     },
+     "spring_expression_injection": {
+       "regex": "spel.*\\$\\{.*\\}|spring.*expression.*\\$\\{.*\\}|@spel.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring expression injection"
+     },
+     "spring_ognl_injection": {
+       "regex": "ognl.*\\$\\{.*\\}|@ognl.*\\$\\{.*\\}|spring.*ognl.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring OGNL injection"
+     },
+     "django_template_injection": {
+       "regex": "django.*template.*\\$\\{.*\\}|jinja2.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django template injection"
+     },
+     "django_orm_injection": {
+       "regex": "django.*orm.*\\$\\{.*\\}|queryset.*\\$\\{.*\\}|model.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django ORM injection"
+     },
+     "laravel_artisan_injection": {
+       "regex": "artisan.*\\$\\{.*\\}|php.*artisan.*\\$\\{.*\\}|laravel.*command.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Artisan injection"
+     },
+     "laravel_eloquent_injection": {
+       "regex": "eloquent.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Eloquent injection"
+     },
+     "express_route_injection": {
+       "regex": "express.*route.*\\$\\{.*\\}|app\\.get.*\\$\\{.*\\}|app\\.post.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js route injection"
+     },
+     "express_middleware_bypass": {
+       "regex": "express.*middleware.*bypass|app\\.use.*\\$\\{.*\\}|middleware.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js middleware bypass"
+     },
+     "rails_erb_injection": {
+       "regex": "erb.*\\$\\{.*\\}|rails.*erb.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ERB injection"
+     },
+     "rails_active_record_injection": {
+       "regex": "activerecord.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ActiveRecord injection"
+     },
+     "aspnet_viewstate_manipulation": {
+       "regex": "viewstate.*\\$\\{.*\\}|__viewstate.*\\$\\{.*\\}|aspnet.*viewstate.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET ViewState manipulation"
+     },
+     "aspnet_form_authentication_bypass": {
+       "regex": "forms.*authentication.*bypass|aspnet.*auth.*bypass|authentication.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET form authentication bypass"
+     },
+     "flask_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|flask.*template.*\\$\\{.*\\}|render_template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flask Jinja2 injection"
+     },
+     "fastapi_dependency_injection": {
+       "regex": "fastapi.*dependency.*\\$\\{.*\\}|depends.*\\$\\{.*\\}|dependency.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "FastAPI dependency injection abuse"
+     },
+     "anti_debugging_detection": {
+       "regex": "isdebuggerpresent|checkremotedebuggerpresent|debugger.*detection",
+       "risk_level": "medium",
+       "description": "Anti-debugging detection"
+     },
+     "anti_vm_detection": {
+       "regex": "virtualbox|vmware|vbox|vm.*detection|sandbox.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM detection"
+     },
+     "code_obfuscation_string_encryption": {
+       "regex": "string.*encryption|obfuscate.*string|encrypt.*string",
+       "risk_level": "medium",
+       "description": "Code obfuscation string encryption"
+     },
+     "code_obfuscation_variable_renaming": {
+       "regex": "variable.*renaming|rename.*variable|obfuscate.*variable",
+       "risk_level": "medium",
+       "description": "Code obfuscation variable renaming"
+     },
+     "api_hooking_function_hooking": {
+       "regex": "hook.*function|api.*hooking|function.*hook",
+       "risk_level": "high",
+       "description": "API hooking function hooking"
+     },
+     "api_hooking_system_call_interception": {
+       "regex": "system.*call.*interception|syscall.*hook|intercept.*syscall",
+       "risk_level": "high",
+       "description": "API hooking system call interception"
+     },
+     "process_injection_dll_injection": {
+       "regex": "dll.*injection|inject.*dll|loadlibrary.*injection",
+       "risk_level": "critical",
+       "description": "Process injection DLL injection"
+     },
+     "process_injection_code_cave_injection": {
+       "regex": "code.*cave.*injection|cave.*injection|inject.*cave",
+       "risk_level": "critical",
+       "description": "Process injection code cave injection"
+     },
+     "memory_scanning_process_memory_manipulation": {
+       "regex": "process.*memory.*manipulation|memory.*scanning|manipulate.*memory",
+       "risk_level": "high",
+       "description": "Memory scanning process memory manipulation"
+     },
+     "ssh_tunneling_port_forwarding": {
+       "regex": "ssh.*-L.*\\d+:.*:\\d+|ssh.*-D.*\\d+|ssh.*tunnel",
+       "risk_level": "medium",
+       "description": "SSH tunneling port forwarding"
+     },
+     "ssh_tunneling_reverse_tunneling": {
+       "regex": "ssh.*-R.*\\d+:.*:\\d+|reverse.*tunnel|ssh.*reverse",
+       "risk_level": "medium",
+       "description": "SSH tunneling reverse tunneling"
+     },
+     "vpn_proxy_abuse_tunnel_manipulation": {
+       "regex": "vpn.*tunnel.*manipulation|proxy.*tunnel|tunnel.*manipulation",
+       "risk_level": "medium",
+       "description": "VPN/proxy abuse tunnel manipulation"
+     },
+     "port_scanning_network_reconnaissance": {
+       "regex": "nmap.*-sS|nmap.*-sU|nmap.*-p.*\\d+",
+       "risk_level": "medium",
+       "description": "Port scanning network reconnaissance"
+     },
+     "network_reconnaissance_host_discovery": {
+       "regex": "host.*discovery|network.*scanning|reconnaissance.*scan",
+       "risk_level": "medium",
+       "description": "Network reconnaissance host discovery"
+     },
+     "session_hijacking_cookie_manipulation": {
+       "regex": "cookie.*manipulation|session.*hijacking|hijack.*session",
+       "risk_level": "high",
+       "description": "Session hijacking cookie manipulation"
+     },
+     "clickjacking_ui_redressing": {
+       "regex": "ui.*redressing|clickjacking|frame.*injection",
+       "risk_level": "medium",
+       "description": "Clickjacking UI redressing"
+     },
+     "open_redirects_url_redirection_abuse": {
+       "regex": "redirect.*\\$\\{.*\\}|url.*redirection.*\\$\\{.*\\}|redirect.*parameter",
+       "risk_level": "medium",
+       "description": "Open redirects URL redirection abuse"
+     },
+     "ssrf_server_side_request_forgery": {
+       "regex": "ssrf.*\\$\\{.*\\}|server.*side.*request.*forgery|internal.*service.*access",
+       "risk_level": "high",
+       "description": "SSRF server-side request forgery"
+     },
+     "xml_injection_data_format_manipulation": {
+       "regex": "xml.*\\$\\{.*\\}|xml.*injection|data.*format.*manipulation",
+       "risk_level": "high",
+       "description": "XML injection data format manipulation"
+     },
+     "json_injection_query_injection": {
+       "regex": "json.*\\$\\{.*\\}|json.*injection|query.*injection",
+       "risk_level": "high",
+       "description": "JSON injection query injection"
+     },
+     "graphql_injection_query_injection": {
+       "regex": "graphql.*\\$\\{.*\\}|graphql.*injection|query.*injection",
+       "risk_level": "high",
+       "description": "GraphQL injection query injection"
+     },
+     "android_bypass_root_detection_bypass": {
+       "regex": "root.*detection.*bypass|android.*root.*bypass|bypass.*root.*detection",
+       "risk_level": "medium",
+       "description": "Android bypass root detection bypass"
+     },
+     "ios_bypass_jailbreak_detection_bypass": {
+       "regex": "jailbreak.*detection.*bypass|ios.*jailbreak.*bypass|bypass.*jailbreak.*detection",
+       "risk_level": "medium",
+       "description": "iOS bypass jailbreak detection bypass"
+     },
+     "react_native_javascript_bridge_abuse": {
+       "regex": "react.*native.*bridge.*abuse|javascript.*bridge.*\\$\\{.*\\}|native.*module.*injection",
+       "risk_level": "high",
+       "description": "React Native JavaScript bridge abuse"
+     },
+     "flutter_dart_code_injection": {
+       "regex": "flutter.*dart.*injection|dart.*code.*\\$\\{.*\\}|platform.*channel.*abuse",
+       "risk_level": "high",
+       "description": "Flutter Dart code injection"
+     },
+     "smart_home_device_hijacking": {
+       "regex": "smart.*home.*hijacking|device.*hijacking|automation.*abuse",
+       "risk_level": "medium",
+       "description": "Smart home device hijacking"
+     },
+     "industrial_iot_scada_manipulation": {
+       "regex": "scada.*manipulation|plc.*programming|industrial.*iot.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Industrial IoT SCADA manipulation"
+     },
+     "medical_device_patient_data_access": {
+       "regex": "medical.*device.*data.*access|patient.*data.*\\$\\{.*\\}|device.*control.*bypass",
+       "risk_level": "critical",
+       "description": "Medical device patient data access"
+     },
+     "automotive_can_bus_manipulation": {
+       "regex": "can.*bus.*manipulation|ecu.*reprogramming|automotive.*security.*bypass",
+       "risk_level": "critical",
+       "description": "Automotive CAN bus manipulation"
+     },
+     "wearable_health_data_access": {
+       "regex": "wearable.*health.*data.*access|device.*synchronization.*abuse|health.*data.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Wearable health data access"
+     },
+     "mining_malware_coinhive": {
+       "regex": "coinhive.*mining|coinhive.*script|mining.*malware.*coinhive",
+       "risk_level": "high",
+       "description": "Mining malware Coinhive"
+     },
+     "mining_malware_xmrig": {
+       "regex": "xmrig.*mining|xmrig.*malware|mining.*malware.*xmrig",
+       "risk_level": "high",
+       "description": "Mining malware XMRig"
+     },
+     "mining_pool_manipulation": {
+       "regex": "mining.*pool.*manipulation|pool.*hijacking|hash.*rate.*theft",
+       "risk_level": "high",
+       "description": "Mining pool manipulation"
+     },
+     "wallet_theft_private_key_extraction": {
+       "regex": "private.*key.*extraction|wallet.*theft|wallet\\.dat.*access",
+       "risk_level": "critical",
+       "description": "Wallet theft private key extraction"
+     },
+     "blockchain_51_attack": {
+       "regex": "51.*attack|blockchain.*attack|double.*spending.*attempt",
+       "risk_level": "critical",
+       "description": "Blockchain 51% attack"
+     },
+     "defi_flash_loan_attack": {
+       "regex": "flash.*loan.*attack|defi.*exploit|smart.*contract.*manipulation",
+       "risk_level": "high",
+       "description": "DeFi flash loan attack"
+     },
+     "nft_token_manipulation": {
+       "regex": "nft.*token.*manipulation|marketplace.*abuse|token.*manipulation",
+       "risk_level": "medium",
+       "description": "NFT token manipulation"
+     },
+     "exchange_trading_bot_manipulation": {
+       "regex": "trading.*bot.*manipulation|order.*book.*abuse|exchange.*attack",
+       "risk_level": "critical",
+       "description": "Exchange trading bot manipulation"
+     },
+     "phishing_email_spoofing": {
+       "regex": "email.*spoofing|phishing.*email|credential.*harvesting",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing"
+     },
+     "spear_phishing_targeted_attacks": {
+       "regex": "spear.*phishing.*targeted|targeted.*phishing|executive.*impersonation",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attacks"
+     },
+     "whaling_ceo_fraud": {
+       "regex": "ceo.*fraud|whaling.*attack|business.*email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud"
+     },
+     "smishing_sms_phishing": {
+       "regex": "sms.*phishing|smishing.*attack|text.*scam",
+       "risk_level": "medium",
+       "description": "Smishing SMS phishing"
+     },
+     "pretexting_false_identity": {
+       "regex": "false.*identity.*creation|pretexting.*attack|information.*gathering",
+       "risk_level": "medium",
+       "description": "Pretexting false identity"
+     },
+     "baiting_physical_device": {
+       "regex": "physical.*device.*placement|usb.*drop.*attack|baiting.*attack",
+       "risk_level": "medium",
+       "description": "Baiting physical device"
+     },
+     "quid_pro_quo_service_exchange": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*attack|something.*for.*something",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange"
+     },
+     "tailgating_physical_access": {
+       "regex": "physical.*access.*abuse|door.*manipulation|tailgating.*attack",
+       "risk_level": "medium",
+       "description": "Tailgating physical access"
+     },
+     "docker_container_privilege_escalation": {
+       "regex": "docker.*run.*--cap-add.*SYS_ADMIN|docker.*run.*--cap-add.*NET_ADMIN",
+       "risk_level": "critical",
+       "description": "Docker container privilege escalation"
+     },
+     "docker_container_resource_abuse": {
+       "regex": "docker.*run.*--memory.*0|docker.*run.*--cpus.*0",
+       "risk_level": "high",
+       "description": "Docker container resource abuse"
+     },
+     "kubernetes_pod_security_context_bypass": {
+       "regex": "runAsUser.*0|runAsGroup.*0|fsGroup.*0",
+       "risk_level": "critical",
+       "description": "Kubernetes pod security context bypass"
+     },
+     "kubernetes_pod_privilege_escalation": {
+       "regex": "allowPrivilegeEscalation.*true|privileged.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod privilege escalation"
+     },
+     "aws_cloudformation_template_injection": {
+       "regex": "cloudformation.*template.*\\$\\{.*\\}|cfn.*template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "AWS CloudFormation template injection"
+     },
+     "aws_lambda_function_injection": {
+       "regex": "lambda.*function.*\\$\\{.*\\}|aws.*lambda.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "AWS Lambda function injection"
+     },
+     "azure_arm_template_injection": {
+       "regex": "arm.*template.*\\$\\{.*\\}|azure.*template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Azure ARM template injection"
+     },
+     "azure_function_app_injection": {
+       "regex": "function.*app.*\\$\\{.*\\}|azure.*function.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Azure Function App injection"
+     },
+     "gcp_cloud_function_injection": {
+       "regex": "cloud.*function.*\\$\\{.*\\}|gcp.*function.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "GCP Cloud Function injection"
+     },
+     "terraform_remote_state_manipulation": {
+       "regex": "terraform.*remote.*state.*\\$\\{.*\\}|backend.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform remote state manipulation"
+     },
+     "ansible_vault_password_file": {
+       "regex": "ansible-vault.*--vault-password-file|--vault-password-file.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Ansible vault password file exposure"
+     },
+     "helm_secret_injection": {
+       "regex": "helm.*secret.*\\$\\{.*\\}|--set.*secret.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Helm secret injection"
+     },
+     "spring_cloud_function_injection": {
+       "regex": "spring.*cloud.*function.*\\$\\{.*\\}|function.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring Cloud Function injection"
+     },
+     "spring_cloud_gateway_injection": {
+       "regex": "spring.*cloud.*gateway.*\\$\\{.*\\}|gateway.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring Cloud Gateway injection"
+     },
+     "log4j_jndi_injection_variants": {
+       "regex": "\\$\\{jndi:ldaps://|\\$\\{jndi:corba://|\\$\\{jndi:iiop://",
+       "risk_level": "critical",
+       "description": "Log4j JNDI injection variants"
+     },
+     "log4j_lookup_injection": {
+       "regex": "\\$\\{java:runtime|\\$\\{java:vm|\\$\\{java:os",
+       "risk_level": "critical",
+       "description": "Log4j lookup injection"
+     },
+     "proxyshell_exchange_autodiscover": {
+       "regex": "autodiscover.*powershell.*-enc|autodiscover.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell Exchange Autodiscover"
+     },
+     "proxyshell_exchange_ecp": {
+       "regex": "ecp.*powershell.*-enc|ecp.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell Exchange ECP"
+     },
+     "proxylogon_exchange_autodiscover_auth": {
+       "regex": "autodiscover.*authentication.*bypass|autodiscover.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon Exchange Autodiscover authentication bypass"
+     },
+     "proxylogon_exchange_ecp_auth": {
+       "regex": "ecp.*authentication.*bypass|ecp.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon Exchange ECP authentication bypass"
+     },
+     "zerologon_netlogon_privilege_escalation": {
+       "regex": "netlogon.*privilege.*escalation|netlogon.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ZeroLogon Netlogon privilege escalation"
+     },
+     "printnightmare_spoolsv_exploit": {
+       "regex": "spoolsv.*exploit|print.*spooler.*rce|spooler.*vulnerability",
+       "risk_level": "critical",
+       "description": "PrintNightmare spoolsv exploit"
+     },
+     "eternalblue_smb_exploit": {
+       "regex": "smb.*eternalblue|ms17_010.*smb|smb.*vulnerability",
+       "risk_level": "critical",
+       "description": "EternalBlue SMB exploit"
+     },
+     "wannacry_encryption": {
+       "regex": "wannacry.*encrypt|wannacry.*encryption|wannacry.*ransomware",
+       "risk_level": "critical",
+       "description": "WannaCry encryption"
+     },
+     "notpetya_mbr_overwrite": {
+       "regex": "notpetya.*mbr.*overwrite|notpetya.*boot.*sector|notpetya.*encryption",
+       "risk_level": "critical",
+       "description": "NotPetya MBR overwrite"
+     },
+     "ryuk_encryption": {
+       "regex": "ryuk.*encrypt|ryuk.*encryption|ryuk.*bitcoin.*wallet",
+       "risk_level": "critical",
+       "description": "Ryuk encryption"
+     },
+     "revil_double_extortion": {
+       "regex": "revil.*double.*extortion|revil.*encrypt|revil.*ransomware",
+       "risk_level": "critical",
+       "description": "REvil double extortion"
+     },
+     "heartbleed_openssl_vulnerability": {
+       "regex": "openssl.*heartbleed|heartbleed.*openssl|openssl.*vulnerability",
+       "risk_level": "critical",
+       "description": "Heartbleed OpenSSL vulnerability"
+     },
+     "shellshock_bash_vulnerability": {
+       "regex": "bash.*shellshock|shellshock.*bash|bash.*vulnerability",
+       "risk_level": "critical",
+       "description": "Shellshock Bash vulnerability"
+     },
+     "struts_ognl_injection": {
+       "regex": "struts.*ognl.*injection|ognl.*struts|struts.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts OGNL injection"
+     },
+     "struts_rest_plugin_vulnerability": {
+       "regex": "struts.*rest.*plugin.*vulnerability|rest.*plugin.*struts",
+       "risk_level": "critical",
+       "description": "Struts REST plugin vulnerability"
+     },
+     "struts_namespace_vulnerability": {
+       "regex": "struts.*namespace.*vulnerability|namespace.*struts",
+       "risk_level": "critical",
+       "description": "Struts namespace vulnerability"
+     },
+     "spring_spel_injection": {
+       "regex": "spel.*\\$\\{.*\\}|spring.*spel.*\\$\\{.*\\}|@spel.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring SpEL injection"
+     },
+     "spring_ognl_injection_variants": {
+       "regex": "ognl.*\\$\\{.*\\}|@ognl.*\\$\\{.*\\}|spring.*ognl.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring OGNL injection variants"
+     },
+     "django_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|django.*jinja2.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django Jinja2 injection"
+     },
+     "django_orm_injection": {
+       "regex": "django.*orm.*\\$\\{.*\\}|queryset.*\\$\\{.*\\}|model.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django ORM injection"
+     },
+     "laravel_artisan_injection": {
+       "regex": "artisan.*\\$\\{.*\\}|php.*artisan.*\\$\\{.*\\}|laravel.*command.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Artisan injection"
+     },
+     "laravel_eloquent_injection": {
+       "regex": "eloquent.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Eloquent injection"
+     },
+     "express_route_injection": {
+       "regex": "express.*route.*\\$\\{.*\\}|app\\.get.*\\$\\{.*\\}|app\\.post.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js route injection"
+     },
+     "express_middleware_bypass": {
+       "regex": "express.*middleware.*bypass|app\\.use.*\\$\\{.*\\}|middleware.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js middleware bypass"
+     },
+     "rails_erb_injection": {
+       "regex": "erb.*\\$\\{.*\\}|rails.*erb.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ERB injection"
+     },
+     "rails_active_record_injection": {
+       "regex": "activerecord.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ActiveRecord injection"
+     },
+     "aspnet_viewstate_manipulation": {
+       "regex": "viewstate.*\\$\\{.*\\}|__viewstate.*\\$\\{.*\\}|aspnet.*viewstate.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET ViewState manipulation"
+     },
+     "aspnet_form_authentication_bypass": {
+       "regex": "forms.*authentication.*bypass|aspnet.*auth.*bypass|authentication.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET form authentication bypass"
+     },
+     "flask_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|flask.*template.*\\$\\{.*\\}|render_template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flask Jinja2 injection"
+     },
+     "fastapi_dependency_injection": {
+       "regex": "fastapi.*dependency.*\\$\\{.*\\}|depends.*\\$\\{.*\\}|dependency.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "FastAPI dependency injection abuse"
+     },
+     "anti_debugging_isdebuggerpresent": {
+       "regex": "isdebuggerpresent|checkremotedebuggerpresent|debugger.*present",
+       "risk_level": "medium",
+       "description": "Anti-debugging IsDebuggerPresent"
+     },
+     "anti_debugging_breakpoint_detection": {
+       "regex": "breakpoint.*detection|debugger.*breakpoint|anti.*debug.*breakpoint",
+       "risk_level": "medium",
+       "description": "Anti-debugging breakpoint detection"
+     },
+     "anti_vm_virtualbox_detection": {
+       "regex": "virtualbox.*detection|vbox.*detection|vmware.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM VirtualBox detection"
+     },
+     "anti_vm_sandbox_detection": {
+       "regex": "sandbox.*detection|vm.*detection|virtual.*machine.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM sandbox detection"
+     },
+     "code_obfuscation_dead_code": {
+       "regex": "dead.*code.*injection|obfuscate.*dead.*code|inject.*dead.*code",
+       "risk_level": "medium",
+       "description": "Code obfuscation dead code injection"
+     },
+     "code_obfuscation_string_encryption_variants": {
+       "regex": "string.*encryption.*variant|obfuscate.*string.*variant|encrypt.*string.*variant",
+       "risk_level": "medium",
+       "description": "Code obfuscation string encryption variants"
+     },
+     "api_hooking_function_hooking_variants": {
+       "regex": "hook.*function.*variant|api.*hooking.*variant|function.*hook.*variant",
+       "risk_level": "high",
+       "description": "API hooking function hooking variants"
+     },
+     "api_hooking_syscall_interception": {
+       "regex": "syscall.*interception|intercept.*syscall|system.*call.*hook",
+       "risk_level": "high",
+       "description": "API hooking syscall interception"
+     },
+     "process_injection_thread_hijacking": {
+       "regex": "thread.*hijacking|hijack.*thread|process.*thread.*injection",
+       "risk_level": "critical",
+       "description": "Process injection thread hijacking"
+     },
+     "process_injection_apc_injection": {
+       "regex": "apc.*injection|asynchronous.*procedure.*call.*injection|apc.*hook",
+       "risk_level": "critical",
+       "description": "Process injection APC injection"
+     },
+     "memory_scanning_heap_spraying": {
+       "regex": "heap.*spraying|memory.*heap.*spray|spray.*heap.*memory",
+       "risk_level": "high",
+       "description": "Memory scanning heap spraying"
+     },
+     "memory_scanning_stack_pivot": {
+       "regex": "stack.*pivot|pivot.*stack|memory.*stack.*manipulation",
+       "risk_level": "high",
+       "description": "Memory scanning stack pivot"
+     },
+     "ssh_tunneling_socks_proxy": {
+       "regex": "ssh.*-D.*\\d+|socks.*proxy.*ssh|ssh.*socks.*proxy",
+       "risk_level": "medium",
+       "description": "SSH tunneling SOCKS proxy"
+     },
+     "ssh_tunneling_dynamic_port_forwarding": {
+       "regex": "ssh.*-D.*\\d+:.*:\\d+|dynamic.*port.*forwarding|ssh.*dynamic",
+       "risk_level": "medium",
+       "description": "SSH tunneling dynamic port forwarding"
+     },
+     "vpn_tunnel_manipulation": {
+       "regex": "vpn.*tunnel.*manipulation|tunnel.*vpn.*manipulation|vpn.*manipulation",
+       "risk_level": "medium",
+       "description": "VPN tunnel manipulation"
+     },
+     "proxy_tunnel_manipulation": {
+       "regex": "proxy.*tunnel.*manipulation|tunnel.*proxy.*manipulation|proxy.*manipulation",
+       "risk_level": "medium",
+       "description": "Proxy tunnel manipulation"
+     },
+     "port_scanning_syn_scan": {
+       "regex": "nmap.*-sS.*\\d+|syn.*scan|tcp.*syn.*scan",
+       "risk_level": "medium",
+       "description": "Port scanning SYN scan"
+     },
+     "port_scanning_udp_scan": {
+       "regex": "nmap.*-sU.*\\d+|udp.*scan|udp.*port.*scan",
+       "risk_level": "medium",
+       "description": "Port scanning UDP scan"
+     },
+     "network_reconnaissance_service_enumeration": {
+       "regex": "service.*enumeration|network.*service.*scan|reconnaissance.*service",
+       "risk_level": "medium",
+       "description": "Network reconnaissance service enumeration"
+     },
+     "network_reconnaissance_os_fingerprinting": {
+       "regex": "os.*fingerprinting|operating.*system.*detection|os.*detection",
+       "risk_level": "medium",
+       "description": "Network reconnaissance OS fingerprinting"
+     },
+     "session_hijacking_session_fixation": {
+       "regex": "session.*fixation|fixation.*attack|session.*hijacking.*fixation",
+       "risk_level": "high",
+       "description": "Session hijacking session fixation"
+     },
+     "session_hijacking_session_prediction": {
+       "regex": "session.*prediction|predict.*session|session.*hijacking.*prediction",
+       "risk_level": "high",
+       "description": "Session hijacking session prediction"
+     },
+     "clickjacking_frame_injection": {
+       "regex": "frame.*injection|iframe.*injection|clickjacking.*frame",
+       "risk_level": "medium",
+       "description": "Clickjacking frame injection"
+     },
+     "clickjacking_overlay_attack": {
+       "regex": "overlay.*attack|clickjacking.*overlay|ui.*redressing.*overlay",
+       "risk_level": "medium",
+       "description": "Clickjacking overlay attack"
+     },
+     "open_redirects_parameter_manipulation": {
+       "regex": "redirect.*parameter.*\\$\\{.*\\}|url.*parameter.*redirect|redirect.*url.*parameter",
+       "risk_level": "medium",
+       "description": "Open redirects parameter manipulation"
+     },
+     "open_redirects_header_injection": {
+       "regex": "redirect.*header.*\\$\\{.*\\}|header.*redirect|redirect.*header.*injection",
+       "risk_level": "medium",
+       "description": "Open redirects header injection"
+     },
+     "ssrf_internal_service_access": {
+       "regex": "internal.*service.*access|ssrf.*internal|server.*side.*internal",
+       "risk_level": "high",
+       "description": "SSRF internal service access"
+     },
+     "ssrf_cloud_metadata_access": {
+       "regex": "cloud.*metadata.*access|ssrf.*metadata|server.*side.*metadata",
+       "risk_level": "high",
+       "description": "SSRF cloud metadata access"
+     },
+     "xml_injection_xxe_injection": {
+       "regex": "xxe.*injection|xml.*external.*entity|external.*entity.*injection",
+       "risk_level": "high",
+       "description": "XML injection XXE injection"
+     },
+     "xml_injection_xpath_injection": {
+       "regex": "xpath.*injection|xml.*path.*injection|xpath.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "XML injection XPath injection"
+     },
+     "json_injection_jsonp_injection": {
+       "regex": "jsonp.*injection|json.*with.*padding.*injection|jsonp.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "JSON injection JSONP injection"
+     },
+     "json_injection_json_schema_injection": {
+       "regex": "json.*schema.*injection|schema.*injection|json.*schema.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "JSON injection JSON schema injection"
+     },
+     "graphql_introspection_abuse": {
+       "regex": "graphql.*introspection.*abuse|introspection.*abuse|graphql.*introspection",
+       "risk_level": "high",
+       "description": "GraphQL introspection abuse"
+     },
+     "graphql_field_suggestion_abuse": {
+       "regex": "graphql.*field.*suggestion.*abuse|field.*suggestion.*abuse|graphql.*suggestion",
+       "risk_level": "high",
+       "description": "GraphQL field suggestion abuse"
+     },
+     "android_root_detection_bypass_variants": {
+       "regex": "root.*detection.*bypass.*variant|android.*root.*bypass.*variant|bypass.*root.*variant",
+       "risk_level": "medium",
+       "description": "Android root detection bypass variants"
+     },
+     "android_su_binary_detection": {
+       "regex": "su.*binary.*detection|android.*su.*detection|root.*su.*detection",
+       "risk_level": "medium",
+       "description": "Android su binary detection"
+     },
+     "ios_jailbreak_detection_bypass_variants": {
+       "regex": "jailbreak.*detection.*bypass.*variant|ios.*jailbreak.*bypass.*variant|bypass.*jailbreak.*variant",
+       "risk_level": "medium",
+       "description": "iOS jailbreak detection bypass variants"
+     },
+     "ios_sandbox_escape": {
+       "regex": "sandbox.*escape|ios.*sandbox.*escape|jailbreak.*sandbox.*escape",
+       "risk_level": "critical",
+       "description": "iOS sandbox escape"
+     },
+     "react_native_native_module_injection": {
+       "regex": "native.*module.*injection|react.*native.*module.*injection|module.*injection",
+       "risk_level": "high",
+       "description": "React Native native module injection"
+     },
+     "react_native_bridge_abuse_variants": {
+       "regex": "bridge.*abuse.*variant|react.*native.*bridge.*variant|javascript.*bridge.*variant",
+       "risk_level": "high",
+       "description": "React Native bridge abuse variants"
+     },
+     "flutter_platform_channel_abuse": {
+       "regex": "platform.*channel.*abuse|flutter.*channel.*abuse|channel.*abuse",
+       "risk_level": "high",
+       "description": "Flutter platform channel abuse"
+     },
+     "flutter_dart_code_injection_variants": {
+       "regex": "dart.*code.*injection.*variant|flutter.*dart.*variant|dart.*injection.*variant",
+       "risk_level": "high",
+       "description": "Flutter Dart code injection variants"
+     },
+     "smart_home_automation_abuse": {
+       "regex": "automation.*abuse|smart.*home.*automation.*abuse|home.*automation.*abuse",
+       "risk_level": "medium",
+       "description": "Smart home automation abuse"
+     },
+     "smart_home_device_control_bypass": {
+       "regex": "device.*control.*bypass|smart.*home.*control.*bypass|home.*control.*bypass",
+       "risk_level": "medium",
+       "description": "Smart home device control bypass"
+     },
+     "industrial_iot_plc_programming": {
+       "regex": "plc.*programming|industrial.*plc.*programming|programmable.*logic.*controller",
+       "risk_level": "critical",
+       "description": "Industrial IoT PLC programming"
+     },
+     "industrial_iot_hmi_manipulation": {
+       "regex": "hmi.*manipulation|human.*machine.*interface.*manipulation|hmi.*attack",
+       "risk_level": "critical",
+       "description": "Industrial IoT HMI manipulation"
+     },
+     "medical_device_control_bypass": {
+       "regex": "medical.*device.*control.*bypass|device.*control.*bypass|medical.*control.*bypass",
+       "risk_level": "critical",
+       "description": "Medical device control bypass"
+     },
+     "medical_device_patient_monitor_access": {
+       "regex": "patient.*monitor.*access|medical.*monitor.*access|monitor.*access",
+       "risk_level": "critical",
+       "description": "Medical device patient monitor access"
+     },
+     "automotive_ecu_reprogramming": {
+       "regex": "ecu.*reprogramming|engine.*control.*unit.*reprogramming|ecu.*attack",
+       "risk_level": "critical",
+       "description": "Automotive ECU reprogramming"
+     },
+     "automotive_obd_manipulation": {
+       "regex": "obd.*manipulation|on.*board.*diagnostics.*manipulation|obd.*attack",
+       "risk_level": "critical",
+       "description": "Automotive OBD manipulation"
+     },
+     "wearable_device_synchronization_abuse": {
+       "regex": "device.*synchronization.*abuse|wearable.*sync.*abuse|sync.*abuse",
+       "risk_level": "medium",
+       "description": "Wearable device synchronization abuse"
+     },
+     "wearable_health_data_exfiltration": {
+       "regex": "health.*data.*exfiltration|wearable.*data.*exfiltration|health.*exfiltration",
+       "risk_level": "medium",
+       "description": "Wearable health data exfiltration"
+     },
+     "mining_malware_cryptojacking": {
+       "regex": "cryptojacking|mining.*malware.*cryptojacking|crypto.*jacking",
+       "risk_level": "high",
+       "description": "Mining malware cryptojacking"
+     },
+     "mining_malware_mining_pool_hijacking": {
+       "regex": "mining.*pool.*hijacking|pool.*hijacking|mining.*hijacking",
+       "risk_level": "high",
+       "description": "Mining malware mining pool hijacking"
+     },
+     "mining_pool_hash_rate_theft": {
+       "regex": "hash.*rate.*theft|mining.*hash.*theft|pool.*hash.*theft",
+       "risk_level": "high",
+       "description": "Mining pool hash rate theft"
+     },
+     "wallet_theft_seed_phrase_extraction": {
+       "regex": "seed.*phrase.*extraction|wallet.*seed.*extraction|seed.*extraction",
+       "risk_level": "critical",
+       "description": "Wallet theft seed phrase extraction"
+     },
+     "wallet_theft_private_key_bruteforce": {
+       "regex": "private.*key.*bruteforce|wallet.*bruteforce|key.*bruteforce",
+       "risk_level": "critical",
+       "description": "Wallet theft private key bruteforce"
+     },
+     "blockchain_double_spending_attack": {
+       "regex": "double.*spending.*attack|blockchain.*double.*spending|double.*spending",
+       "risk_level": "critical",
+       "description": "Blockchain double spending attack"
+     },
+     "blockchain_race_condition_attack": {
+       "regex": "race.*condition.*attack|blockchain.*race.*condition|race.*condition",
+       "risk_level": "critical",
+       "description": "Blockchain race condition attack"
+     },
+     "defi_smart_contract_reentrancy": {
+       "regex": "smart.*contract.*reentrancy|reentrancy.*attack|defi.*reentrancy",
+       "risk_level": "high",
+       "description": "DeFi smart contract reentrancy"
+     },
+     "defi_flash_loan_attack_variants": {
+       "regex": "flash.*loan.*attack.*variant|defi.*flash.*variant|loan.*attack.*variant",
+       "risk_level": "high",
+       "description": "DeFi flash loan attack variants"
+     },
+     "nft_marketplace_abuse": {
+       "regex": "marketplace.*abuse|nft.*marketplace.*abuse|marketplace.*attack",
+       "risk_level": "medium",
+       "description": "NFT marketplace abuse"
+     },
+     "nft_token_manipulation_variants": {
+       "regex": "token.*manipulation.*variant|nft.*token.*variant|manipulation.*variant",
+       "risk_level": "medium",
+       "description": "NFT token manipulation variants"
+     },
+     "exchange_order_book_manipulation": {
+       "regex": "order.*book.*manipulation|exchange.*order.*manipulation|book.*manipulation",
+       "risk_level": "critical",
+       "description": "Exchange order book manipulation"
+     },
+     "exchange_trading_bot_manipulation_variants": {
+       "regex": "trading.*bot.*manipulation.*variant|exchange.*bot.*variant|bot.*manipulation.*variant",
+       "risk_level": "critical",
+       "description": "Exchange trading bot manipulation variants"
+     },
+     "phishing_credential_harvesting": {
+       "regex": "credential.*harvesting|phishing.*credential|harvesting.*credential",
+       "risk_level": "medium",
+       "description": "Phishing credential harvesting"
+     },
+     "phishing_email_spoofing_variants": {
+       "regex": "email.*spoofing.*variant|phishing.*email.*variant|spoofing.*variant",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing variants"
+     },
+     "spear_phishing_executive_impersonation": {
+       "regex": "executive.*impersonation|spear.*phishing.*executive|impersonation.*executive",
+       "risk_level": "high",
+       "description": "Spear phishing executive impersonation"
+     },
+     "spear_phishing_targeted_attack_variants": {
+       "regex": "targeted.*attack.*variant|spear.*phishing.*variant|targeted.*variant",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attack variants"
+     },
+     "whaling_business_email_compromise": {
+       "regex": "business.*email.*compromise|whaling.*business.*email|email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling business email compromise"
+     },
+     "whaling_ceo_fraud_variants": {
+       "regex": "ceo.*fraud.*variant|whaling.*ceo.*variant|fraud.*variant",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud variants"
+     },
+     "smishing_text_scam": {
+       "regex": "text.*scam|smishing.*text.*scam|sms.*scam",
+       "risk_level": "medium",
+       "description": "Smishing text scam"
+     },
+     "smishing_mobile_device_targeting": {
+       "regex": "mobile.*device.*targeting|smishing.*mobile.*targeting|device.*targeting",
+       "risk_level": "medium",
+       "description": "Smishing mobile device targeting"
+     },
+     "pretexting_fake_identity": {
+       "regex": "fake.*identity.*creation|pretexting.*fake.*identity|identity.*creation",
+       "risk_level": "medium",
+       "description": "Pretexting fake identity"
+     },
+     "pretexting_information_gathering": {
+       "regex": "information.*gathering|pretexting.*information|gathering.*information",
+       "risk_level": "medium",
+       "description": "Pretexting information gathering"
+     },
+     "baiting_usb_drop_attack": {
+       "regex": "usb.*drop.*attack|baiting.*usb.*drop|drop.*attack",
+       "risk_level": "medium",
+       "description": "Baiting USB drop attack"
+     },
+     "baiting_physical_device_placement": {
+       "regex": "physical.*device.*placement|baiting.*physical.*device|device.*placement",
+       "risk_level": "medium",
+       "description": "Baiting physical device placement"
+     },
+     "quid_pro_quo_something_for_something": {
+       "regex": "something.*for.*something|quid.*pro.*quo.*something|exchange.*manipulation",
+       "risk_level": "medium",
+       "description": "Quid pro quo something for something"
+     },
+     "quid_pro_quo_service_exchange_manipulation": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*service|exchange.*manipulation",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange manipulation"
+     },
+     "tailgating_piggybacking": {
+       "regex": "piggybacking|tailgating.*piggybacking|door.*sneaking",
+       "risk_level": "medium",
+       "description": "Tailgating piggybacking"
+     },
+     "tailgating_door_manipulation": {
+       "regex": "door.*manipulation|tailgating.*door.*manipulation|door.*sneaking",
+       "risk_level": "medium",
+       "description": "Tailgating door manipulation"
+     },
+     "docker_container_capabilities_abuse": {
+       "regex": "docker.*run.*--cap-add.*SYS_PTRACE|docker.*run.*--cap-add.*SYS_ADMIN",
+       "risk_level": "critical",
+       "description": "Docker container capabilities abuse"
+     },
+     "docker_container_security_opts_bypass": {
+       "regex": "docker.*run.*--security-opt.*no-new-privileges.*false|docker.*run.*--security-opt.*apparmor.*unconfined",
+       "risk_level": "critical",
+       "description": "Docker container security opts bypass"
+     },
+     "docker_container_device_access": {
+       "regex": "docker.*run.*--device.*/dev/|docker.*run.*--privileged.*true",
+       "risk_level": "critical",
+       "description": "Docker container device access"
+     },
+     "kubernetes_pod_host_pid": {
+       "regex": "hostPID.*true|hostPid.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod host PID"
+     },
+     "kubernetes_pod_host_ipc": {
+       "regex": "hostIPC.*true|hostIpc.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod host IPC"
+     },
+     "kubernetes_pod_host_network": {
+       "regex": "hostNetwork.*true|hostPort.*\\d+",
+       "risk_level": "high",
+       "description": "Kubernetes pod host network"
+     },
+     "aws_ec2_instance_metadata_access": {
+       "regex": "curl.*169.254.169.254|wget.*169.254.169.254",
+       "risk_level": "medium",
+       "description": "AWS EC2 instance metadata access"
+     },
+     "aws_s3_bucket_policy_bypass": {
+       "regex": "aws.*s3.*put-bucket-policy.*--policy.*\\$\\{.*\\}|s3.*bucket.*policy.*bypass",
+       "risk_level": "high",
+       "description": "AWS S3 bucket policy bypass"
+     },
+     "aws_iam_role_assumption": {
+       "regex": "aws.*sts.*assume-role|aws.*iam.*assume-role|role.*assumption",
+       "risk_level": "critical",
+       "description": "AWS IAM role assumption"
+     },
+     "azure_vm_custom_script_extension": {
+       "regex": "az.*vm.*extension.*set.*--publisher.*Microsoft.Azure.Extensions.*--name.*CustomScript",
+       "risk_level": "high",
+       "description": "Azure VM custom script extension"
+     },
+     "azure_key_vault_secret_access": {
+       "regex": "az.*keyvault.*secret.*download|az.*keyvault.*certificate.*download",
+       "risk_level": "critical",
+       "description": "Azure Key Vault access"
+     },
+     "azure_storage_account_access": {
+       "regex": "az.*storage.*account.*show-connection-string|az.*storage.*blob.*download",
+       "risk_level": "high",
+       "description": "Azure storage account access"
+     },
+     "gcp_compute_instance_metadata_access": {
+       "regex": "curl.*metadata.google.internal|gcloud.*compute.*instances.*add-metadata",
+       "risk_level": "medium",
+       "description": "GCP compute instance metadata access"
+     },
+     "gcp_storage_bucket_access": {
+       "regex": "gsutil.*cp.*gs://|gcloud.*storage.*buckets.*list",
+       "risk_level": "high",
+       "description": "GCP storage bucket access"
+     },
+     "terraform_backend_config_injection": {
+       "regex": "terraform.*backend.*config.*\\$\\{.*\\}|backend.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform backend config injection"
+     },
+     "terraform_provider_config_injection": {
+       "regex": "terraform.*provider.*config.*\\$\\{.*\\}|provider.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform provider config injection"
+     },
+     "ansible_vault_password": {
+       "regex": "ansible-vault.*decrypt|ansible-vault.*view",
+       "risk_level": "critical",
+       "description": "Ansible vault password exposure"
+     },
+     "ansible_playbook_injection": {
+       "regex": "ansible-playbook.*-e.*\\$\\{.*\\}|ansible-playbook.*--extra-vars.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ansible playbook injection"
+     },
+     "helm_chart_injection": {
+       "regex": "helm.*install.*--set.*\\$\\{.*\\}|helm.*upgrade.*--set.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Helm chart injection"
+     },
+     "spring4shell_cve_2022_22965": {
+       "regex": "class.*\\$\\{.*\\}|method.*\\$\\{.*\\}|field.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22965"
+     },
+     "spring4shell_cve_2022_22963": {
+       "regex": "spring.*cloud.*function.*\\$\\{.*\\}|function.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22963"
+     },
+     "spring4shell_cve_2022_22950": {
+       "regex": "spring.*cloud.*gateway.*\\$\\{.*\\}|gateway.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring4Shell CVE-2022-22950"
+     },
+     "log4shell_cve_2021_44228": {
+       "regex": "\\$\\{jndi:ldap://|\\$\\{jndi:rmi://|\\$\\{jndi:dns://",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-44228"
+     },
+     "log4shell_cve_2021_45046": {
+       "regex": "\\$\\{jndi:ldap://.*\\$\\{.*\\}|\\$\\{jndi:rmi://.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-45046"
+     },
+     "log4shell_cve_2021_45105": {
+       "regex": "\\$\\{jndi:.*\\$\\{.*\\}.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Log4Shell CVE-2021-45105"
+     },
+     "proxyshell_cve_2021_34473": {
+       "regex": "powershell.*-enc.*[A-Za-z0-9+/]{20,}|powershell.*-encodedcommand.*[A-Za-z0-9+/]{20,}",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-34473"
+     },
+     "proxyshell_cve_2021_34523": {
+       "regex": "exchange.*powershell.*-enc|exchange.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-34523"
+     },
+     "proxyshell_cve_2021_31207": {
+       "regex": "exchange.*autodiscover.*powershell|exchange.*ecp.*powershell",
+       "risk_level": "critical",
+       "description": "ProxyShell CVE-2021-31207"
+     },
+     "proxylogon_cve_2021_26855": {
+       "regex": "exchange.*autodiscover.*authentication.*bypass|exchange.*ecp.*authentication.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26855"
+     },
+     "proxylogon_cve_2021_26857": {
+       "regex": "exchange.*autodiscover.*deserialization|exchange.*ecp.*deserialization",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26857"
+     },
+     "proxylogon_cve_2021_26858": {
+       "regex": "exchange.*autodiscover.*post.*authentication|exchange.*ecp.*post.*authentication",
+       "risk_level": "critical",
+       "description": "ProxyLogon CVE-2021-26858"
+     },
+     "zerologon_cve_2020_1472": {
+       "regex": "netlogon.*privilege.*escalation|netlogon.*authentication.*bypass",
+       "risk_level": "critical",
+       "description": "ZeroLogon CVE-2020-1472"
+     },
+     "printnightmare_cve_2021_1675": {
+       "regex": "spoolsv.*privilege.*escalation|print.*spooler.*exploit",
+       "risk_level": "critical",
+       "description": "PrintNightmare CVE-2021-1675"
+     },
+     "printnightmare_cve_2021_34527": {
+       "regex": "windows.*print.*spooler.*rce|print.*spooler.*remote.*code.*execution",
+       "risk_level": "critical",
+       "description": "PrintNightmare CVE-2021-34527"
+     },
+     "eternalblue_ms17_010": {
+       "regex": "smb.*eternalblue|ms17_010.*exploit|smb.*vulnerability.*exploitation",
+       "risk_level": "critical",
+       "description": "EternalBlue MS17-010"
+     },
+     "wannacry_ransomware": {
+       "regex": "wannacry.*encrypt|wannacry.*ransomware|wannacry.*bitcoin.*address",
+       "risk_level": "critical",
+       "description": "WannaCry ransomware"
+     },
+     "notpetya_ransomware": {
+       "regex": "notpetya.*encrypt|notpetya.*ransomware|notpetya.*mbr.*overwrite",
+       "risk_level": "critical",
+       "description": "NotPetya ransomware"
+     },
+     "ryuk_ransomware": {
+       "regex": "ryuk.*encrypt|ryuk.*ransomware|ryuk.*bitcoin.*wallet",
+       "risk_level": "critical",
+       "description": "Ryuk ransomware"
+     },
+     "revil_ransomware": {
+       "regex": "revil.*encrypt|revil.*ransomware|revil.*double.*extortion",
+       "risk_level": "critical",
+       "description": "REvil ransomware"
+     },
+     "heartbleed_cve_2014_0160": {
+       "regex": "openssl.*heartbleed|heartbleed.*exploit|openssl.*vulnerability",
+       "risk_level": "critical",
+       "description": "Heartbleed CVE-2014-0160"
+     },
+     "shellshock_cve_2014_6271": {
+       "regex": "bash.*shellshock|shellshock.*exploit|bash.*vulnerability",
+       "risk_level": "critical",
+       "description": "Shellshock CVE-2014-6271"
+     },
+     "struts_cve_2017_5638": {
+       "regex": "struts.*cve.*2017.*5638|struts.*ognl.*injection|struts.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2017-5638"
+     },
+     "struts_cve_2017_9805": {
+       "regex": "struts.*cve.*2017.*9805|struts.*rest.*plugin.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2017-9805"
+     },
+     "struts_cve_2018_11776": {
+       "regex": "struts.*cve.*2018.*11776|struts.*namespace.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts CVE-2018-11776"
+     },
+     "spring_expression_injection": {
+       "regex": "spel.*\\$\\{.*\\}|spring.*expression.*\\$\\{.*\\}|@spel.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring expression injection"
+     },
+     "spring_ognl_injection": {
+       "regex": "ognl.*\\$\\{.*\\}|@ognl.*\\$\\{.*\\}|spring.*ognl.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring OGNL injection"
+     },
+     "django_template_injection": {
+       "regex": "django.*template.*\\$\\{.*\\}|jinja2.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django template injection"
+     },
+     "django_orm_injection": {
+       "regex": "django.*orm.*\\$\\{.*\\}|queryset.*\\$\\{.*\\}|model.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django ORM injection"
+     },
+     "laravel_artisan_injection": {
+       "regex": "artisan.*\\$\\{.*\\}|php.*artisan.*\\$\\{.*\\}|laravel.*command.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Artisan injection"
+     },
+     "laravel_eloquent_injection": {
+       "regex": "eloquent.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel Eloquent injection"
+     },
+     "express_route_injection": {
+       "regex": "express.*route.*\\$\\{.*\\}|app\\.get.*\\$\\{.*\\}|app\\.post.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js route injection"
+     },
+     "express_middleware_bypass": {
+       "regex": "express.*middleware.*bypass|app\\.use.*\\$\\{.*\\}|middleware.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js middleware bypass"
+     },
+     "rails_erb_injection": {
+       "regex": "erb.*\\$\\{.*\\}|rails.*erb.*\\$\\{.*\\}|template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ERB injection"
+     },
+     "rails_active_record_injection": {
+       "regex": "activerecord.*\\$\\{.*\\}|model.*\\$\\{.*\\}|query.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails ActiveRecord injection"
+     },
+     "aspnet_viewstate_manipulation": {
+       "regex": "viewstate.*\\$\\{.*\\}|__viewstate.*\\$\\{.*\\}|aspnet.*viewstate.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET ViewState manipulation"
+     },
+     "aspnet_form_authentication_bypass": {
+       "regex": "forms.*authentication.*bypass|aspnet.*auth.*bypass|authentication.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET form authentication bypass"
+     },
+     "flask_jinja2_injection": {
+       "regex": "jinja2.*\\$\\{.*\\}|flask.*template.*\\$\\{.*\\}|render_template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flask Jinja2 injection"
+     },
+     "fastapi_dependency_injection": {
+       "regex": "fastapi.*dependency.*\\$\\{.*\\}|depends.*\\$\\{.*\\}|dependency.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "FastAPI dependency injection abuse"
+     },
+     "anti_debugging_detection": {
+       "regex": "isdebuggerpresent|checkremotedebuggerpresent|debugger.*detection",
+       "risk_level": "medium",
+       "description": "Anti-debugging detection"
+     },
+     "anti_vm_detection": {
+       "regex": "virtualbox|vmware|vbox|vm.*detection|sandbox.*detection",
+       "risk_level": "medium",
+       "description": "Anti-VM detection"
+     },
+     "code_obfuscation_string_encryption": {
+       "regex": "string.*encryption|obfuscate.*string|encrypt.*string",
+       "risk_level": "medium",
+       "description": "Code obfuscation string encryption"
+     },
+     "code_obfuscation_variable_renaming": {
+       "regex": "variable.*renaming|rename.*variable|obfuscate.*variable",
+       "risk_level": "medium",
+       "description": "Code obfuscation variable renaming"
+     },
+     "api_hooking_function_hooking": {
+       "regex": "hook.*function|api.*hooking|function.*hook",
+       "risk_level": "high",
+       "description": "API hooking function hooking"
+     },
+     "api_hooking_system_call_interception": {
+       "regex": "system.*call.*interception|syscall.*hook|intercept.*syscall",
+       "risk_level": "high",
+       "description": "API hooking system call interception"
+     },
+     "process_injection_dll_injection": {
+       "regex": "dll.*injection|inject.*dll|loadlibrary.*injection",
+       "risk_level": "critical",
+       "description": "Process injection DLL injection"
+     },
+     "process_injection_code_cave_injection": {
+       "regex": "code.*cave.*injection|cave.*injection|inject.*cave",
+       "risk_level": "critical",
+       "description": "Process injection code cave injection"
+     },
+     "memory_scanning_process_memory_manipulation": {
+       "regex": "process.*memory.*manipulation|memory.*scanning|manipulate.*memory",
+       "risk_level": "high",
+       "description": "Memory scanning process memory manipulation"
+     },
+     "ssh_tunneling_port_forwarding": {
+       "regex": "ssh.*-L.*\\d+:.*:\\d+|ssh.*-D.*\\d+|ssh.*tunnel",
+       "risk_level": "medium",
+       "description": "SSH tunneling port forwarding"
+     },
+     "ssh_tunneling_reverse_tunneling": {
+       "regex": "ssh.*-R.*\\d+:.*:\\d+|reverse.*tunnel|ssh.*reverse",
+       "risk_level": "medium",
+       "description": "SSH tunneling reverse tunneling"
+     },
+     "vpn_proxy_abuse_tunnel_manipulation": {
+       "regex": "vpn.*tunnel.*manipulation|proxy.*tunnel|tunnel.*manipulation",
+       "risk_level": "medium",
+       "description": "VPN/proxy abuse tunnel manipulation"
+     },
+     "port_scanning_network_reconnaissance": {
+       "regex": "nmap.*-sS|nmap.*-sU|nmap.*-p.*\\d+",
+       "risk_level": "medium",
+       "description": "Port scanning network reconnaissance"
+     },
+     "network_reconnaissance_host_discovery": {
+       "regex": "host.*discovery|network.*scanning|reconnaissance.*scan",
+       "risk_level": "medium",
+       "description": "Network reconnaissance host discovery"
+     },
+     "session_hijacking_cookie_manipulation": {
+       "regex": "cookie.*manipulation|session.*hijacking|hijack.*session",
+       "risk_level": "high",
+       "description": "Session hijacking cookie manipulation"
+     },
+     "clickjacking_ui_redressing": {
+       "regex": "ui.*redressing|clickjacking|frame.*injection",
+       "risk_level": "medium",
+       "description": "Clickjacking UI redressing"
+     },
+     "open_redirects_url_redirection_abuse": {
+       "regex": "redirect.*\\$\\{.*\\}|url.*redirection.*\\$\\{.*\\}|redirect.*parameter",
+       "risk_level": "medium",
+       "description": "Open redirects URL redirection abuse"
+     },
+     "ssrf_server_side_request_forgery": {
+       "regex": "ssrf.*\\$\\{.*\\}|server.*side.*request.*forgery|internal.*service.*access",
+       "risk_level": "high",
+       "description": "SSRF server-side request forgery"
+     },
+     "xml_injection_data_format_manipulation": {
+       "regex": "xml.*\\$\\{.*\\}|xml.*injection|data.*format.*manipulation",
+       "risk_level": "high",
+       "description": "XML injection data format manipulation"
+     },
+     "json_injection_query_injection": {
+       "regex": "json.*\\$\\{.*\\}|json.*injection|query.*injection",
+       "risk_level": "high",
+       "description": "JSON injection query injection"
+     },
+     "graphql_injection_query_injection": {
+       "regex": "graphql.*\\$\\{.*\\}|graphql.*injection|query.*injection",
+       "risk_level": "high",
+       "description": "GraphQL injection query injection"
+     },
+     "android_bypass_root_detection_bypass": {
+       "regex": "root.*detection.*bypass|android.*root.*bypass|bypass.*root.*detection",
+       "risk_level": "medium",
+       "description": "Android bypass root detection bypass"
+     },
+     "ios_bypass_jailbreak_detection_bypass": {
+       "regex": "jailbreak.*detection.*bypass|ios.*jailbreak.*bypass|bypass.*jailbreak.*detection",
+       "risk_level": "medium",
+       "description": "iOS bypass jailbreak detection bypass"
+     },
+     "react_native_javascript_bridge_abuse": {
+       "regex": "react.*native.*bridge.*abuse|javascript.*bridge.*\\$\\{.*\\}|native.*module.*injection",
+       "risk_level": "high",
+       "description": "React Native JavaScript bridge abuse"
+     },
+     "flutter_dart_code_injection": {
+       "regex": "flutter.*dart.*injection|dart.*code.*\\$\\{.*\\}|platform.*channel.*abuse",
+       "risk_level": "high",
+       "description": "Flutter Dart code injection"
+     },
+     "smart_home_device_hijacking": {
+       "regex": "smart.*home.*hijacking|device.*hijacking|automation.*abuse",
+       "risk_level": "medium",
+       "description": "Smart home device hijacking"
+     },
+     "industrial_iot_scada_manipulation": {
+       "regex": "scada.*manipulation|plc.*programming|industrial.*iot.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Industrial IoT SCADA manipulation"
+     },
+     "medical_device_patient_data_access": {
+       "regex": "medical.*device.*data.*access|patient.*data.*\\$\\{.*\\}|device.*control.*bypass",
+       "risk_level": "critical",
+       "description": "Medical device patient data access"
+     },
+     "automotive_can_bus_manipulation": {
+       "regex": "can.*bus.*manipulation|ecu.*reprogramming|automotive.*security.*bypass",
+       "risk_level": "critical",
+       "description": "Automotive CAN bus manipulation"
+     },
+     "wearable_health_data_access": {
+       "regex": "wearable.*health.*data.*access|device.*synchronization.*abuse|health.*data.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Wearable health data access"
+     },
+     "mining_malware_coinhive": {
+       "regex": "coinhive.*mining|coinhive.*script|mining.*malware.*coinhive",
+       "risk_level": "high",
+       "description": "Mining malware Coinhive"
+     },
+     "mining_malware_xmrig": {
+       "regex": "xmrig.*mining|xmrig.*malware|mining.*malware.*xmrig",
+       "risk_level": "high",
+       "description": "Mining malware XMRig"
+     },
+     "mining_pool_manipulation": {
+       "regex": "mining.*pool.*manipulation|pool.*hijacking|hash.*rate.*theft",
+       "risk_level": "high",
+       "description": "Mining pool manipulation"
+     },
+     "wallet_theft_private_key_extraction": {
+       "regex": "private.*key.*extraction|wallet.*theft|wallet\\.dat.*access",
+       "risk_level": "critical",
+       "description": "Wallet theft private key extraction"
+     },
+     "blockchain_51_attack": {
+       "regex": "51.*attack|blockchain.*attack|double.*spending.*attempt",
+       "risk_level": "critical",
+       "description": "Blockchain 51% attack"
+     },
+     "defi_flash_loan_attack": {
+       "regex": "flash.*loan.*attack|defi.*exploit|smart.*contract.*manipulation",
+       "risk_level": "high",
+       "description": "DeFi flash loan attack"
+     },
+     "nft_token_manipulation": {
+       "regex": "nft.*token.*manipulation|marketplace.*abuse|token.*manipulation",
+       "risk_level": "medium",
+       "description": "NFT token manipulation"
+     },
+     "exchange_trading_bot_manipulation": {
+       "regex": "trading.*bot.*manipulation|order.*book.*abuse|exchange.*attack",
+       "risk_level": "critical",
+       "description": "Exchange trading bot manipulation"
+     },
+     "phishing_email_spoofing": {
+       "regex": "email.*spoofing|phishing.*email|credential.*harvesting",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing"
+     },
+     "spear_phishing_targeted_attacks": {
+       "regex": "spear.*phishing.*targeted|targeted.*phishing|executive.*impersonation",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attacks"
+     },
+     "whaling_ceo_fraud": {
+       "regex": "ceo.*fraud|whaling.*attack|business.*email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud"
+     },
+     "smishing_sms_phishing": {
+       "regex": "sms.*phishing|smishing.*attack|text.*scam",
+       "risk_level": "medium",
+       "description": "Smishing SMS phishing"
+     },
+     "pretexting_false_identity": {
+       "regex": "false.*identity.*creation|pretexting.*attack|information.*gathering",
+       "risk_level": "medium",
+       "description": "Pretexting false identity"
+     },
+     "baiting_physical_device": {
+       "regex": "physical.*device.*placement|usb.*drop.*attack|baiting.*attack",
+       "risk_level": "medium",
+       "description": "Baiting physical device"
+     },
+     "quid_pro_quo_service_exchange": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*attack|something.*for.*something",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange"
+     },
+     "tailgating_physical_access": {
+       "regex": "physical.*access.*abuse|door.*manipulation|tailgating.*attack",
+       "risk_level": "medium",
+       "description": "Tailgating physical access"
+     },
+     "docker_container_privilege_escalation": {
+       "regex": "docker.*run.*--cap-add.*SYS_ADMIN|docker.*run.*--cap-add.*NET_ADMIN",
+       "risk_level": "critical",
+       "description": "Docker container privilege escalation"
+     },
+     "docker_container_resource_abuse": {
+       "regex": "docker.*run.*--memory.*0|docker.*run.*--cpus.*0",
+       "risk_level": "high",
+       "description": "Docker container resource abuse"
+     },
+     "kubernetes_pod_security_context_bypass": {
+       "regex": "runAsUser.*0|runAsGroup.*0|fsGroup.*0",
+       "risk_level": "critical",
+       "description": "Kubernetes pod security context bypass"
+     },
+     "kubernetes_pod_privilege_escalation": {
+       "regex": "allowPrivilegeEscalation.*true|privileged.*true",
+       "risk_level": "critical",
+       "description": "Kubernetes pod privilege escalation"
+     },
+     "aws_cloudformation_template_injection": {
+       "regex": "cloudformation.*template.*\\$\\{.*\\}|cfn.*template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "AWS CloudFormation template injection"
+     },
+     "aws_lambda_function_injection": {
+       "regex": "lambda.*function.*\\$\\{.*\\}|aws.*lambda.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "AWS Lambda function injection"
+     },
+     "azure_arm_template_injection": {
+       "regex": "arm.*template.*\\$\\{.*\\}|azure.*template.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Azure ARM template injection"
+     },
+     "azure_function_app_injection": {
+       "regex": "function.*app.*\\$\\{.*\\}|azure.*function.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Azure Function App injection"
+     },
+     "gcp_cloud_function_injection": {
+       "regex": "cloud.*function.*\\$\\{.*\\}|gcp.*function.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "GCP Cloud Function injection"
+     },
+     "terraform_remote_state_manipulation": {
+       "regex": "terraform.*remote.*state.*\\$\\{.*\\}|backend.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Terraform remote state manipulation"
+     },
+     "ansible_vault_password_file": {
+       "regex": "ansible-vault.*--vault-password-file|--vault-password-file.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Ansible vault password file exposure"
+     },
+     "helm_secret_injection": {
+       "regex": "helm.*secret.*\\$\\{.*\\}|--set.*secret.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Helm secret injection"
+     },
+     "spring_cloud_function_injection": {
+       "regex": "spring.*cloud.*function.*\\$\\{.*\\}|function.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring Cloud Function injection"
+     },
+     "spring_cloud_gateway_injection": {
+       "regex": "spring.*cloud.*gateway.*\\$\\{.*\\}|gateway.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Spring Cloud Gateway injection"
+     },
+     "log4j_jndi_injection_variants": {
+       "regex": "\\$\\{jndi:ldaps://|\\$\\{jndi:corba://|\\$\\{jndi:iiop://",
+       "risk_level": "critical",
+       "description": "Log4j JNDI injection variants"
+     },
+     "log4j_lookup_injection": {
+       "regex": "\\$\\{java:runtime|\\$\\{java:vm|\\$\\{java:os",
+       "risk_level": "critical",
+       "description": "Log4j lookup injection"
+     },
+     "proxyshell_exchange_autodiscover": {
+       "regex": "autodiscover.*powershell.*-enc|autodiscover.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell Exchange Autodiscover"
+     },
+     "proxyshell_exchange_ecp": {
+       "regex": "ecp.*powershell.*-enc|ecp.*powershell.*-encodedcommand",
+       "risk_level": "critical",
+       "description": "ProxyShell Exchange ECP"
+     },
+     "proxylogon_exchange_autodiscover_auth": {
+       "regex": "autodiscover.*authentication.*bypass|autodiscover.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon Exchange Autodiscover authentication bypass"
+     },
+     "proxylogon_exchange_ecp_auth": {
+       "regex": "ecp.*authentication.*bypass|ecp.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ProxyLogon Exchange ECP authentication bypass"
+     },
+     "zerologon_netlogon_privilege_escalation": {
+       "regex": "netlogon.*privilege.*escalation|netlogon.*auth.*bypass",
+       "risk_level": "critical",
+       "description": "ZeroLogon Netlogon privilege escalation"
+     },
+     "printnightmare_spoolsv_exploit": {
+       "regex": "spoolsv.*exploit|print.*spooler.*rce|spooler.*vulnerability",
+       "risk_level": "critical",
+       "description": "PrintNightmare spoolsv exploit"
+     },
+     "eternalblue_smb_exploit": {
+       "regex": "smb.*eternalblue|ms17_010.*smb|smb.*vulnerability",
+       "risk_level": "critical",
+       "description": "EternalBlue SMB exploit"
+     },
+     "wannacry_encryption": {
+       "regex": "wannacry.*encrypt|wannacry.*encryption|wannacry.*ransomware",
+       "risk_level": "critical",
+       "description": "WannaCry encryption"
+     },
+     "notpetya_mbr_overwrite": {
+       "regex": "notpetya.*mbr.*overwrite|notpetya.*boot.*sector|notpetya.*encryption",
+       "risk_level": "critical",
+       "description": "NotPetya MBR overwrite"
+     },
+     "ryuk_encryption": {
+       "regex": "ryuk.*encrypt|ryuk.*encryption|ryuk.*bitcoin.*wallet",
+       "risk_level": "critical",
+       "description": "Ryuk encryption"
+     },
+     "revil_double_extortion": {
+       "regex": "revil.*double.*extortion|revil.*encrypt|revil.*ransomware",
+       "risk_level": "critical",
+       "description": "REvil double extortion"
+     },
+     "heartbleed_openssl_vulnerability": {
+       "regex": "openssl.*heartbleed|heartbleed.*openssl|openssl.*vulnerability",
+       "risk_level": "critical",
+       "description": "Heartbleed OpenSSL vulnerability"
+     },
+     "shellshock_bash_vulnerability": {
+       "regex": "bash.*shellshock|shellshock.*bash|bash.*vulnerability",
+       "risk_level": "critical",
+       "description": "Shellshock Bash vulnerability"
+     },
+     "struts_ognl_injection": {
+       "regex": "struts.*ognl.*injection|ognl.*struts|struts.*vulnerability",
+       "risk_level": "critical",
+       "description": "Struts OGNL injection"
+     },
+     "struts_rest_plugin_vulnerability": {
+       "regex": "struts.*rest.*plugin.*vulnerability|rest.*plugin.*struts",
+       "risk_level": "critical",
+       "description": "Struts REST plugin vulnerability"
+     },
+     "struts_namespace_vulnerability": {
+       "regex": "struts.*namespace.*vulnerability|namespace.*struts",
+       "risk_level": "critical",
+       "description": "Struts namespace vulnerability"
+     },
+     "spring_spel_injection": {
+       "regex": "spel.*\\$\\{.*\\}|spring.*spel.*\\

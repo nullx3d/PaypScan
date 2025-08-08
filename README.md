@@ -300,7 +300,7 @@ curl https://your-ngrok-url.ngrok-free.app/events
 
 ## 🛡️ Security Patterns
 
-The tool detects **1k+ dangerous patterns** across **10 major security categories**:
+The tool detects **1000+ dangerous patterns** across **10 major security categories**:
 
 ### 🔥 Core Language Patterns
 - **PowerShell**: `Invoke-Expression`, `iex`, `powershell -Command`, `powershell -EncodedCommand`
