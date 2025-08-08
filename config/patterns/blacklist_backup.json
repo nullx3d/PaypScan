@@ -2165,6 +2165,21 @@
        "risk_level": "critical",
        "description": "Wallet theft patterns"
      },
+     "phishing_patterns": {
+       "regex": "phishing.*\\$\\{.*\\}|spear.*phishing.*\\$\\{.*\\}|whaling.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Phishing patterns"
+     },
+     "bec_attack": {
+       "regex": "CEO.*fraud|business.*email.*compromise|wire.*transfer.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "BEC (Business Email Compromise)"
+     },
+     "vishing_patterns": {
+       "regex": "voice.*phishing.*\\$\\{.*\\}|vishing.*\\$\\{.*\\}|phone.*scam.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Vishing patterns"
+     },
      "express_js_security": {
        "regex": "express\\.Router.*\\$\\{.*\\}|app\\.use.*\\$\\{.*\\}|res\\.send.*\\$\\{.*\\}",
        "risk_level": "high",
@@ -2354,6 +2369,41 @@
        "regex": "pool.*hijacking.*\\$\\{.*\\}|51.*attack.*\\$\\{.*\\}|double.*spend.*\\$\\{.*\\}",
        "risk_level": "critical",
        "description": "Mining pool hijacking"
+     },
+     "spear_phishing": {
+       "regex": "spear.*phishing.*\\$\\{.*\\}|targeted.*phishing.*\\$\\{.*\\}|whaling.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spear phishing"
+     },
+     "whaling_attacks": {
+       "regex": "whaling.*\\$\\{.*\\}|executive.*phishing.*\\$\\{.*\\}|ceo.*fraud.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Whaling attacks"
+     },
+     "smishing_patterns": {
+       "regex": "smishing.*\\$\\{.*\\}|sms.*phishing.*\\$\\{.*\\}|text.*scam.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Smishing patterns"
+     },
+     "pretexting_patterns": {
+       "regex": "pretexting.*\\$\\{.*\\}|false.*pretext.*\\$\\{.*\\}|fake.*identity.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Pretexting patterns"
+     },
+     "baiting_attacks": {
+       "regex": "baiting.*\\$\\{.*\\}|physical.*bait.*\\$\\{.*\\}|usb.*drop.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Baiting attacks"
+     },
+     "quid_pro_quo_attacks": {
+       "regex": "quid.*pro.*quo.*\\$\\{.*\\}|something.*for.*something.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Quid pro quo attacks"
+     },
+     "tailgating_patterns": {
+       "regex": "tailgating.*\\$\\{.*\\}|piggybacking.*\\$\\{.*\\}|door.*sneaking.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Tailgating patterns"
      },
      "docker_container_escape": {
        "regex": "docker.*run.*--privileged|docker.*run.*--cap-add.*ALL|docker.*run.*--security-opt.*privileged",
@@ -2854,6 +2904,46 @@
        "regex": "trading.*bot.*manipulation|order.*book.*abuse|exchange.*attack",
        "risk_level": "critical",
        "description": "Exchange trading bot manipulation"
+     },
+     "phishing_email_spoofing": {
+       "regex": "email.*spoofing|phishing.*email|credential.*harvesting",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing"
+     },
+     "spear_phishing_targeted_attacks": {
+       "regex": "spear.*phishing.*targeted|targeted.*phishing|executive.*impersonation",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attacks"
+     },
+     "whaling_ceo_fraud": {
+       "regex": "ceo.*fraud|whaling.*attack|business.*email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud"
+     },
+     "smishing_sms_phishing": {
+       "regex": "sms.*phishing|smishing.*attack|text.*scam",
+       "risk_level": "medium",
+       "description": "Smishing SMS phishing"
+     },
+     "pretexting_false_identity": {
+       "regex": "false.*identity.*creation|pretexting.*attack|information.*gathering",
+       "risk_level": "medium",
+       "description": "Pretexting false identity"
+     },
+     "baiting_physical_device": {
+       "regex": "physical.*device.*placement|usb.*drop.*attack|baiting.*attack",
+       "risk_level": "medium",
+       "description": "Baiting physical device"
+     },
+     "quid_pro_quo_service_exchange": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*attack|something.*for.*something",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange"
+     },
+     "tailgating_physical_access": {
+       "regex": "physical.*access.*abuse|door.*manipulation|tailgating.*attack",
+       "risk_level": "medium",
+       "description": "Tailgating physical access"
      },
      "docker_container_privilege_escalation": {
        "regex": "docker.*run.*--cap-add.*SYS_ADMIN|docker.*run.*--cap-add.*NET_ADMIN",
@@ -3410,6 +3500,11 @@
        "risk_level": "critical",
        "description": "Exchange trading bot manipulation variants"
      },
+     "phishing_credential_harvesting": {
+       "regex": "credential.*harvesting|phishing.*credential|harvesting.*credential",
+       "risk_level": "medium",
+       "description": "Phishing credential harvesting"
+     },
      "phishing_email_spoofing_variants": {
        "regex": "email.*spoofing.*variant|phishing.*email.*variant|spoofing.*variant",
        "risk_level": "medium",
@@ -3964,6 +4059,46 @@
        "regex": "trading.*bot.*manipulation|order.*book.*abuse|exchange.*attack",
        "risk_level": "critical",
        "description": "Exchange trading bot manipulation"
+     },
+     "phishing_email_spoofing": {
+       "regex": "email.*spoofing|phishing.*email|credential.*harvesting",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing"
+     },
+     "spear_phishing_targeted_attacks": {
+       "regex": "spear.*phishing.*targeted|targeted.*phishing|executive.*impersonation",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attacks"
+     },
+     "whaling_ceo_fraud": {
+       "regex": "ceo.*fraud|whaling.*attack|business.*email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud"
+     },
+     "smishing_sms_phishing": {
+       "regex": "sms.*phishing|smishing.*attack|text.*scam",
+       "risk_level": "medium",
+       "description": "Smishing SMS phishing"
+     },
+     "pretexting_false_identity": {
+       "regex": "false.*identity.*creation|pretexting.*attack|information.*gathering",
+       "risk_level": "medium",
+       "description": "Pretexting false identity"
+     },
+     "baiting_physical_device": {
+       "regex": "physical.*device.*placement|usb.*drop.*attack|baiting.*attack",
+       "risk_level": "medium",
+       "description": "Baiting physical device"
+     },
+     "quid_pro_quo_service_exchange": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*attack|something.*for.*something",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange"
+     },
+     "tailgating_physical_access": {
+       "regex": "physical.*access.*abuse|door.*manipulation|tailgating.*attack",
+       "risk_level": "medium",
+       "description": "Tailgating physical access"
      },
      "docker_container_privilege_escalation": {
        "regex": "docker.*run.*--cap-add.*SYS_ADMIN|docker.*run.*--cap-add.*NET_ADMIN",
@@ -4520,6 +4655,11 @@
        "risk_level": "critical",
        "description": "Exchange trading bot manipulation variants"
      },
+     "phishing_credential_harvesting": {
+       "regex": "credential.*harvesting|phishing.*credential|harvesting.*credential",
+       "risk_level": "medium",
+       "description": "Phishing credential harvesting"
+     },
      "phishing_email_spoofing_variants": {
        "regex": "email.*spoofing.*variant|phishing.*email.*variant|spoofing.*variant",
        "risk_level": "medium",
@@ -5074,6 +5214,46 @@
        "regex": "trading.*bot.*manipulation|order.*book.*abuse|exchange.*attack",
        "risk_level": "critical",
        "description": "Exchange trading bot manipulation"
+     },
+     "phishing_email_spoofing": {
+       "regex": "email.*spoofing|phishing.*email|credential.*harvesting",
+       "risk_level": "medium",
+       "description": "Phishing email spoofing"
+     },
+     "spear_phishing_targeted_attacks": {
+       "regex": "spear.*phishing.*targeted|targeted.*phishing|executive.*impersonation",
+       "risk_level": "high",
+       "description": "Spear phishing targeted attacks"
+     },
+     "whaling_ceo_fraud": {
+       "regex": "ceo.*fraud|whaling.*attack|business.*email.*compromise",
+       "risk_level": "critical",
+       "description": "Whaling CEO fraud"
+     },
+     "smishing_sms_phishing": {
+       "regex": "sms.*phishing|smishing.*attack|text.*scam",
+       "risk_level": "medium",
+       "description": "Smishing SMS phishing"
+     },
+     "pretexting_false_identity": {
+       "regex": "false.*identity.*creation|pretexting.*attack|information.*gathering",
+       "risk_level": "medium",
+       "description": "Pretexting false identity"
+     },
+     "baiting_physical_device": {
+       "regex": "physical.*device.*placement|usb.*drop.*attack|baiting.*attack",
+       "risk_level": "medium",
+       "description": "Baiting physical device"
+     },
+     "quid_pro_quo_service_exchange": {
+       "regex": "service.*exchange.*manipulation|quid.*pro.*quo.*attack|something.*for.*something",
+       "risk_level": "medium",
+       "description": "Quid pro quo service exchange"
+     },
+     "tailgating_physical_access": {
+       "regex": "physical.*access.*abuse|door.*manipulation|tailgating.*attack",
+       "risk_level": "medium",
+       "description": "Tailgating physical access"
      },
      "docker_container_privilege_escalation": {
        "regex": "docker.*run.*--cap-add.*SYS_ADMIN|docker.*run.*--cap-add.*NET_ADMIN",

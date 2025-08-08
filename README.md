@@ -300,7 +300,7 @@ curl https://your-ngrok-url.ngrok-free.app/events
 
 ## 🛡️ Security Patterns
 
-The tool detects **1000+ dangerous patterns** across **10 major security categories**:
+The tool detects **1000+ dangerous patterns** across **9 major security categories**:
 
 ### 🔥 Core Language Patterns
 - **PowerShell**: `Invoke-Expression`, `iex`, `powershell -Command`, `powershell -EncodedCommand`
@@ -386,15 +386,7 @@ The tool detects **1000+ dangerous patterns** across **10 major security categor
 - **NFT Security**: Token manipulation, marketplace abuse
 - **Exchange Attacks**: Trading bot manipulation, order book abuse
 
-### 🎭 Social Engineering
-- **Phishing**: Email spoofing, credential harvesting
-- **Spear Phishing**: Targeted attacks, executive impersonation
-- **Whaling**: CEO fraud, business email compromise
-- **Smishing**: SMS phishing, mobile device targeting
-- **Pretexting**: False identity creation, information gathering
-- **Baiting**: Physical device placement, USB drop attacks
-- **Quid Pro Quo**: Service exchange manipulation
-- **Tailgating**: Physical access abuse, door manipulation
+
 
 ### Risk Scoring
 - **CRITICAL (10)**: `eval()`, `exec()`, ZeroLogon, EternalBlue
