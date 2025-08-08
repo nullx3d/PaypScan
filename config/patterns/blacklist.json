@@ -1034,6 +1034,1376 @@
       "regex": "zebra.*encode|zebra.*key|zebra.*>",
       "risk_level": "critical",
       "description": "Zebra data exfiltration"
-    }
-  }
+    },
+    "docker_privileged": {
+      "regex": "docker\\s+run\\s+.*--privileged|docker\\s+run\\s+.*--cap-add\\s+ALL",
+      "risk_level": "high",
+      "description": "Privileged Docker container"
+    },
+    "docker_host_network": {
+      "regex": "docker\\s+run\\s+.*--network\\s+host|docker\\s+run\\s+.*-p\\s+host",
+      "risk_level": "high",
+      "description": "Docker host network access"
+    },
+    "docker_host_mount": {
+      "regex": "docker\\s+run\\s+.*-v\\s+/:/|docker\\s+run\\s+.*--mount\\s+type=bind",
+      "risk_level": "high",
+      "description": "Docker host filesystem mount"
+    },
+    "docker_secrets": {
+      "regex": "docker\\s+secret\\s+create|docker\\s+run.*--secret",
+      "risk_level": "high",
+      "description": "Docker secrets access"
+    },
+    "docker_registry_auth": {
+      "regex": "docker\\s+login\\s+.*|docker\\s+run.*-e\\s+REGISTRY",
+      "risk_level": "medium",
+      "description": "Docker registry authentication"
+    },
+    "kubernetes_exec": {
+      "regex": "kubectl\\s+exec\\s+.*--|kubectl\\s+exec\\s+.*-it",
+      "risk_level": "high",
+      "description": "Kubernetes exec command"
+    },
+    "kubernetes_port_forward": {
+      "regex": "kubectl\\s+port-forward\\s+.*|kubectl\\s+proxy",
+      "risk_level": "high",
+      "description": "Kubernetes port forwarding"
+    },
+    "kubernetes_secrets": {
+      "regex": "kubectl\\s+create\\s+secret|kubectl\\s+apply\\s+-f.*secret",
+      "risk_level": "high",
+      "description": "Kubernetes secrets creation"
+    },
+    "kubernetes_configmaps": {
+      "regex": "kubectl\\s+create\\s+configmap|kubectl\\s+apply\\s+-f.*configmap",
+      "risk_level": "medium",
+      "description": "Kubernetes configmap creation"
+    },
+    "kubernetes_pods": {
+      "regex": "kubectl\\s+run\\s+.*|kubectl\\s+create\\s+deployment",
+      "risk_level": "medium",
+      "description": "Kubernetes pod creation"
+    },
+    "kubernetes_services": {
+      "regex": "kubectl\\s+expose\\s+.*|kubectl\\s+create\\s+service",
+      "risk_level": "medium",
+      "description": "Kubernetes service creation"
+    },
+    "aws_cli_profile": {
+      "regex": "aws\\s+.*--profile\\s+.*|aws\\s+configure\\s+set\\s+profile",
+      "risk_level": "high",
+      "description": "AWS CLI with profile"
+    },
+    "aws_cli_credentials": {
+      "regex": "aws\\s+configure\\s+set\\s+aws_access_key|aws\\s+configure\\s+set\\s+aws_secret_key",
+      "risk_level": "high",
+      "description": "AWS CLI credentials"
+    },
+    "aws_s3_access": {
+      "regex": "aws\\s+s3\\s+.*|aws\\s+s3api\\s+.*",
+      "risk_level": "medium",
+      "description": "AWS S3 access"
+    },
+    "aws_ec2_access": {
+      "regex": "aws\\s+ec2\\s+.*|aws\\s+ec2api\\s+.*",
+      "risk_level": "medium",
+      "description": "AWS EC2 access"
+    },
+    "aws_iam_access": {
+      "regex": "aws\\s+iam\\s+.*|aws\\s+sts\\s+.*",
+      "risk_level": "high",
+      "description": "AWS IAM access"
+    },
+    "aws_secrets_access": {
+      "regex": "aws\\s+secretsmanager\\s+.*|aws\\s+ssm\\s+get-parameter",
+      "risk_level": "high",
+      "description": "AWS Secrets Manager access"
+    },
+    "aws_lambda_access": {
+      "regex": "aws\\s+lambda\\s+.*|aws\\s+lambdaapi\\s+.*",
+      "risk_level": "medium",
+      "description": "AWS Lambda access"
+    },
+    "aws_cloudformation": {
+      "regex": "aws\\s+cloudformation\\s+.*|aws\\s+cf\\s+.*",
+      "risk_level": "medium",
+      "description": "AWS CloudFormation access"
+    },
+    "azure_cli_subscription": {
+      "regex": "az\\s+.*--subscription\\s+.*|az\\s+account\\s+set",
+      "risk_level": "high",
+      "description": "Azure CLI with subscription"
+    },
+    "azure_cli_credentials": {
+      "regex": "az\\s+login\\s+.*|az\\s+account\\s+get-access-token",
+      "risk_level": "high",
+      "description": "Azure CLI credentials"
+    },
+    "azure_storage_access": {
+      "regex": "az\\s+storage\\s+.*|az\\s+storageapi\\s+.*",
+      "risk_level": "medium",
+      "description": "Azure Storage access"
+    },
+    "azure_vm_access": {
+      "regex": "az\\s+vm\\s+.*|az\\s+compute\\s+.*",
+      "risk_level": "medium",
+      "description": "Azure VM access"
+    },
+    "azure_keyvault_access": {
+      "regex": "az\\s+keyvault\\s+.*|az\\s+keyvaultapi\\s+.*",
+      "risk_level": "high",
+      "description": "Azure Key Vault access"
+    },
+    "azure_appservice_access": {
+      "regex": "az\\s+webapp\\s+.*|az\\s+appservice\\s+.*",
+      "risk_level": "medium",
+      "description": "Azure App Service access"
+    },
+    "azure_aks_access": {
+      "regex": "az\\s+aks\\s+.*|az\\s+kubernetes\\s+.*",
+      "risk_level": "medium",
+      "description": "Azure AKS access"
+    },
+    "gcp_cli_project": {
+      "regex": "gcloud\\s+.*--project\\s+.*|gcloud\\s+config\\s+set\\s+project",
+      "risk_level": "high",
+      "description": "GCP CLI with project"
+    },
+    "gcp_cli_credentials": {
+      "regex": "gcloud\\s+auth\\s+.*|gcloud\\s+config\\s+set\\s+account",
+      "risk_level": "high",
+      "description": "GCP CLI credentials"
+    },
+    "gcp_storage_access": {
+      "regex": "gcloud\\s+storage\\s+.*|gsutil\\s+.*",
+      "risk_level": "medium",
+      "description": "GCP Storage access"
+    },
+    "gcp_compute_access": {
+      "regex": "gcloud\\s+compute\\s+.*|gcloud\\s+instances\\s+.*",
+      "risk_level": "medium",
+      "description": "GCP Compute access"
+    },
+    "gcp_secrets_access": {
+      "regex": "gcloud\\s+secrets\\s+.*|gcloud\\s+secretmanager\\s+.*",
+      "risk_level": "high",
+      "description": "GCP Secrets access"
+    },
+    "gcp_kubernetes_access": {
+      "regex": "gcloud\\s+container\\s+.*|gcloud\\s+kubernetes\\s+.*",
+      "risk_level": "medium",
+      "description": "GCP Kubernetes access"
+    },
+    "gcp_cloudfunctions": {
+      "regex": "gcloud\\s+functions\\s+.*|gcloud\\s+cloudfunctions\\s+.*",
+      "risk_level": "medium",
+      "description": "GCP Cloud Functions access"
+    },
+    "terraform_aws": {
+      "regex": "terraform\\s+.*aws_|terraform\\s+.*provider\\s+aws",
+      "risk_level": "medium",
+      "description": "Terraform AWS provider"
+    },
+    "terraform_azure": {
+      "regex": "terraform\\s+.*azurerm_|terraform\\s+.*provider\\s+azurerm",
+      "risk_level": "medium",
+      "description": "Terraform Azure provider"
+    },
+    "terraform_gcp": {
+      "regex": "terraform\\s+.*google_|terraform\\s+.*provider\\s+google",
+      "risk_level": "medium",
+      "description": "Terraform GCP provider"
+    },
+    "ansible_aws": {
+      "regex": "ansible\\s+.*aws_|ansible-playbook.*aws",
+      "risk_level": "medium",
+      "description": "Ansible AWS modules"
+    },
+    "ansible_azure": {
+      "regex": "ansible\\s+.*azure_|ansible-playbook.*azure",
+      "risk_level": "medium",
+      "description": "Ansible Azure modules"
+    },
+    "ansible_gcp": {
+      "regex": "ansible\\s+.*gcp_|ansible-playbook.*gcp",
+      "risk_level": "medium",
+      "description": "Ansible GCP modules"
+    },
+    "helm_secrets": {
+      "regex": "helm\\s+.*--set\\s+secret|helm\\s+.*--values.*secret",
+      "risk_level": "high",
+      "description": "Helm secrets configuration"
+    },
+    "helm_registry": {
+      "regex": "helm\\s+.*--registry|helm\\s+.*--repo",
+      "risk_level": "medium",
+      "description": "Helm registry access"
+    },
+    "docker_compose_secrets": {
+      "regex": "docker-compose\\s+.*secret|docker-compose.*-f.*secret",
+      "risk_level": "high",
+      "description": "Docker Compose secrets"
+    },
+    "docker_compose_env": {
+      "regex": "docker-compose\\s+.*--env-file|docker-compose.*environment:",
+      "risk_level": "medium",
+      "description": "Docker Compose environment"
+    },
+    "rancher_access": {
+      "regex": "rancher\\s+.*|kubectl\\s+.*--context.*rancher",
+      "risk_level": "medium",
+      "description": "Rancher access"
+    },
+    "openshift_access": {
+      "regex": "oc\\s+.*|kubectl\\s+.*--context.*openshift",
+      "risk_level": "medium",
+      "description": "OpenShift access"
+    },
+    "istio_access": {
+      "regex": "istioctl\\s+.*|kubectl\\s+.*istio",
+      "risk_level": "medium",
+      "description": "Istio access"
+    },
+    "linkerd_access": {
+      "regex": "linkerd\\s+.*|kubectl\\s+.*linkerd",
+      "risk_level": "medium",
+      "description": "Linkerd access"
+    },
+    "consul_access": {
+      "regex": "consul\\s+.*|kubectl\\s+.*consul",
+      "risk_level": "medium",
+      "description": "Consul access"
+    },
+    "vault_access": {
+      "regex": "vault\\s+.*|kubectl\\s+.*vault",
+      "risk_level": "high",
+      "description": "Vault access"
+    },
+    "jenkins_credentials": {
+      "regex": "jenkins\\s+.*credential|jenkins.*--username|jenkins.*--password",
+      "risk_level": "high",
+      "description": "Jenkins credentials"
+    },
+    "gitlab_runner": {
+      "regex": "gitlab-runner\\s+.*|gitlab.*runner.*register",
+      "risk_level": "medium",
+      "description": "GitLab Runner access"
+    },
+    "github_actions_secrets": {
+      "regex": "\\$\\{\\s*secrets\\.|GITHUB_TOKEN|GITHUB_SECRET",
+      "risk_level": "high",
+      "description": "GitHub Actions secrets"
+    },
+    "azure_devops_tokens": {
+      "regex": "az\\s+devops\\s+.*--token|AZURE_DEVOPS_EXT_PAT",
+      "risk_level": "high",
+      "description": "Azure DevOps tokens"
+    },
+    "bitbucket_pipelines": {
+      "regex": "bitbucket\\s+.*|BITBUCKET_ACCESS_TOKEN",
+      "risk_level": "medium",
+      "description": "Bitbucket Pipelines access"
+    },
+    "circleci_tokens": {
+      "regex": "circleci\\s+.*|CIRCLECI_TOKEN",
+      "risk_level": "medium",
+      "description": "CircleCI tokens"
+    },
+    "travis_ci_tokens": {
+      "regex": "travis\\s+.*|TRAVIS_TOKEN",
+      "risk_level": "medium",
+      "description": "Travis CI tokens"
+    },
+    "teamcity_tokens": {
+      "regex": "teamcity\\s+.*|TEAMCITY_TOKEN",
+      "risk_level": "medium",
+      "description": "TeamCity tokens"
+    },
+    "bamboo_tokens": {
+      "regex": "bamboo\\s+.*|BAMBOO_TOKEN",
+      "risk_level": "medium",
+      "description": "Bamboo tokens"
+    },
+    "sonarqube_tokens": {
+      "regex": "sonar\\s+.*|SONAR_TOKEN",
+      "risk_level": "medium",
+      "description": "SonarQube tokens"
+    },
+    "artifactory_tokens": {
+      "regex": "jfrog\\s+.*|ARTIFACTORY_TOKEN",
+      "risk_level": "medium",
+      "description": "Artifactory tokens"
+    },
+    "nexus_tokens": {
+      "regex": "nexus\\s+.*|NEXUS_TOKEN",
+      "risk_level": "medium",
+      "description": "Nexus tokens"
+    },
+    "harbor_tokens": {
+      "regex": "harbor\\s+.*|HARBOR_TOKEN",
+      "risk_level": "medium",
+      "description": "Harbor tokens"
+    },
+    "quay_tokens": {
+      "regex": "quay\\s+.*|QUAY_TOKEN",
+      "risk_level": "medium",
+      "description": "Quay tokens"
+    },
+    "ecr_access": {
+      "regex": "aws\\s+ecr\\s+.*|docker\\s+login.*ecr",
+      "risk_level": "medium",
+      "description": "AWS ECR access"
+    },
+    "acr_access": {
+      "regex": "az\\s+acr\\s+.*|docker\\s+login.*acr",
+      "risk_level": "medium",
+      "description": "Azure ACR access"
+    },
+    "gcr_access": {
+      "regex": "gcloud\\s+container\\s+images\\s+.*|docker\\s+login.*gcr",
+      "risk_level": "medium",
+      "description": "GCP GCR access"
+    },
+    "spring4shell_exploit": {
+      "regex": "class\\.forName.*getMethod.*invoke|SpEL.*\\$\\{.*\\}|@PreAuthorize.*\\$\\{.*\\}",
+      "risk_level": "critical",
+      "description": "Spring4Shell exploit"
+    },
+    "log4shell_variants": {
+      "regex": "\\$\\{jndi:ldaps://|\\$\\{jndi:rmi://|\\$\\{jndi:dns://|\\$\\{jndi:corba://|\\$\\{jndi:iiop://",
+      "risk_level": "critical",
+      "description": "Log4Shell variant exploits"
+    },
+    "proxyshell_exploit": {
+      "regex": "New-ManagementRoleAssignment.*-RoleDefinitionName|Set-MailboxFolderPermission.*-User",
+      "risk_level": "critical",
+      "description": "ProxyShell exploit"
+    },
+    "proxylogon_exploit": {
+      "regex": "Set-MailboxFolderPermission.*-User|Add-MailboxFolderPermission.*-User",
+      "risk_level": "critical",
+      "description": "ProxyLogon exploit"
+    },
+    "proxynotshell_exploit": {
+      "regex": "New-ManagementRoleAssignment.*-RoleDefinitionName.*-User|Set-MailboxFolderPermission.*-User.*-AccessRights",
+      "risk_level": "critical",
+      "description": "ProxyNotShell exploit"
+    },
+    "petitpotam_exploit": {
+      "regex": "PetitPotam|MS-EFSR|EfsRpcOpenFileRaw",
+      "risk_level": "critical",
+      "description": "PetitPotam exploit"
+    },
+    "zerologon_exploit": {
+      "regex": "NetrDrsGetNCChanges|NetrDrsGetNCChanges|MS-DRSR",
+      "risk_level": "critical",
+      "description": "ZeroLogon exploit"
+    },
+    "printnightmare_exploit": {
+      "regex": "spoolsv\\.exe|MS-RPRN|RpcAddPrinterDriver",
+      "risk_level": "critical",
+      "description": "PrintNightmare exploit"
+    },
+    "eternalblue_exploit": {
+      "regex": "MS17-010|SMBv1|EternalBlue|DoublePulsar",
+      "risk_level": "critical",
+      "description": "EternalBlue exploit"
+    },
+    "wannacry_exploit": {
+      "regex": "WannaCry|WannaCrypt|EternalRocks",
+      "risk_level": "critical",
+      "description": "WannaCry exploit"
+    },
+    "notpetya_exploit": {
+      "regex": "NotPetya|Petya|EternalRocks",
+      "risk_level": "critical",
+      "description": "NotPetya exploit"
+    },
+    "badrabbit_exploit": {
+      "regex": "BadRabbit|DiskCryptor|EternalRocks",
+      "risk_level": "critical",
+      "description": "BadRabbit exploit"
+    },
+    "ryuk_exploit": {
+      "regex": "Ryuk|Hermes|EternalRocks",
+      "risk_level": "critical",
+      "description": "Ryuk exploit"
+    },
+    "locky_exploit": {
+      "regex": "Locky|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "Locky exploit"
+    },
+    "cerber_exploit": {
+      "regex": "Cerber|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "Cerber exploit"
+    },
+    "cryptolocker_exploit": {
+      "regex": "CryptoLocker|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker exploit"
+    },
+    "teslacrypt_exploit": {
+      "regex": "TeslaCrypt|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt exploit"
+    },
+    "cryptowall_exploit": {
+      "regex": "CryptoWall|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall exploit"
+    },
+    "cryptolocker_v2_exploit": {
+      "regex": "CryptoLocker\\.v2|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v2 exploit"
+    },
+    "cryptolocker_v3_exploit": {
+      "regex": "CryptoLocker\\.v3|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v3 exploit"
+    },
+    "cryptolocker_v4_exploit": {
+      "regex": "CryptoLocker\\.v4|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v4 exploit"
+    },
+    "cryptolocker_v5_exploit": {
+      "regex": "CryptoLocker\\.v5|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v5 exploit"
+    },
+    "cryptolocker_v6_exploit": {
+      "regex": "CryptoLocker\\.v6|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v6 exploit"
+    },
+    "cryptolocker_v7_exploit": {
+      "regex": "CryptoLocker\\.v7|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v7 exploit"
+    },
+    "cryptolocker_v8_exploit": {
+      "regex": "CryptoLocker\\.v8|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v8 exploit"
+    },
+    "cryptolocker_v9_exploit": {
+      "regex": "CryptoLocker\\.v9|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v9 exploit"
+    },
+    "cryptolocker_v10_exploit": {
+      "regex": "CryptoLocker\\.v10|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v10 exploit"
+    },
+    "heartbleed_exploit": {
+      "regex": "Heartbleed|CVE-2014-0160|OpenSSL",
+      "risk_level": "critical",
+      "description": "Heartbleed exploit"
+    },
+    "shellshock_exploit": {
+      "regex": "Shellshock|CVE-2014-6271|bash.*-c.*\\$\\{.*\\}",
+      "risk_level": "critical",
+      "description": "Shellshock exploit"
+    },
+    "struts_exploit": {
+      "regex": "Struts|CVE-2017-5638|CVE-2017-9805",
+      "risk_level": "critical",
+      "description": "Apache Struts exploit"
+    },
+    "wannacry_v2_exploit": {
+      "regex": "WannaCry\\.v2|WannaCrypt\\.v2|EternalRocks\\.v2",
+      "risk_level": "critical",
+      "description": "WannaCry v2 exploit"
+    },
+    "wannacry_v3_exploit": {
+      "regex": "WannaCry\\.v3|WannaCrypt\\.v3|EternalRocks\\.v3",
+      "risk_level": "critical",
+      "description": "WannaCry v3 exploit"
+    },
+    "wannacry_v4_exploit": {
+      "regex": "WannaCry\\.v4|WannaCrypt\\.v4|EternalRocks\\.v4",
+      "risk_level": "critical",
+      "description": "WannaCry v4 exploit"
+    },
+    "wannacry_v5_exploit": {
+      "regex": "WannaCry\\.v5|WannaCrypt\\.v5|EternalRocks\\.v5",
+      "risk_level": "critical",
+      "description": "WannaCry v5 exploit"
+    },
+    "wannacry_v6_exploit": {
+      "regex": "WannaCry\\.v6|WannaCrypt\\.v6|EternalRocks\\.v6",
+      "risk_level": "critical",
+      "description": "WannaCry v6 exploit"
+    },
+    "wannacry_v7_exploit": {
+      "regex": "WannaCry\\.v7|WannaCrypt\\.v7|EternalRocks\\.v7",
+      "risk_level": "critical",
+      "description": "WannaCry v7 exploit"
+    },
+    "wannacry_v8_exploit": {
+      "regex": "WannaCry\\.v8|WannaCrypt\\.v8|EternalRocks\\.v8",
+      "risk_level": "critical",
+      "description": "WannaCry v8 exploit"
+    },
+    "wannacry_v9_exploit": {
+      "regex": "WannaCry\\.v9|WannaCrypt\\.v9|EternalRocks\\.v9",
+      "risk_level": "critical",
+      "description": "WannaCry v9 exploit"
+    },
+    "wannacry_v10_exploit": {
+      "regex": "WannaCry\\.v10|WannaCrypt\\.v10|EternalRocks\\.v10",
+      "risk_level": "critical",
+      "description": "WannaCry v10 exploit"
+    },
+    "notpetya_v2_exploit": {
+      "regex": "NotPetya\\.v2|Petya\\.v2|EternalRocks\\.v2",
+      "risk_level": "critical",
+      "description": "NotPetya v2 exploit"
+    },
+    "notpetya_v3_exploit": {
+      "regex": "NotPetya\\.v3|Petya\\.v3|EternalRocks\\.v3",
+      "risk_level": "critical",
+      "description": "NotPetya v3 exploit"
+    },
+    "notpetya_v4_exploit": {
+      "regex": "NotPetya\\.v4|Petya\\.v4|EternalRocks\\.v4",
+      "risk_level": "critical",
+      "description": "NotPetya v4 exploit"
+    },
+    "notpetya_v5_exploit": {
+      "regex": "NotPetya\\.v5|Petya\\.v5|EternalRocks\\.v5",
+      "risk_level": "critical",
+      "description": "NotPetya v5 exploit"
+    },
+    "notpetya_v6_exploit": {
+      "regex": "NotPetya\\.v6|Petya\\.v6|EternalRocks\\.v6",
+      "risk_level": "critical",
+      "description": "NotPetya v6 exploit"
+    },
+    "notpetya_v7_exploit": {
+      "regex": "NotPetya\\.v7|Petya\\.v7|EternalRocks\\.v7",
+      "risk_level": "critical",
+      "description": "NotPetya v7 exploit"
+    },
+    "notpetya_v8_exploit": {
+      "regex": "NotPetya\\.v8|Petya\\.v8|EternalRocks\\.v8",
+      "risk_level": "critical",
+      "description": "NotPetya v8 exploit"
+    },
+    "notpetya_v9_exploit": {
+      "regex": "NotPetya\\.v9|Petya\\.v9|EternalRocks\\.v9",
+      "risk_level": "critical",
+      "description": "NotPetya v9 exploit"
+    },
+    "notpetya_v10_exploit": {
+      "regex": "NotPetya\\.v10|Petya\\.v10|EternalRocks\\.v10",
+      "risk_level": "critical",
+      "description": "NotPetya v10 exploit"
+    },
+    "badrabbit_v2_exploit": {
+      "regex": "BadRabbit\\.v2|DiskCryptor\\.v2|EternalRocks\\.v2",
+      "risk_level": "critical",
+      "description": "BadRabbit v2 exploit"
+    },
+    "badrabbit_v3_exploit": {
+      "regex": "BadRabbit\\.v3|DiskCryptor\\.v3|EternalRocks\\.v3",
+      "risk_level": "critical",
+      "description": "BadRabbit v3 exploit"
+    },
+    "badrabbit_v4_exploit": {
+      "regex": "BadRabbit\\.v4|DiskCryptor\\.v4|EternalRocks\\.v4",
+      "risk_level": "critical",
+      "description": "BadRabbit v4 exploit"
+    },
+    "badrabbit_v5_exploit": {
+      "regex": "BadRabbit\\.v5|DiskCryptor\\.v5|EternalRocks\\.v5",
+      "risk_level": "critical",
+      "description": "BadRabbit v5 exploit"
+    },
+    "badrabbit_v6_exploit": {
+      "regex": "BadRabbit\\.v6|DiskCryptor\\.v6|EternalRocks\\.v6",
+      "risk_level": "critical",
+      "description": "BadRabbit v6 exploit"
+    },
+    "badrabbit_v7_exploit": {
+      "regex": "BadRabbit\\.v7|DiskCryptor\\.v7|EternalRocks\\.v7",
+      "risk_level": "critical",
+      "description": "BadRabbit v7 exploit"
+    },
+    "badrabbit_v8_exploit": {
+      "regex": "BadRabbit\\.v8|DiskCryptor\\.v8|EternalRocks\\.v8",
+      "risk_level": "critical",
+      "description": "BadRabbit v8 exploit"
+    },
+    "badrabbit_v9_exploit": {
+      "regex": "BadRabbit\\.v9|DiskCryptor\\.v9|EternalRocks\\.v9",
+      "risk_level": "critical",
+      "description": "BadRabbit v9 exploit"
+    },
+    "badrabbit_v10_exploit": {
+      "regex": "BadRabbit\\.v10|DiskCryptor\\.v10|EternalRocks\\.v10",
+      "risk_level": "critical",
+      "description": "BadRabbit v10 exploit"
+    },
+    "ryuk_v2_exploit": {
+      "regex": "Ryuk\\.v2|Hermes\\.v2|EternalRocks\\.v2",
+      "risk_level": "critical",
+      "description": "Ryuk v2 exploit"
+    },
+    "ryuk_v3_exploit": {
+      "regex": "Ryuk\\.v3|Hermes\\.v3|EternalRocks\\.v3",
+      "risk_level": "critical",
+      "description": "Ryuk v3 exploit"
+    },
+    "ryuk_v4_exploit": {
+      "regex": "Ryuk\\.v4|Hermes\\.v4|EternalRocks\\.v4",
+      "risk_level": "critical",
+      "description": "Ryuk v4 exploit"
+    },
+    "ryuk_v5_exploit": {
+      "regex": "Ryuk\\.v5|Hermes\\.v5|EternalRocks\\.v5",
+      "risk_level": "critical",
+      "description": "Ryuk v5 exploit"
+    },
+    "ryuk_v6_exploit": {
+      "regex": "Ryuk\\.v6|Hermes\\.v6|EternalRocks\\.v6",
+      "risk_level": "critical",
+      "description": "Ryuk v6 exploit"
+    },
+    "ryuk_v7_exploit": {
+      "regex": "Ryuk\\.v7|Hermes\\.v7|EternalRocks\\.v7",
+      "risk_level": "critical",
+      "description": "Ryuk v7 exploit"
+    },
+    "ryuk_v8_exploit": {
+      "regex": "Ryuk\\.v8|Hermes\\.v8|EternalRocks\\.v8",
+      "risk_level": "critical",
+      "description": "Ryuk v8 exploit"
+    },
+    "ryuk_v9_exploit": {
+      "regex": "Ryuk\\.v9|Hermes\\.v9|EternalRocks\\.v9",
+      "risk_level": "critical",
+      "description": "Ryuk v9 exploit"
+    },
+    "ryuk_v10_exploit": {
+      "regex": "Ryuk\\.v10|Hermes\\.v10|EternalRocks\\.v10",
+      "risk_level": "critical",
+      "description": "Ryuk v10 exploit"
+    },
+    "locky_v2_exploit": {
+      "regex": "Locky\\.v2|Zeus\\.v2|EternalRocks\\.v2",
+      "risk_level": "critical",
+      "description": "Locky v2 exploit"
+    },
+    "locky_v3_exploit": {
+      "regex": "Locky\\.v3|Zeus\\.v3|EternalRocks\\.v3",
+      "risk_level": "critical",
+      "description": "Locky v3 exploit"
+    },
+    "locky_v4_exploit": {
+      "regex": "Locky\\.v4|Zeus\\.v4|EternalRocks\\.v4",
+      "risk_level": "critical",
+      "description": "Locky v4 exploit"
+    },
+    "locky_v5_exploit": {
+      "regex": "Locky\\.v5|Zeus\\.v5|EternalRocks\\.v5",
+      "risk_level": "critical",
+      "description": "Locky v5 exploit"
+    },
+    "locky_v6_exploit": {
+      "regex": "Locky\\.v6|Zeus\\.v6|EternalRocks\\.v6",
+      "risk_level": "critical",
+      "description": "Locky v6 exploit"
+    },
+    "locky_v7_exploit": {
+      "regex": "Locky\\.v7|Zeus\\.v7|EternalRocks\\.v7",
+      "risk_level": "critical",
+      "description": "Locky v7 exploit"
+    },
+    "locky_v8_exploit": {
+      "regex": "Locky\\.v8|Zeus\\.v8|EternalRocks\\.v8",
+      "risk_level": "critical",
+      "description": "Locky v8 exploit"
+    },
+    "locky_v9_exploit": {
+      "regex": "Locky\\.v9|Zeus\\.v9|EternalRocks\\.v9",
+      "risk_level": "critical",
+      "description": "Locky v9 exploit"
+    },
+    "locky_v10_exploit": {
+      "regex": "Locky\\.v10|Zeus\\.v10|EternalRocks\\.v10",
+      "risk_level": "critical",
+      "description": "Locky v10 exploit"
+    },
+    "cerber_v2_exploit": {
+      "regex": "Cerber\\.v2|Zeus\\.v2|EternalRocks\\.v2",
+      "risk_level": "critical",
+      "description": "Cerber v2 exploit"
+    },
+    "cerber_v3_exploit": {
+      "regex": "Cerber\\.v3|Zeus\\.v3|EternalRocks\\.v3",
+      "risk_level": "critical",
+      "description": "Cerber v3 exploit"
+    },
+    "cerber_v4_exploit": {
+      "regex": "Cerber\\.v4|Zeus\\.v4|EternalRocks\\.v4",
+      "risk_level": "critical",
+      "description": "Cerber v4 exploit"
+    },
+    "cerber_v5_exploit": {
+      "regex": "Cerber\\.v5|Zeus\\.v5|EternalRocks\\.v5",
+      "risk_level": "critical",
+      "description": "Cerber v5 exploit"
+    },
+    "cerber_v6_exploit": {
+      "regex": "Cerber\\.v6|Zeus\\.v6|EternalRocks\\.v6",
+      "risk_level": "critical",
+      "description": "Cerber v6 exploit"
+    },
+    "cerber_v7_exploit": {
+      "regex": "Cerber\\.v7|Zeus\\.v7|EternalRocks\\.v7",
+      "risk_level": "critical",
+      "description": "Cerber v7 exploit"
+    },
+    "cerber_v8_exploit": {
+      "regex": "Cerber\\.v8|Zeus\\.v8|EternalRocks\\.v8",
+      "risk_level": "critical",
+      "description": "Cerber v8 exploit"
+    },
+    "cerber_v9_exploit": {
+      "regex": "Cerber\\.v9|Zeus\\.v9|EternalRocks\\.v9",
+      "risk_level": "critical",
+      "description": "Cerber v9 exploit"
+    },
+    "cerber_v10_exploit": {
+      "regex": "Cerber\\.v10|Zeus\\.v10|EternalRocks\\.v10",
+      "risk_level": "critical",
+      "description": "Cerber v10 exploit"
+    },
+    "cryptolocker_v11_exploit": {
+      "regex": "CryptoLocker\\.v11|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v11 exploit"
+    },
+    "cryptolocker_v12_exploit": {
+      "regex": "CryptoLocker\\.v12|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v12 exploit"
+    },
+    "cryptolocker_v13_exploit": {
+      "regex": "CryptoLocker\\.v13|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v13 exploit"
+    },
+    "cryptolocker_v14_exploit": {
+      "regex": "CryptoLocker\\.v14|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v14 exploit"
+    },
+    "cryptolocker_v15_exploit": {
+      "regex": "CryptoLocker\\.v15|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v15 exploit"
+    },
+    "cryptolocker_v16_exploit": {
+      "regex": "CryptoLocker\\.v16|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v16 exploit"
+    },
+    "cryptolocker_v17_exploit": {
+      "regex": "CryptoLocker\\.v17|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v17 exploit"
+    },
+    "cryptolocker_v18_exploit": {
+      "regex": "CryptoLocker\\.v18|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v18 exploit"
+    },
+    "cryptolocker_v19_exploit": {
+      "regex": "CryptoLocker\\.v19|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v19 exploit"
+    },
+    "cryptolocker_v20_exploit": {
+      "regex": "CryptoLocker\\.v20|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoLocker v20 exploit"
+    },
+    "teslacrypt_v2_exploit": {
+      "regex": "TeslaCrypt\\.v2|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v2 exploit"
+    },
+    "teslacrypt_v3_exploit": {
+      "regex": "TeslaCrypt\\.v3|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v3 exploit"
+    },
+    "teslacrypt_v4_exploit": {
+      "regex": "TeslaCrypt\\.v4|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v4 exploit"
+    },
+    "teslacrypt_v5_exploit": {
+      "regex": "TeslaCrypt\\.v5|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v5 exploit"
+    },
+    "teslacrypt_v6_exploit": {
+      "regex": "TeslaCrypt\\.v6|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v6 exploit"
+    },
+    "teslacrypt_v7_exploit": {
+      "regex": "TeslaCrypt\\.v7|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v7 exploit"
+    },
+    "teslacrypt_v8_exploit": {
+      "regex": "TeslaCrypt\\.v8|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v8 exploit"
+    },
+    "teslacrypt_v9_exploit": {
+      "regex": "TeslaCrypt\\.v9|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v9 exploit"
+    },
+    "teslacrypt_v10_exploit": {
+      "regex": "TeslaCrypt\\.v10|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "TeslaCrypt v10 exploit"
+    },
+    "cryptowall_v2_exploit": {
+      "regex": "CryptoWall\\.v2|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v2 exploit"
+    },
+    "cryptowall_v3_exploit": {
+      "regex": "CryptoWall\\.v3|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v3 exploit"
+    },
+    "cryptowall_v4_exploit": {
+      "regex": "CryptoWall\\.v4|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v4 exploit"
+    },
+    "cryptowall_v5_exploit": {
+      "regex": "CryptoWall\\.v5|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v5 exploit"
+    },
+    "cryptowall_v6_exploit": {
+      "regex": "CryptoWall\\.v6|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v6 exploit"
+    },
+    "cryptowall_v7_exploit": {
+      "regex": "CryptoWall\\.v7|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v7 exploit"
+    },
+    "cryptowall_v8_exploit": {
+      "regex": "CryptoWall\\.v8|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v8 exploit"
+    },
+    "cryptowall_v9_exploit": {
+      "regex": "CryptoWall\\.v9|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v9 exploit"
+    },
+    "cryptowall_v10_exploit": {
+      "regex": "CryptoWall\\.v10|Zeus|EternalRocks",
+      "risk_level": "critical",
+      "description": "CryptoWall v10 exploit"
+    },
+    "heartbleed_v2_exploit": {
+      "regex": "Heartbleed\\.v2|CVE-2014-0160\\.v2|OpenSSL\\.v2",
+      "risk_level": "critical",
+      "description": "Heartbleed v2 exploit"
+    },
+    "heartbleed_v3_exploit": {
+      "regex": "Heartbleed\\.v3|CVE-2014-0160\\.v3|OpenSSL\\.v3",
+      "risk_level": "critical",
+      "description": "Heartbleed v3 exploit"
+    },
+    "heartbleed_v4_exploit": {
+      "regex": "Heartbleed\\.v4|CVE-2014-0160\\.v4|OpenSSL\\.v4",
+      "risk_level": "critical",
+      "description": "Heartbleed v4 exploit"
+    },
+    "heartbleed_v5_exploit": {
+      "regex": "Heartbleed\\.v5|CVE-2014-0160\\.v5|OpenSSL\\.v5",
+      "risk_level": "critical",
+      "description": "Heartbleed v5 exploit"
+    },
+    "heartbleed_v6_exploit": {
+      "regex": "Heartbleed\\.v6|CVE-2014-0160\\.v6|OpenSSL\\.v6",
+      "risk_level": "critical",
+      "description": "Heartbleed v6 exploit"
+    },
+    "heartbleed_v7_exploit": {
+      "regex": "Heartbleed\\.v7|CVE-2014-0160\\.v7|OpenSSL\\.v7",
+      "risk_level": "critical",
+      "description": "Heartbleed v7 exploit"
+    },
+    "heartbleed_v8_exploit": {
+      "regex": "Heartbleed\\.v8|CVE-2014-0160\\.v8|OpenSSL\\.v8",
+      "risk_level": "critical",
+      "description": "Heartbleed v8 exploit"
+    },
+    "heartbleed_v9_exploit": {
+      "regex": "Heartbleed\\.v9|CVE-2014-0160\\.v9|OpenSSL\\.v9",
+      "risk_level": "critical",
+      "description": "Heartbleed v9 exploit"
+    },
+    "heartbleed_v10_exploit": {
+      "regex": "Heartbleed\\.v10|CVE-2014-0160\\.v10|OpenSSL\\.v10",
+      "risk_level": "critical",
+      "description": "Heartbleed v10 exploit"
+    },
+    "shellshock_v2_exploit": {
+      "regex": "Shellshock\\.v2|CVE-2014-6271\\.v2|bash.*-c.*\\$\\{.*\\}\\.v2",
+      "risk_level": "critical",
+      "description": "Shellshock v2 exploit"
+    },
+    "shellshock_v3_exploit": {
+      "regex": "Shellshock\\.v3|CVE-2014-6271\\.v3|bash.*-c.*\\$\\{.*\\}\\.v3",
+      "risk_level": "critical",
+      "description": "Shellshock v3 exploit"
+    },
+    "shellshock_v4_exploit": {
+      "regex": "Shellshock\\.v4|CVE-2014-6271\\.v4|bash.*-c.*\\$\\{.*\\}\\.v4",
+      "risk_level": "critical",
+      "description": "Shellshock v4 exploit"
+    },
+    "shellshock_v5_exploit": {
+      "regex": "Shellshock\\.v5|CVE-2014-6271\\.v5|bash.*-c.*\\$\\{.*\\}\\.v5",
+      "risk_level": "critical",
+      "description": "Shellshock v5 exploit"
+    },
+    "shellshock_v6_exploit": {
+      "regex": "Shellshock\\.v6|CVE-2014-6271\\.v6|bash.*-c.*\\$\\{.*\\}\\.v6",
+      "risk_level": "critical",
+      "description": "Shellshock v6 exploit"
+    },
+    "shellshock_v7_exploit": {
+      "regex": "Shellshock\\.v7|CVE-2014-6271\\.v7|bash.*-c.*\\$\\{.*\\}\\.v7",
+      "risk_level": "critical",
+      "description": "Shellshock v7 exploit"
+    },
+    "shellshock_v8_exploit": {
+      "regex": "Shellshock\\.v8|CVE-2014-6271\\.v8|bash.*-c.*\\$\\{.*\\}\\.v8",
+      "risk_level": "critical",
+      "description": "Shellshock v8 exploit"
+    },
+    "shellshock_v9_exploit": {
+      "regex": "Shellshock\\.v9|CVE-2014-6271\\.v9|bash.*-c.*\\$\\{.*\\}\\.v9",
+      "risk_level": "critical",
+      "description": "Shellshock v9 exploit"
+    },
+    "shellshock_v10_exploit": {
+      "regex": "Shellshock\\.v10|CVE-2014-6271\\.v10|bash.*-c.*\\$\\{.*\\}\\.v10",
+      "risk_level": "critical",
+      "description": "Shellshock v10 exploit"
+    },
+    "struts_v2_exploit": {
+      "regex": "Struts\\.v2|CVE-2017-5638\\.v2|CVE-2017-9805\\.v2",
+      "risk_level": "critical",
+      "description": "Apache Struts v2 exploit"
+    },
+    "struts_v3_exploit": {
+      "regex": "Struts\\.v3|CVE-2017-5638\\.v3|CVE-2017-9805\\.v3",
+      "risk_level": "critical",
+      "description": "Apache Struts v3 exploit"
+    },
+    "struts_v4_exploit": {
+      "regex": "Struts\\.v4|CVE-2017-5638\\.v4|CVE-2017-9805\\.v4",
+      "risk_level": "critical",
+      "description": "Apache Struts v4 exploit"
+    },
+    "struts_v5_exploit": {
+      "regex": "Struts\\.v5|CVE-2017-5638\\.v5|CVE-2017-9805\\.v5",
+      "risk_level": "critical",
+      "description": "Apache Struts v5 exploit"
+    },
+    "struts_v6_exploit": {
+      "regex": "Struts\\.v6|CVE-2017-5638\\.v6|CVE-2017-9805\\.v6",
+      "risk_level": "critical",
+      "description": "Apache Struts v6 exploit"
+    },
+    "struts_v7_exploit": {
+      "regex": "Struts\\.v7|CVE-2017-5638\\.v7|CVE-2017-9805\\.v7",
+      "risk_level": "critical",
+      "description": "Apache Struts v7 exploit"
+    },
+    "struts_v8_exploit": {
+      "regex": "Struts\\.v8|CVE-2017-5638\\.v8|CVE-2017-9805\\.v8",
+      "risk_level": "critical",
+      "description": "Apache Struts v8 exploit"
+    },
+    "struts_v9_exploit": {
+      "regex": "Struts\\.v9|CVE-2017-5638\\.v9|CVE-2017-9805\\.v9",
+      "risk_level": "critical",
+      "description": "Apache Struts v9 exploit"
+    },
+         "struts_v10_exploit": {
+       "regex": "Struts\\.v10|CVE-2017-5638\\.v10|CVE-2017-9805\\.v10",
+       "risk_level": "critical",
+       "description": "Apache Struts v10 exploit"
+     },
+     "spring_security_bypass": {
+       "regex": "@PreAuthorize.*\\$\\{.*\\}|@Secured.*\\$\\{.*\\}|hasRole.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spring Security bypass"
+     },
+     "django_security_bypass": {
+       "regex": "@login_required.*\\$\\{.*\\}|@permission_required.*\\$\\{.*\\}|is_authenticated.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Django security bypass"
+     },
+     "laravel_security_bypass": {
+       "regex": "Auth::check.*\\$\\{.*\\}|Gate::allows.*\\$\\{.*\\}|Policy::check.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Laravel security bypass"
+     },
+     "anti_debugging": {
+       "regex": "IsDebuggerPresent|CheckRemoteDebuggerPresent|GetTickCount|QueryPerformanceCounter",
+       "risk_level": "medium",
+       "description": "Anti-debugging techniques"
+     },
+     "anti_vm_detection": {
+       "regex": "VMware|VirtualBox|VBox|QEMU|Xen|Hyper-V",
+       "risk_level": "medium",
+       "description": "Anti-VM detection"
+     },
+     "code_obfuscation": {
+       "regex": "eval\\(.*\\$\\{.*\\}\\)|Function\\(.*\\$\\{.*\\}\\)|setTimeout\\(.*\\$\\{.*\\}\\)",
+       "risk_level": "high",
+       "description": "Code obfuscation"
+     },
+     "dns_tunneling": {
+       "regex": "nslookup.*\\$\\{.*\\}|dig.*\\$\\{.*\\}|host.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "DNS tunneling"
+     },
+     "icmp_tunneling": {
+       "regex": "ping.*-c.*\\$\\{.*\\}|ping.*-n.*\\$\\{.*\\}|ping.*-t.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ICMP tunneling"
+     },
+     "http_tunneling": {
+       "regex": "curl.*-X.*POST.*\\$\\{.*\\}|wget.*--post-data.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "HTTP tunneling"
+     },
+     "sql_injection_advanced": {
+       "regex": "UNION.*SELECT.*\\$\\{.*\\}|OR.*1=1.*\\$\\{.*\\}|AND.*1=1.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Advanced SQL injection"
+     },
+     "xss_advanced": {
+       "regex": "<script.*\\$\\{.*\\}</script>|javascript:.*\\$\\{.*\\}|onload=.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Advanced XSS"
+     },
+     "csrf_attack": {
+       "regex": "document\\.cookie.*\\$\\{.*\\}|XMLHttpRequest.*\\$\\{.*\\}|fetch.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "CSRF attack"
+     },
+     "android_security_bypass": {
+       "regex": "android\\.os\\.Build|getPackageInfo|getSystemService.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Android security bypass"
+     },
+     "ios_security_bypass": {
+       "regex": "UIDevice.*systemName|NSBundle.*bundleIdentifier|CFBundleIdentifier.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "iOS security bypass"
+     },
+     "mobile_reverse_engineering": {
+       "regex": "Frida|Xposed|Substrate|Cydia|Jailbreak|Root",
+       "risk_level": "medium",
+       "description": "Mobile reverse engineering"
+     },
+     "iot_device_exploitation": {
+       "regex": "telnet.*\\$\\{.*\\}|ssh.*\\$\\{.*\\}|ftp.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "IoT device exploitation"
+     },
+     "firmware_analysis_bypass": {
+       "regex": "binwalk|firmwalker|firmwalker|firmwalker",
+       "risk_level": "medium",
+       "description": "Firmware analysis bypass"
+     },
+     "smart_home_security_bypass": {
+       "regex": "HomeKit|SmartThings|Wink|IFTTT.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Smart home security bypass"
+     },
+     "crypto_mining_malware": {
+       "regex": "xmrig|cpuminer|ccminer|ethminer|gminer",
+       "risk_level": "high",
+       "description": "Crypto mining malware"
+     },
+     "mining_pool_attacks": {
+       "regex": "stratum.*\\$\\{.*\\}|pool.*\\$\\{.*\\}|mining.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Mining pool attacks"
+     },
+     "wallet_theft_patterns": {
+       "regex": "wallet.*dat|keystore.*json|private.*key.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Wallet theft patterns"
+     },
+     "phishing_patterns": {
+       "regex": "phishing.*\\$\\{.*\\}|spear.*phishing.*\\$\\{.*\\}|whaling.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Phishing patterns"
+     },
+     "bec_attack": {
+       "regex": "CEO.*fraud|business.*email.*compromise|wire.*transfer.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "BEC (Business Email Compromise)"
+     },
+     "vishing_patterns": {
+       "regex": "voice.*phishing.*\\$\\{.*\\}|vishing.*\\$\\{.*\\}|phone.*scam.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Vishing patterns"
+     },
+     "express_js_security": {
+       "regex": "express\\.Router.*\\$\\{.*\\}|app\\.use.*\\$\\{.*\\}|res\\.send.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Express.js security bypass"
+     },
+     "ruby_rails_security": {
+       "regex": "before_action.*\\$\\{.*\\}|skip_before_action.*\\$\\{.*\\}|authenticate_user.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Ruby on Rails security bypass"
+     },
+     "asp_net_security": {
+       "regex": "\\[Authorize\\].*\\$\\{.*\\}|User\\.IsInRole.*\\$\\{.*\\}|HttpContext\\.User.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "ASP.NET security bypass"
+     },
+     "flask_security": {
+       "regex": "@login_required.*\\$\\{.*\\}|@roles_required.*\\$\\{.*\\}|current_user.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flask security bypass"
+     },
+     "fastapi_security": {
+       "regex": "Depends.*\\$\\{.*\\}|Security.*\\$\\{.*\\}|get_current_user.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "FastAPI security bypass"
+     },
+     "anti_sandbox_evasion": {
+       "regex": "GetSystemTime|GetLocalTime|GetTickCount64|QueryPerformanceFrequency",
+       "risk_level": "medium",
+       "description": "Anti-sandbox evasion"
+     },
+     "string_encryption": {
+       "regex": "base64_decode.*\\$\\{.*\\}|rot13.*\\$\\{.*\\}|xor.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "String encryption"
+     },
+     "api_hooking_evasion": {
+       "regex": "GetProcAddress|LoadLibrary|FreeLibrary|GetModuleHandle",
+       "risk_level": "medium",
+       "description": "API hooking evasion"
+     },
+     "process_injection_evasion": {
+       "regex": "CreateRemoteThread|VirtualAllocEx|WriteProcessMemory|OpenProcess",
+       "risk_level": "high",
+       "description": "Process injection evasion"
+     },
+     "memory_scanning_evasion": {
+       "regex": "VirtualProtect|VirtualAlloc|HeapAlloc|LocalAlloc",
+       "risk_level": "medium",
+       "description": "Memory scanning evasion"
+     },
+     "ssh_tunneling": {
+       "regex": "ssh.*-L.*\\$\\{.*\\}|ssh.*-D.*\\$\\{.*\\}|ssh.*-R.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "SSH tunneling"
+     },
+     "vpn_abuse": {
+       "regex": "openvpn.*\\$\\{.*\\}|wireguard.*\\$\\{.*\\}|ipsec.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "VPN abuse"
+     },
+     "proxy_abuse": {
+       "regex": "squid.*\\$\\{.*\\}|nginx.*proxy.*\\$\\{.*\\}|haproxy.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Proxy abuse"
+     },
+     "port_scanning": {
+       "regex": "nmap.*\\$\\{.*\\}|masscan.*\\$\\{.*\\}|netcat.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Port scanning"
+     },
+     "network_reconnaissance": {
+       "regex": "traceroute.*\\$\\{.*\\}|ping.*sweep.*\\$\\{.*\\}|arp.*scan.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Network reconnaissance"
+     },
+     "session_hijacking": {
+       "regex": "session.*id.*\\$\\{.*\\}|cookie.*\\$\\{.*\\}|token.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Session hijacking"
+     },
+     "clickjacking": {
+       "regex": "iframe.*\\$\\{.*\\}|z-index.*\\$\\{.*\\}|opacity.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Clickjacking"
+     },
+     "open_redirects": {
+       "regex": "redirect.*\\$\\{.*\\}|location.*\\$\\{.*\\}|url.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Open redirects"
+     },
+     "server_side_request_forgery": {
+       "regex": "curl.*\\$\\{.*\\}|file_get_contents.*\\$\\{.*\\}|wget.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Server-side request forgery"
+     },
+     "xml_external_entity": {
+       "regex": "xml.*external.*entity.*\\$\\{.*\\}|XXE.*\\$\\{.*\\}|DOCTYPE.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "XML external entity injection"
+     },
+     "json_injection": {
+       "regex": "JSON\\.parse.*\\$\\{.*\\}|JSON\\.stringify.*\\$\\{.*\\}|json_decode.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "JSON injection"
+     },
+     "graphql_injection": {
+       "regex": "query.*\\$\\{.*\\}|mutation.*\\$\\{.*\\}|subscription.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "GraphQL injection"
+     },
+     "react_native_security": {
+       "regex": "react-native.*\\$\\{.*\\}|AsyncStorage.*\\$\\{.*\\}|NetInfo.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "React Native security bypass"
+     },
+     "flutter_security": {
+       "regex": "flutter.*\\$\\{.*\\}|SharedPreferences.*\\$\\{.*\\}|http.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Flutter security bypass"
+     },
+     "certificate_pinning_bypass": {
+       "regex": "ssl.*pinning.*\\$\\{.*\\}|certificate.*pinning.*\\$\\{.*\\}|public.*key.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Certificate pinning bypass"
+     },
+     "root_detection_bypass": {
+       "regex": "isRooted.*\\$\\{.*\\}|checkRoot.*\\$\\{.*\\}|detectRoot.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Root detection bypass"
+     },
+     "jailbreak_detection_bypass": {
+       "regex": "isJailbroken.*\\$\\{.*\\}|checkJailbreak.*\\$\\{.*\\}|detectJailbreak.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Jailbreak detection bypass"
+     },
+     "mobile_malware_patterns": {
+       "regex": "trojan.*\\$\\{.*\\}|spyware.*\\$\\{.*\\}|adware.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Mobile malware patterns"
+     },
+     "industrial_iot_attacks": {
+       "regex": "scada.*\\$\\{.*\\}|plc.*\\$\\{.*\\}|hmi.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Industrial IoT attacks"
+     },
+     "medical_device_security": {
+       "regex": "medical.*device.*\\$\\{.*\\}|patient.*monitor.*\\$\\{.*\\}|mri.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Medical device security"
+     },
+     "automotive_security_bypass": {
+       "regex": "can.*bus.*\\$\\{.*\\}|ecu.*\\$\\{.*\\}|obd.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Automotive security bypass"
+     },
+     "wearable_device_security": {
+       "regex": "fitbit.*\\$\\{.*\\}|apple.*watch.*\\$\\{.*\\}|samsung.*gear.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Wearable device security"
+     },
+     "blockchain_attacks": {
+       "regex": "blockchain.*\\$\\{.*\\}|smart.*contract.*\\$\\{.*\\}|solidity.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Blockchain attacks"
+     },
+     "defi_security_bypass": {
+       "regex": "defi.*\\$\\{.*\\}|yield.*farming.*\\$\\{.*\\}|liquidity.*pool.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "DeFi security bypass"
+     },
+     "nft_security_issues": {
+       "regex": "nft.*\\$\\{.*\\}|non.*fungible.*token.*\\$\\{.*\\}|erc721.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "NFT security issues"
+     },
+     "mining_botnet_detection": {
+       "regex": "botnet.*\\$\\{.*\\}|mining.*pool.*\\$\\{.*\\}|worker.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Mining botnet detection"
+     },
+     "crypto_exchange_attacks": {
+       "regex": "exchange.*\\$\\{.*\\}|trading.*\\$\\{.*\\}|order.*book.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Crypto exchange attacks"
+     },
+     "mining_pool_hijacking": {
+       "regex": "pool.*hijacking.*\\$\\{.*\\}|51.*attack.*\\$\\{.*\\}|double.*spend.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Mining pool hijacking"
+     },
+     "spear_phishing": {
+       "regex": "spear.*phishing.*\\$\\{.*\\}|targeted.*phishing.*\\$\\{.*\\}|whaling.*\\$\\{.*\\}",
+       "risk_level": "high",
+       "description": "Spear phishing"
+     },
+     "whaling_attacks": {
+       "regex": "whaling.*\\$\\{.*\\}|executive.*phishing.*\\$\\{.*\\}|ceo.*fraud.*\\$\\{.*\\}",
+       "risk_level": "critical",
+       "description": "Whaling attacks"
+     },
+     "smishing_patterns": {
+       "regex": "smishing.*\\$\\{.*\\}|sms.*phishing.*\\$\\{.*\\}|text.*scam.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Smishing patterns"
+     },
+     "pretexting_patterns": {
+       "regex": "pretexting.*\\$\\{.*\\}|false.*pretext.*\\$\\{.*\\}|fake.*identity.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Pretexting patterns"
+     },
+     "baiting_attacks": {
+       "regex": "baiting.*\\$\\{.*\\}|physical.*bait.*\\$\\{.*\\}|usb.*drop.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Baiting attacks"
+     },
+     "quid_pro_quo_attacks": {
+       "regex": "quid.*pro.*quo.*\\$\\{.*\\}|something.*for.*something.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Quid pro quo attacks"
+     },
+     "tailgating_patterns": {
+       "regex": "tailgating.*\\$\\{.*\\}|piggybacking.*\\$\\{.*\\}|door.*sneaking.*\\$\\{.*\\}",
+       "risk_level": "medium",
+       "description": "Tailgating patterns"
+     }
+   }
 } 
