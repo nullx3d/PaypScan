@@ -13,7 +13,7 @@ A real-time security scanner that monitors  DevOps pipelines for dangerous patte
 ## 🚀 Features
 
 - **🔍 Real-time Analysis**: Monitor pipeline builds as they happen
-- **🛡️ 1k+ Security Patterns**: Detect dangerous code patterns automatically
+- **🛡️ 250+ Security Patterns**: Detect dangerous code patterns automatically
 - **📱 Slack Alerts**: Real-time notifications via Slack
 - **📊 Risk Scoring**: Prioritize threats with intelligent scoring
 - **🔄 Webhook Integration**: Seamless Azure DevOps integration
@@ -300,7 +300,7 @@ curl https://your-ngrok-url.ngrok-free.app/events
 
 ## 🛡️ Security Patterns
 
-The tool detects **256 dangerous patterns** across **10 major security categories**:
+The tool detects **250 dangerous patterns** across **10 major security categories**:
 
 ### 🔥 Core Language Patterns
 - **PowerShell**: `Invoke-Expression`, `iex`, `powershell -Command`, `powershell -EncodedCommand`
