@@ -300,7 +300,7 @@ curl https://your-ngrok-url.ngrok-free.app/events
 
 ## 🛡️ Security Patterns
 
-The tool detects **200+ dangerous patterns** across **10 major security categories**:
+The tool detects **1k+ dangerous patterns** across **10 major security categories**:
 
 ### 🔥 Core Language Patterns
 - **PowerShell**: `Invoke-Expression`, `iex`, `powershell -Command`, `powershell -EncodedCommand`
@@ -308,7 +308,7 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **Python**: `eval()`, `exec()`, `subprocess.call()`, `os.system()`, Base64 decode + execute
 - **JavaScript**: `eval()`, `Function()`, `setTimeout()` with dynamic code
 
-### ☁️ Cloud & Container Security (50+ patterns)
+### ☁️ Cloud & Container Security
 - **Docker**: Container escape, privileged containers, volume mounts
 - **Kubernetes**: Pod security, RBAC bypass, service account abuse
 - **AWS**: CLI credential exposure, IAM privilege escalation, S3 bucket access
@@ -318,7 +318,7 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **Ansible**: Playbook injection, vault password exposure
 - **Helm**: Chart injection, repository manipulation
 
-### 🚨 Modern Exploit Patterns (180+ patterns)
+### 🚨 Modern Exploit Patterns
 - **Spring4Shell**: CVE-2022-22965, CVE-2022-22963, CVE-2022-22950
 - **Log4Shell**: CVE-2021-44228, CVE-2021-45046, CVE-2021-45105
 - **ProxyShell**: CVE-2021-34473, CVE-2021-34523, CVE-2021-31207
@@ -331,7 +331,7 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **Shellshock**: CVE-2014-6271, Bash vulnerability
 - **Struts**: CVE-2017-5638, CVE-2017-9805, CVE-2018-11776
 
-### 🏗️ Framework Security (8 patterns)
+### 🏗️ Framework Security
 - **Spring**: Expression injection, OGNL injection, SpEL abuse
 - **Django**: Template injection, ORM injection, middleware bypass
 - **Laravel**: Artisan command injection, Eloquent ORM abuse
@@ -341,7 +341,7 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **Flask**: Jinja2 template injection, route parameter abuse
 - **FastAPI**: Dependency injection abuse, parameter validation bypass
 
-### 🕵️ Anti-Analysis & Evasion (8 patterns)
+### 🕵️ Anti-Analysis & Evasion
 - **Anti-Debugging**: Debugger detection, breakpoint manipulation
 - **Anti-VM**: Virtual machine detection, sandbox evasion
 - **Code Obfuscation**: String encryption, variable renaming, dead code injection
@@ -349,27 +349,27 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **Process Injection**: DLL injection, code cave injection, thread hijacking
 - **Memory Scanning**: Process memory manipulation, heap spraying
 
-### 🌐 Network Security (8 patterns)
+### 🌐 Network Security
 - **SSH Tunneling**: Port forwarding, reverse tunneling, SOCKS proxy
 - **VPN/Proxy Abuse**: Tunnel manipulation, traffic obfuscation
 - **Port Scanning**: Network reconnaissance, service enumeration
 - **Network Reconnaissance**: Host discovery, service fingerprinting
 
-### 🛡️ Web Application Security (10 patterns)
+### 🛡️ Web Application Security
 - **Session Hijacking**: Cookie manipulation, session fixation
 - **Clickjacking**: UI redressing, frame injection
 - **Open Redirects**: URL redirection abuse, parameter manipulation
 - **SSRF**: Server-side request forgery, internal service access
 - **XML/JSON/GraphQL Injection**: Data format manipulation, query injection
 
-### 📱 Mobile Security (9 patterns)
+### 📱 Mobile Security
 - **Android Bypass**: Root detection bypass, certificate pinning bypass
 - **iOS Bypass**: Jailbreak detection bypass, app sandbox escape
 - **React Native**: JavaScript bridge abuse, native module injection
 - **Flutter**: Dart code injection, platform channel abuse
 - **Mobile Malware**: App repackaging, malicious payload injection
 
-### 🔌 IoT Security (7 patterns)
+### 🔌 IoT Security
 - **Device Exploitation**: Firmware manipulation, hardware backdoors
 - **Smart Home**: Device hijacking, automation abuse
 - **Industrial IoT**: SCADA system manipulation, PLC programming
@@ -377,7 +377,7 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **Automotive**: CAN bus manipulation, ECU reprogramming
 - **Wearable Security**: Health data access, device synchronization abuse
 
-### 💰 Cryptocurrency Mining (10 patterns)
+### 💰 Cryptocurrency Mining
 - **Mining Malware**: Coinhive, XMRig, cryptojacking detection
 - **Pool Attacks**: Mining pool manipulation, hash rate theft
 - **Wallet Theft**: Private key extraction, wallet.dat access
@@ -386,7 +386,7 @@ The tool detects **200+ dangerous patterns** across **10 major security categori
 - **NFT Security**: Token manipulation, marketplace abuse
 - **Exchange Attacks**: Trading bot manipulation, order book abuse
 
-### 🎭 Social Engineering (10 patterns)
+### 🎭 Social Engineering
 - **Phishing**: Email spoofing, credential harvesting
 - **Spear Phishing**: Targeted attacks, executive impersonation
 - **Whaling**: CEO fraud, business email compromise
