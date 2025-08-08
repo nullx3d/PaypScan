@@ -20,6 +20,20 @@ A real-time security scanner that monitors  DevOps pipelines for dangerous patte
 - **💾 Database Storage**: Track and analyze security findings
 - **🛠️ Modular Architecture**: Easy to extend and customize
 
+## 📸 Screenshots
+
+### Security Analysis Dashboard
+![Security Analysis](screenshots/1.png)
+
+### Real-time Pipeline Monitoring
+![Pipeline Monitoring](screenshots/2.png)
+
+### Slack Alert Notifications
+![Slack Alerts](screenshots/3.png)
+
+### Database Structure & Logs
+![Database & Logs](screenshots/4.png)
+
 ## 🚧 Roadmap & Upcoming Features
 
 ### 📧 Enhanced Notification Systems
