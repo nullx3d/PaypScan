@@ -142,3 +142,9 @@ config/production.py
 # Analyzer backup files
 analyzers_backup.zip
 *_backup.zip 
+
+# Ignore folder
+ignore/
+
+# Ignore start script
+start_payscan.py 

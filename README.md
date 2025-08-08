@@ -321,30 +321,31 @@ cp env.example .env
 # Edit .env with your Azure DevOps and Slack settings
 ```
 
-### 4. Start ngrok
+### 4. Start Gunicorn Webhook Server
 ```bash
-ngrok http 5000
+cd webhook_scripts
+gunicorn -w 4 -b 0.0.0.0:8002 --keep-alive 65 --max-requests 1000 --timeout 120 webhook_server:app
+```
+
+### 5. Start ngrok
+```bash
+# In another terminal
+ngrok http 8002
 # Copy the HTTPS URL (e.g., https://abc123.ngrok-free.app)
 ```
 
-### 5. Configure Azure DevOps Webhook
+### 6. Configure Azure DevOps Webhook
 1. Go to Azure DevOps → Project Settings → Service Hooks
 2. Click "Create subscription"
 3. Select "Build completed" event
 4. Set webhook URL: `https://your-ngrok-url.ngrok-free.app/webhook`
 5. Test the connection
 
-### 6. Start Webhook Server
-```bash
-cd webhook_scripts
-python webhook_server.py
-```
-
 ### 7. Start Webhook Listener
 ```bash
 # In another terminal
 cd webhook_scripts
-python simple_webhook_listener.py
+WEBHOOK_SERVER_URL=http://localhost:8002 python simple_webhook_listener.py
 ```
 
 ### Alternative: Manual Analysis
@@ -481,30 +482,54 @@ python main.py --verbose
 
 ### Webhook Listener (Real-time Monitoring)
 
-#### 1. Start ngrok
+#### Option 1: Production Setup (Recommended)
 ```bash
+# 1. Start Gunicorn webhook server
+cd webhook_scripts
+gunicorn -w 4 -b 0.0.0.0:8002 --keep-alive 65 --max-requests 1000 --timeout 120 webhook_server:app
+
+# 2. Start ngrok (in another terminal)
+ngrok http 8002
+# Copy the HTTPS URL (e.g., https://abc123.ngrok-free.app)
+
+# 3. Configure Azure DevOps Webhook
+# Go to Azure DevOps → Project Settings → Service Hooks
+# Click "Create subscription"
+# Select "Build completed" event
+# Set webhook URL: https://your-ngrok-url.ngrok-free.app/webhook
+# Test the connection
+
+# 4. Start Webhook Listener (in another terminal)
+cd webhook_scripts
+WEBHOOK_SERVER_URL=http://localhost:8002 python simple_webhook_listener.py
+```
+
+#### Option 2: Development Setup
+```bash
+# 1. Start ngrok
 ngrok http 5000
 # Copy the HTTPS URL (e.g., https://abc123.ngrok-free.app)
-```
 
-#### 2. Configure Azure DevOps Webhook
-1. Go to Azure DevOps → Project Settings → Service Hooks
-2. Click "Create subscription"
-3. Select "Build completed" event
-4. Set webhook URL: `https://your-ngrok-url.ngrok-free.app/webhook`
-5. Test the connection
+# 2. Configure Azure DevOps Webhook
+# Go to Azure DevOps → Project Settings → Service Hooks
+# Click "Create subscription"
+# Select "Build completed" event
+# Set webhook URL: https://your-ngrok-url.ngrok-free.app/webhook
+# Test the connection
 
-#### 3. Start Webhook Server
-```bash
+# 3. Start Flask webhook server
 cd webhook_scripts
 python webhook_server.py
-```
 
-#### 4. Start Webhook Listener
-```bash
-# In another terminal
+# 4. Start Webhook Listener (in another terminal)
 cd webhook_scripts
 python simple_webhook_listener.py
+```
+
+#### Option 3: Automated Startup (Experimental)
+```bash
+# Single command to start everything
+python start_payscan.py
 ```
 
 ### Testing
@@ -647,28 +672,46 @@ The tool detects **250 dangerous patterns** across **10 major security categorie
 
 ## 🔗 Webhook Setup
 
-### 1. Start ngrok
+### Production Setup (Recommended)
 ```bash
+# 1. Start Gunicorn webhook server
+cd webhook_scripts
+gunicorn -w 4 -b 0.0.0.0:8002 --keep-alive 65 --max-requests 1000 --timeout 120 webhook_server:app
+
+# 2. Start ngrok (in another terminal)
+ngrok http 8002
+# Copy the HTTPS URL (e.g., https://abc123.ngrok-free.app)
+
+# 3. Configure Azure DevOps Webhook
+# Go to Project Settings → Service Hooks
+# Click "Create subscription"
+# Select "Build completed" event
+# Set webhook URL: https://your-ngrok-url.ngrok-free.app/webhook
+# Test the connection
+
+# 4. Start Webhook Listener (in another terminal)
+cd webhook_scripts
+WEBHOOK_SERVER_URL=http://localhost:8002 python simple_webhook_listener.py
+```
+
+### Development Setup
+```bash
+# 1. Start ngrok
 ngrok http 5000
 # Copy the HTTPS URL (e.g., https://abc123.ngrok-free.app)
-```
 
-### 2. Configure Azure DevOps Webhook
-1. Go to Project Settings → Service Hooks
-2. Click "Create subscription"
-3. Select "Build completed" event
-4. Set webhook URL: `https://your-ngrok-url.ngrok-free.app/webhook`
-5. Test the connection
+# 2. Configure Azure DevOps Webhook
+# Go to Project Settings → Service Hooks
+# Click "Create subscription"
+# Select "Build completed" event
+# Set webhook URL: https://your-ngrok-url.ngrok-free.app/webhook
+# Test the connection
 
-### 3. Start Webhook Server
-```bash
+# 3. Start Flask webhook server
 cd webhook_scripts
 python webhook_server.py
-```
 
-### 4. Start Webhook Listener
-```bash
-# In another terminal
+# 4. Start Webhook Listener (in another terminal)
 cd webhook_scripts
 python simple_webhook_listener.py
 ```

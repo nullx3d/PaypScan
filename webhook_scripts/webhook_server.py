@@ -87,10 +87,17 @@ def webhook_handler():
 @app.route('/events', methods=['GET'])
 def get_events():
     """Returns stored events"""
-    return jsonify({
+    response = jsonify({
         "total_events": len(webhook_events),
         "events": webhook_events
     })
+    
+    # Add headers to prevent connection issues
+    response.headers['Connection'] = 'close'
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
+    
+    return response
 
 @app.route('/events/latest', methods=['GET'])
 def get_latest_event():
@@ -150,7 +157,14 @@ def connection_status():
 @app.route('/ping', methods=['GET'])
 def ping():
     """Simple ping endpoint for connection testing"""
-    return jsonify({"pong": datetime.now().isoformat()})
+    response = jsonify({"pong": datetime.now().isoformat()})
+    
+    # Add headers to prevent connection issues
+    response.headers['Connection'] = 'close'
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
+    
+    return response
 
 def analyze_azure_devops_event(data):
     """Analyzes Azure DevOps events"""

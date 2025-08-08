@@ -40,7 +40,8 @@ devops_server_url = os.getenv('AZURE_DEVOPS_SERVER_URL', 'https://dev.azure.com'
 SLACK_WEBHOOK_URL = os.getenv('SLACK_WEBHOOK_URL')
 
 # Webhook config from environment
-WEBHOOK_SERVER_URL = os.getenv('WEBHOOK_SERVER_URL', 'https://your-ngrok-url.ngrok-free.app')
+WEBHOOK_SERVER_URL = os.getenv('WEBHOOK_SERVER_URL', 'http://localhost:8001')
+print(f"🔧 Debug: WEBHOOK_SERVER_URL = {WEBHOOK_SERVER_URL}")
 
 class SlackNotifier:
     """Slack notification sender"""
@@ -172,13 +173,21 @@ class SimpleWebhookListener:
     def test_connection(self):
         """Test connection to webhook server"""
         try:
-            response = self.session.get(f"{self.webhook_url}/ping")  # ✅ Reuse session
-            if response.status_code == 200:
-                logger.info("✅ Connection to webhook server is healthy")
-                return True
-            else:
-                logger.error(f"❌ Webhook server returned status: {response.status_code}")
-                return False
+            # Force new connection for test
+            with requests.Session() as temp_session:
+                temp_session.timeout = 10
+                temp_session.headers.update({
+                    'Connection': 'close',  # Force new connection
+                    'Accept-Encoding': 'identity'  # Disable compression
+                })
+                
+                response = temp_session.get(f"{self.webhook_url}/ping")
+                if response.status_code == 200:
+                    logger.info("✅ Connection to webhook server is healthy")
+                    return True
+                else:
+                    logger.error(f"❌ Webhook server returned status: {response.status_code}")
+                    return False
         except Exception as e:
             logger.error(f"❌ Connection test failed: {e}")
             return False
@@ -189,14 +198,22 @@ class SimpleWebhookListener:
         
         for attempt in range(max_retries):
             try:
-                response = self.session.get(f"{self.webhook_url}/events")  # ✅ Reuse session
-                
-                if response.status_code == 200:
-                    logger.debug(f"✅ Webhook events retrieved successfully (attempt {attempt + 1})")
-                    return response.json()
-                else:
-                    logger.error(f"Failed to get webhook events: {response.status_code} (attempt {attempt + 1})")
+                # Force new connection for each request
+                with requests.Session() as temp_session:
+                    temp_session.timeout = 30
+                    temp_session.headers.update({
+                        'Connection': 'close',  # Force new connection
+                        'Accept-Encoding': 'identity'  # Disable compression
+                    })
                     
+                    response = temp_session.get(f"{self.webhook_url}/events")
+                    
+                    if response.status_code == 200:
+                        logger.debug(f"✅ Webhook events retrieved successfully (attempt {attempt + 1})")
+                        return response.json()
+                    else:
+                        logger.error(f"Failed to get webhook events: {response.status_code} (attempt {attempt + 1})")
+                        
             except requests.exceptions.Timeout:
                 logger.warning(f"⏰ Timeout getting webhook events (attempt {attempt + 1}/{max_retries})")
                 if attempt < max_retries - 1:
