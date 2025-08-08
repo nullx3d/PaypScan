@@ -19,6 +19,24 @@ app = Flask(__name__)
 # Global variables
 webhook_events = []
 MAX_EVENTS = 50
+MAX_EVENT_AGE = 3600  # 1 saat - eski event'leri sil
+
+def cleanup_old_events():
+    """Clean up old events to prevent memory leak"""
+    global webhook_events
+    current_time = datetime.now()
+    
+    # Remove events older than 1 hour
+    webhook_events = [
+        event for event in webhook_events 
+        if (current_time - datetime.fromisoformat(event['timestamp'])).total_seconds() < MAX_EVENT_AGE
+    ]
+    
+    if len(webhook_events) > MAX_EVENTS:
+        # Keep only the latest events
+        webhook_events = webhook_events[-MAX_EVENTS:]
+    
+    logger.info(f"🧹 Memory cleanup: {len(webhook_events)} events remaining")
 
 @app.route('/webhook', methods=['POST'])
 def webhook_handler():
@@ -53,6 +71,9 @@ def webhook_handler():
         if len(webhook_events) > MAX_EVENTS:
             webhook_events = webhook_events[-MAX_EVENTS:]
             logger.info(f"🔄 Old events cleaned. Remaining events: {len(webhook_events)}")
+        
+        # Cleanup old events periodically
+        cleanup_old_events()  # ✅ Memory cleanup
         
         # Analyze Azure DevOps events
         analyze_azure_devops_event(data)
@@ -98,6 +119,38 @@ def health_check():
         "timestamp": datetime.now().isoformat(),
         "total_events": len(webhook_events)
     })
+
+@app.route('/status', methods=['GET'])
+def status_check():
+    """Detailed status endpoint for monitoring"""
+    return jsonify({
+        "status": "running",
+        "timestamp": datetime.now().isoformat(),
+        "total_events": len(webhook_events),
+        "server_uptime": "active",
+        "last_event_time": webhook_events[-1]['timestamp'] if webhook_events else None,
+        "memory_usage": len(webhook_events),
+        "max_events": MAX_EVENTS
+    })
+
+@app.route('/connection-status', methods=['GET'])
+def connection_status():
+    """Detailed connection status for monitoring"""
+    return jsonify({
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "total_events": len(webhook_events),
+        "server_uptime": "active",
+        "last_event_time": webhook_events[-1]['timestamp'] if webhook_events else None,
+        "memory_usage": len(webhook_events),
+        "max_events": MAX_EVENTS,
+        "connection_test": "available"
+    })
+
+@app.route('/ping', methods=['GET'])
+def ping():
+    """Simple ping endpoint for connection testing"""
+    return jsonify({"pong": datetime.now().isoformat()})
 
 def analyze_azure_devops_event(data):
     """Analyzes Azure DevOps events"""

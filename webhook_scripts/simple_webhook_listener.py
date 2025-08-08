@@ -121,7 +121,7 @@ class SecurityAnalyzer:
         return findings
 
 class SimpleWebhookListener:
-    """Simple webhook listener"""
+    """Simple webhook listener with memory management"""
     
     def __init__(self):
         self.webhook_url = WEBHOOK_SERVER_URL
@@ -129,10 +129,16 @@ class SimpleWebhookListener:
         self.slack_notifier = SlackNotifier(SLACK_WEBHOOK_URL)
         self.db_manager = DatabaseManager()
         
+        # Memory management
+        self.session = requests.Session()  # ✅ Reuse session
+        self.session.timeout = 30
+        self.last_cleanup = time.time()
+        self.cleanup_interval = 300  # 5 dakikada bir cleanup
+        
         # Debug: Print Slack webhook URL
         print(f"🔧 Debug: Slack Webhook URL = {SLACK_WEBHOOK_URL}")
         
-        # Use Slack URL from environment
+        # Debug: Using Slack URL from environment
         print(f"🔧 Debug: Using Slack URL from environment: {SLACK_WEBHOOK_URL}")
         
         # Set event counter to current events in webhook server
@@ -143,19 +149,74 @@ class SimpleWebhookListener:
         else:
             self.last_event_count = 0
             print("🔄 Event counter reset - waiting for new events")
-        
-    def get_webhook_events(self):
-        """Gets webhook events"""
+    
+    def cleanup_memory(self):
+        """Clean up memory periodically"""
+        current_time = time.time()
+        if current_time - self.last_cleanup > self.cleanup_interval:
+            try:
+                # Force garbage collection
+                import gc
+                gc.collect()
+                
+                # Clear session cache
+                self.session.cookies.clear()
+                
+                # Log memory cleanup
+                logger.info("🧹 Memory cleanup performed")
+                self.last_cleanup = current_time
+                
+            except Exception as e:
+                logger.warning(f"⚠️ Memory cleanup failed: {e}")
+    
+    def test_connection(self):
+        """Test connection to webhook server"""
         try:
-            response = requests.get(f"{self.webhook_url}/events")
+            response = self.session.get(f"{self.webhook_url}/ping")  # ✅ Reuse session
             if response.status_code == 200:
-                return response.json()
+                logger.info("✅ Connection to webhook server is healthy")
+                return True
             else:
-                logger.error(f"Failed to get webhook events: {response.status_code}")
-                return None
+                logger.error(f"❌ Webhook server returned status: {response.status_code}")
+                return False
         except Exception as e:
-            logger.error(f"Webhook connection error: {e}")
-            return None
+            logger.error(f"❌ Connection test failed: {e}")
+            return False
+
+    def get_webhook_events(self):
+        """Gets webhook events with improved error handling and retry logic"""
+        max_retries = 3
+        
+        for attempt in range(max_retries):
+            try:
+                response = self.session.get(f"{self.webhook_url}/events")  # ✅ Reuse session
+                
+                if response.status_code == 200:
+                    logger.debug(f"✅ Webhook events retrieved successfully (attempt {attempt + 1})")
+                    return response.json()
+                else:
+                    logger.error(f"Failed to get webhook events: {response.status_code} (attempt {attempt + 1})")
+                    
+            except requests.exceptions.Timeout:
+                logger.warning(f"⏰ Timeout getting webhook events (attempt {attempt + 1}/{max_retries})")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+                    
+            except requests.exceptions.ConnectionError as e:
+                logger.error(f"🔌 Connection error getting webhook events: {e} (attempt {attempt + 1}/{max_retries})")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+                    
+            except Exception as e:
+                logger.error(f"❌ Unexpected error getting webhook events: {e} (attempt {attempt + 1}/{max_retries})")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+        
+        logger.error(f"❌ Failed to get webhook events after {max_retries} attempts")
+        return None
     
     def get_yaml_content(self, definition_id):
         """Gets pipeline YAML content"""
@@ -329,7 +390,7 @@ class SimpleWebhookListener:
             return False
     
     def run(self):
-        """Main listening loop"""
+        """Main listening loop with improved error handling and health monitoring"""
         logger.info("🚀 Simple Webhook Listener started")
         logger.info(f"📡 Webhook URL: {self.webhook_url}")
         logger.info("🔍 Security analysis active")
@@ -339,34 +400,95 @@ class SimpleWebhookListener:
             logger.warning("⚠️ Slack webhook URL not configured - notifications will not be sent")
         logger.info("⏳ Listening for events... (Press Ctrl+C to stop)")
         
-
+        # Health monitoring variables
+        consecutive_failures = 0
+        max_consecutive_failures = 5
+        last_successful_check = time.time()
+        last_connection_test = time.time()
+        connection_test_interval = 30  # 30 saniyede bir connection test
         
         try:
             while True:
-                # Get webhook events
-                events_data = self.get_webhook_events()
-                
-                if events_data:
-                    events = events_data.get('events', [])
-                    current_count = len(events)
+                try:
+                    # Get webhook events
+                    events_data = self.get_webhook_events()
                     
-                    # Check for new events
-                    if current_count > self.last_event_count:
-                        new_events = events[self.last_event_count:]
-                        logger.info(f"🆕 {len(new_events)} new events found")
+                    if events_data:
+                        consecutive_failures = 0  # Reset failure counter
+                        last_successful_check = time.time()
                         
-                        for event in new_events:
-                            self.analyze_webhook_event(event)
+                        events = events_data.get('events', [])
+                        current_count = len(events)
                         
-                        self.last_event_count = current_count
-                
-                # Wait 5 seconds
-                time.sleep(5)
-                
+                        # Check for new events
+                        if current_count > self.last_event_count:
+                            new_events = events[self.last_event_count:]
+                            logger.info(f"🆕 {len(new_events)} new events found")
+                            
+                            for event in new_events:
+                                self.analyze_webhook_event(event)
+                            
+                            self.last_event_count = current_count
+                        else:
+                            logger.debug(f"📊 No new events (current: {current_count}, last: {self.last_event_count})")
+                    else:
+                        consecutive_failures += 1
+                        logger.warning(f"⚠️ Failed to get webhook events (failure {consecutive_failures}/{max_consecutive_failures})")
+                        
+                        # If too many consecutive failures, log warning
+                        if consecutive_failures >= max_consecutive_failures:
+                            logger.error(f"🚨 {consecutive_failures} consecutive failures - connection may be lost")
+                            
+                            # Test connection
+                            if not self.test_connection():
+                                logger.error("🔌 Webhook server connection lost - attempting to reconnect...")
+                            
+                            # Try to reconnect
+                            try:
+                                logger.info("🔄 Attempting to reconnect...")
+                                time.sleep(10)  # Wait 10 seconds before retry
+                                consecutive_failures = 0  # Reset counter
+                            except Exception as e:
+                                logger.error(f"❌ Reconnection failed: {e}")
+                    
+                    # Health check - log if no successful connection for 5 minutes
+                    if time.time() - last_successful_check > 300:  # 5 minutes
+                        logger.info("⏰ No successful connection for 5 minutes - checking webhook server...")
+                        last_successful_check = time.time()  # Reset timer
+                    
+                    # Periodic connection test (every 30 seconds)
+                    if time.time() - last_connection_test > connection_test_interval:
+                        logger.info("🔍 Performing periodic connection test...")
+                        if not self.test_connection():
+                            logger.warning("⚠️ Periodic connection test failed - session may be stale")
+                            # Force session refresh
+                            self.session.close()
+                            self.session = requests.Session()
+                            self.session.timeout = 30
+                            logger.info("🔄 Session refreshed")
+                        else:
+                            logger.info("✅ Connection test successful - session healthy")
+                        last_connection_test = time.time()
+                    
+                    # Memory cleanup
+                    self.cleanup_memory()  # ✅ Periodic memory cleanup
+                    
+                    # Wait 5 seconds
+                    time.sleep(5)
+                    
+                except KeyboardInterrupt:
+                    logger.info("🛑 Listener stopped by user")
+                    break
+                except Exception as e:
+                    logger.error(f"❌ Unexpected error in main loop: {e}")
+                    consecutive_failures += 1
+                    time.sleep(5)  # Wait before retry
+                    
         except KeyboardInterrupt:
             logger.info("🛑 Listener stopped")
         except Exception as e:
-            logger.error(f"Unexpected error: {e}")
+            logger.error(f"❌ Critical error: {e}")
+            raise
 
 if __name__ == "__main__":
     listener = SimpleWebhookListener()
