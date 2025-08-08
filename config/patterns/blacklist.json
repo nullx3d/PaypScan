@@ -2062,12 +2062,12 @@
      },
      "spring_security_bypass": {
        "regex": "@PreAuthorize.*\\$\\{.*\\}|@Secured.*\\$\\{.*\\}|hasRole.*\\$\\{.*\\}",
-       "risk_level": "high",
+      "risk_level": "high",
        "description": "Spring Security bypass"
-     },
+    },
      "django_security_bypass": {
        "regex": "@login_required.*\\$\\{.*\\}|@permission_required.*\\$\\{.*\\}|is_authenticated.*\\$\\{.*\\}",
-       "risk_level": "high",
+      "risk_level": "high",
        "description": "Django security bypass"
      },
      "laravel_security_bypass": {
@@ -2077,7 +2077,7 @@
      },
      "anti_debugging": {
        "regex": "IsDebuggerPresent|CheckRemoteDebuggerPresent|GetTickCount|QueryPerformanceCounter",
-       "risk_level": "medium",
+      "risk_level": "medium",
        "description": "Anti-debugging techniques"
      },
      "anti_vm_detection": {
@@ -2087,12 +2087,12 @@
      },
      "code_obfuscation": {
        "regex": "eval\\(.*\\$\\{.*\\}\\)|Function\\(.*\\$\\{.*\\}\\)|setTimeout\\(.*\\$\\{.*\\}\\)",
-       "risk_level": "high",
+      "risk_level": "high",
        "description": "Code obfuscation"
-     },
+    },
      "dns_tunneling": {
        "regex": "nslookup.*\\$\\{.*\\}|dig.*\\$\\{.*\\}|host.*\\$\\{.*\\}",
-       "risk_level": "high",
+      "risk_level": "high",
        "description": "DNS tunneling"
      },
      "icmp_tunneling": {
@@ -2102,12 +2102,12 @@
      },
      "http_tunneling": {
        "regex": "curl.*-X.*POST.*\\$\\{.*\\}|wget.*--post-data.*\\$\\{.*\\}",
-       "risk_level": "medium",
+      "risk_level": "medium",
        "description": "HTTP tunneling"
-     },
+    },
      "sql_injection_advanced": {
        "regex": "UNION.*SELECT.*\\$\\{.*\\}|OR.*1=1.*\\$\\{.*\\}|AND.*1=1.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Advanced SQL injection"
      },
      "xss_advanced": {
@@ -2162,7 +2162,7 @@
      },
      "wallet_theft_patterns": {
        "regex": "wallet.*dat|keystore.*json|private.*key.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Wallet theft patterns"
      },
      "express_js_security": {
@@ -2262,7 +2262,7 @@
      },
      "xml_external_entity": {
        "regex": "xml.*external.*entity.*\\$\\{.*\\}|XXE.*\\$\\{.*\\}|DOCTYPE.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "XML external entity injection"
      },
      "json_injection": {
@@ -2307,17 +2307,17 @@
      },
      "industrial_iot_attacks": {
        "regex": "scada.*\\$\\{.*\\}|plc.*\\$\\{.*\\}|hmi.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Industrial IoT attacks"
-     },
+    },
      "medical_device_security": {
        "regex": "medical.*device.*\\$\\{.*\\}|patient.*monitor.*\\$\\{.*\\}|mri.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Medical device security"
-     },
+    },
      "automotive_security_bypass": {
        "regex": "can.*bus.*\\$\\{.*\\}|ecu.*\\$\\{.*\\}|obd.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Automotive security bypass"
      },
      "wearable_device_security": {
@@ -2347,22 +2347,22 @@
      },
      "crypto_exchange_attacks": {
        "regex": "exchange.*\\$\\{.*\\}|trading.*\\$\\{.*\\}|order.*book.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Crypto exchange attacks"
-     },
+    },
      "mining_pool_hijacking": {
        "regex": "pool.*hijacking.*\\$\\{.*\\}|51.*attack.*\\$\\{.*\\}|double.*spend.*\\$\\{.*\\}",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Mining pool hijacking"
-     },
+    },
      "docker_container_escape": {
        "regex": "docker.*run.*--privileged|docker.*run.*--cap-add.*ALL|docker.*run.*--security-opt.*privileged",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Docker container escape attempt"
-     },
+    },
      "docker_socket_mount": {
        "regex": "docker.*run.*-v.*/var/run/docker.sock|docker.*run.*--volume.*docker.sock",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Docker socket mount"
      },
      "docker_host_network": {
@@ -2377,12 +2377,12 @@
      },
      "docker_volume_escape": {
        "regex": "docker.*run.*-v.*/:/host|docker.*run.*--volume.*/:/host",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Docker volume escape"
-     },
+    },
      "kubernetes_privileged_pod": {
        "regex": "privileged.*true|securityContext.*privileged.*true",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Kubernetes privileged pod"
      },
      "kubernetes_host_path": {
@@ -2402,12 +2402,12 @@
      },
      "aws_cli_credentials": {
        "regex": "aws.*configure.*set.*aws_access_key_id|aws.*configure.*set.*aws_secret_access_key",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "AWS CLI credentials exposure"
-     },
+    },
      "aws_iam_escalation": {
        "regex": "aws.*iam.*create-access-key|aws.*iam.*attach-user-policy",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "AWS IAM privilege escalation"
      },
      "aws_s3_public_access": {
@@ -2422,7 +2422,7 @@
      },
      "azure_service_principal": {
        "regex": "az.*ad.*sp.*create-for-rbac|az.*account.*get-access-token",
-       "risk_level": "critical",
+      "risk_level": "critical",
        "description": "Azure service principal creation"
      },
      "azure_vm_extension": {
@@ -5236,4 +5236,33 @@
        "description": "Struts namespace vulnerability"
      },
      "spring_spel_injection": {
-       "regex": "spel.*\\$\\{.*\\}|spring.*spel.*\\
+       "risk_level": "high",
+       "description": "Spring SpEL injection"
+     },
+     "cicd_pipeline_abuse_jenkins_script_injection": {
+       "regex": "jenkins.*script.*\$\{.*\}|pipeline.*script.*\$\{.*\}|jenkins.*groovy.*\$\{.*\}",
+       "risk_level": "critical",
+       "description": "Jenkins pipeline script injection"
+     },
+     "cicd_pipeline_abuse_github_actions_injection": {
+       "regex": "github.*actions.*\$\{.*\}|workflow.*\$\{.*\}|action.*\$\{.*\}",
+       "risk_level": "critical",
+       "description": "GitHub Actions workflow injection"
+     },
+     "cicd_pipeline_abuse_azure_devops_injection": {
+       "regex": "azure.*devops.*\$\{.*\}|azure.*pipeline.*\$\{.*\}|yaml.*\$\{.*\}",
+       "risk_level": "critical",
+       "description": "Azure DevOps pipeline injection"
+     },
+     "cicd_pipeline_abuse_environment_variable_injection": {
+       "regex": "env.*\$\{.*\}|environment.*\$\{.*\}|envvar.*\$\{.*\}",
+       "risk_level": "high",
+       "description": "Environment variable injection"
+     },
+     "cicd_pipeline_abuse_build_script_injection": {
+       "regex": "build.*script.*\$\{.*\}|script.*\$\{.*\}|build.*\$\{.*\}",
+       "risk_level": "critical",
+       "description": "Build script injection"
+     }
+   }
+ }
