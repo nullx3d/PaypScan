@@ -9,6 +9,7 @@ import json
 import logging
 from datetime import datetime
 import os
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -20,6 +21,12 @@ app = Flask(__name__)
 webhook_events = []
 MAX_EVENTS = 50
 MAX_EVENT_AGE = 3600  # 1 saat - eski event'leri sil
+
+# Detailed logging
+request_count = 0
+last_request_time = time.time()
+error_count = 0
+last_error_time = None
 
 def cleanup_old_events():
     """Clean up old events to prevent memory leak"""
@@ -42,20 +49,28 @@ def cleanup_old_events():
 def webhook_handler():
     """Handles Azure DevOps webhooks"""
     
+    global request_count, last_request_time, error_count, last_error_time
+    
     try:
+        request_count += 1
+        last_request_time = time.time()
+        
         # Log request
-        logger.info(f"Webhook received: {request.method} {request.url}")
-        logger.info(f"Headers: {dict(request.headers)}")
+        logger.info(f"📥 Webhook #{request_count} received: {request.method} {request.url}")
+        logger.info(f"📋 Headers: {dict(request.headers)}")
+        logger.info(f"🕐 Request time: {datetime.now().isoformat()}")
         
         # Get JSON body
         data = request.get_json()
         if not data:
-            logger.warning("JSON body not found")
+            logger.warning("❌ JSON body not found")
+            error_count += 1
+            last_error_time = time.time()
             return jsonify({"error": "No JSON data"}), 400
         
         # Get event type
         event_type = data.get('eventType', 'unknown')
-        logger.info(f"Event Type: {event_type}")
+        logger.info(f"📋 Event Type: {event_type}")
         
         # Store event
         global webhook_events
@@ -78,10 +93,13 @@ def webhook_handler():
         # Analyze Azure DevOps events
         analyze_azure_devops_event(data)
         
+        logger.info(f"✅ Webhook #{request_count} processed successfully")
         return jsonify({"status": "success", "message": "Webhook received"}), 200
         
     except Exception as e:
-        logger.error(f"Webhook processing error: {e}")
+        logger.error(f"❌ Webhook #{request_count} processing error: {e}")
+        error_count += 1
+        last_error_time = time.time()
         return jsonify({"error": str(e)}), 500
 
 @app.route('/events', methods=['GET'])
@@ -130,6 +148,8 @@ def health_check():
 @app.route('/status', methods=['GET'])
 def status_check():
     """Detailed status endpoint for monitoring"""
+    global request_count, last_request_time, error_count, last_error_time
+    
     return jsonify({
         "status": "running",
         "timestamp": datetime.now().isoformat(),
@@ -137,7 +157,12 @@ def status_check():
         "server_uptime": "active",
         "last_event_time": webhook_events[-1]['timestamp'] if webhook_events else None,
         "memory_usage": len(webhook_events),
-        "max_events": MAX_EVENTS
+        "max_events": MAX_EVENTS,
+        "request_count": request_count,
+        "last_request_time": datetime.fromtimestamp(last_request_time).isoformat() if last_request_time else None,
+        "error_count": error_count,
+        "last_error_time": datetime.fromtimestamp(last_error_time).isoformat() if last_error_time else None,
+        "success_rate": f"{((request_count - error_count) / request_count * 100):.1f}%" if request_count > 0 else "0%"
     })
 
 @app.route('/connection-status', methods=['GET'])
@@ -164,6 +189,43 @@ def ping():
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
     
+    return response
+
+@app.route('/events/wait', methods=['GET'])
+def wait_for_events():
+    """Long polling endpoint - waits for new events"""
+    timeout = 30  # 30 saniye timeout
+    start_time = time.time()
+    last_event_count = len(webhook_events)
+    
+    logger.info(f"⏳ Long polling started - waiting for new events (timeout: {timeout}s)")
+    
+    while time.time() - start_time < timeout:
+        current_count = len(webhook_events)
+        if current_count > last_event_count:
+            new_events = webhook_events[last_event_count:]
+            logger.info(f"📡 Long polling: {len(new_events)} new events found")
+            
+            response = jsonify({
+                "total_events": current_count,
+                "new_events": new_events
+            })
+            response.headers['Connection'] = 'close'
+            response.headers['Content-Type'] = 'application/json'
+            response.headers['Cache-Control'] = 'no-cache'
+            return response
+        
+        time.sleep(1)  # Check every second
+    
+    # Timeout - return empty response
+    logger.debug("⏰ Long polling timeout - no new events")
+    response = jsonify({
+        "total_events": len(webhook_events),
+        "new_events": []
+    })
+    response.headers['Connection'] = 'close'
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
     return response
 
 def analyze_azure_devops_event(data):

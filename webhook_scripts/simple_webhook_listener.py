@@ -136,8 +136,22 @@ class SimpleWebhookListener:
         self.last_cleanup = time.time()
         self.cleanup_interval = 300  # 5 dakikada bir cleanup
         
+        # Heartbeat system
+        self.last_heartbeat = time.time()
+        self.heartbeat_interval = 10  # 10 saniyede bir heartbeat
+        self.heartbeat_count = 0
+        
+        # Detailed logging
+        self.last_event_time = time.time()
+        self.connection_attempts = 0
+        self.successful_connections = 0
+        self.failed_connections = 0
+        self.last_error_time = None
+        self.last_error_type = None
+        
         # Debug: Print Slack webhook URL
         print(f"🔧 Debug: Slack Webhook URL = {SLACK_WEBHOOK_URL}")
+        print(f"🔧 Debug: WEBHOOK_SERVER_URL = {WEBHOOK_SERVER_URL}")
         
         # Debug: Using Slack URL from environment
         print(f"🔧 Debug: Using Slack URL from environment: {SLACK_WEBHOOK_URL}")
@@ -170,6 +184,41 @@ class SimpleWebhookListener:
             except Exception as e:
                 logger.warning(f"⚠️ Memory cleanup failed: {e}")
     
+    def send_heartbeat(self):
+        """Send heartbeat to keep connection alive"""
+        try:
+            current_time = time.time()
+            if current_time - self.last_heartbeat > self.heartbeat_interval:
+                # Force new connection for heartbeat
+                with requests.Session() as temp_session:
+                    temp_session.timeout = 5
+                    temp_session.headers.update({
+                        'Connection': 'close',
+                        'Accept-Encoding': 'identity',
+                        'User-Agent': 'PaypScan-Heartbeat/1.0'
+                    })
+                    
+                    response = temp_session.get(f"{self.webhook_url}/ping")
+                    
+                    if response.status_code == 200:
+                        self.heartbeat_count += 1
+                        logger.info(f"💓 Heartbeat #{self.heartbeat_count} - Connection healthy")
+                        self.successful_connections += 1
+                        return True
+                    else:
+                        logger.warning(f"💓 Heartbeat #{self.heartbeat_count} - Status: {response.status_code}")
+                        self.failed_connections += 1
+                        return False
+                        
+                self.last_heartbeat = current_time
+                
+        except Exception as e:
+            logger.error(f"💓 Heartbeat #{self.heartbeat_count} - Error: {e}")
+            self.failed_connections += 1
+            self.last_error_time = time.time()
+            self.last_error_type = str(type(e).__name__)
+            return False
+    
     def test_connection(self):
         """Test connection to webhook server"""
         try:
@@ -193,41 +242,70 @@ class SimpleWebhookListener:
             return False
 
     def get_webhook_events(self):
-        """Gets webhook events with improved error handling and retry logic"""
+        """Gets webhook events using long polling - more reliable than short polling"""
         max_retries = 3
+        self.connection_attempts += 1
         
         for attempt in range(max_retries):
             try:
                 # Force new connection for each request
                 with requests.Session() as temp_session:
-                    temp_session.timeout = 30
+                    temp_session.timeout = 35  # 35 saniye timeout (long polling + buffer)
                     temp_session.headers.update({
                         'Connection': 'close',  # Force new connection
-                        'Accept-Encoding': 'identity'  # Disable compression
+                        'Accept-Encoding': 'identity',  # Disable compression
+                        'User-Agent': 'PaypScan-Listener-LongPoll/1.0'
                     })
                     
-                    response = temp_session.get(f"{self.webhook_url}/events")
+                    start_time = time.time()
+                    logger.debug(f"⏳ Long polling request #{self.connection_attempts} (attempt {attempt + 1})")
+                    
+                    # Use long polling endpoint instead of regular events endpoint
+                    response = temp_session.get(f"{self.webhook_url}/events/wait")
+                    end_time = time.time()
+                    
+                    logger.debug(f"📡 Long polling response #{self.connection_attempts} (attempt {attempt + 1}) - Response time: {end_time - start_time:.2f}s")
                     
                     if response.status_code == 200:
-                        logger.debug(f"✅ Webhook events retrieved successfully (attempt {attempt + 1})")
-                        return response.json()
+                        data = response.json()
+                        new_events = data.get('new_events', [])
+                        
+                        if new_events:
+                            logger.info(f"✅ Long polling: {len(new_events)} new events found")
+                            self.successful_connections += 1
+                            self.last_event_time = time.time()
+                            return {'events': new_events}  # Return in expected format
+                        else:
+                            logger.debug(f"⏰ Long polling timeout - no new events (attempt {attempt + 1})")
+                            self.successful_connections += 1
+                            return {'events': []}  # Empty events
                     else:
                         logger.error(f"Failed to get webhook events: {response.status_code} (attempt {attempt + 1})")
+                        self.failed_connections += 1
                         
             except requests.exceptions.Timeout:
                 logger.warning(f"⏰ Timeout getting webhook events (attempt {attempt + 1}/{max_retries})")
+                self.failed_connections += 1
+                self.last_error_time = time.time()
+                self.last_error_type = "Timeout"
                 if attempt < max_retries - 1:
                     time.sleep(2 ** attempt)  # Exponential backoff
                     continue
                     
             except requests.exceptions.ConnectionError as e:
                 logger.error(f"🔌 Connection error getting webhook events: {e} (attempt {attempt + 1}/{max_retries})")
+                self.failed_connections += 1
+                self.last_error_time = time.time()
+                self.last_error_type = "ConnectionError"
                 if attempt < max_retries - 1:
                     time.sleep(2 ** attempt)  # Exponential backoff
                     continue
                     
             except Exception as e:
                 logger.error(f"❌ Unexpected error getting webhook events: {e} (attempt {attempt + 1}/{max_retries})")
+                self.failed_connections += 1
+                self.last_error_time = time.time()
+                self.last_error_type = str(type(e).__name__)
                 if attempt < max_retries - 1:
                     time.sleep(2 ** attempt)  # Exponential backoff
                     continue
@@ -468,30 +546,26 @@ class SimpleWebhookListener:
                             except Exception as e:
                                 logger.error(f"❌ Reconnection failed: {e}")
                     
-                    # Health check - log if no successful connection for 5 minutes
-                    if time.time() - last_successful_check > 300:  # 5 minutes
-                        logger.info("⏰ No successful connection for 5 minutes - checking webhook server...")
-                        last_successful_check = time.time()  # Reset timer
-                    
-                    # Periodic connection test (every 30 seconds)
-                    if time.time() - last_connection_test > connection_test_interval:
-                        logger.info("🔍 Performing periodic connection test...")
-                        if not self.test_connection():
-                            logger.warning("⚠️ Periodic connection test failed - session may be stale")
-                            # Force session refresh
-                            self.session.close()
-                            self.session = requests.Session()
-                            self.session.timeout = 30
-                            logger.info("🔄 Session refreshed")
-                        else:
-                            logger.info("✅ Connection test successful - session healthy")
-                        last_connection_test = time.time()
-                    
                     # Memory cleanup
                     self.cleanup_memory()  # ✅ Periodic memory cleanup
                     
-                    # Wait 5 seconds
-                    time.sleep(5)
+                    # No heartbeat needed with long polling - connection stays alive naturally
+                    
+                    # Detailed status logging (every 5 minutes)
+                    if time.time() - last_successful_check > 300:  # 5 minutes
+                        logger.info("📊 DETAILED STATUS REPORT:")
+                        logger.info(f"   🔗 Connection attempts: {self.connection_attempts}")
+                        logger.info(f"   ✅ Successful connections: {self.successful_connections}")
+                        logger.info(f"   ❌ Failed connections: {self.failed_connections}")
+                        logger.info(f"   💓 Heartbeats sent: {self.heartbeat_count}")
+                        logger.info(f"   🕐 Last event time: {time.strftime('%H:%M:%S', time.localtime(self.last_event_time))}")
+                        if self.last_error_time:
+                            logger.info(f"   ⚠️ Last error: {self.last_error_type} at {time.strftime('%H:%M:%S', time.localtime(self.last_error_time))}")
+                        logger.info("📊 END STATUS REPORT")
+                        last_successful_check = time.time()  # Reset timer
+                    
+                    # Wait 10 seconds (long polling handles the waiting)
+                    time.sleep(10)
                     
                 except KeyboardInterrupt:
                     logger.info("🛑 Listener stopped by user")
