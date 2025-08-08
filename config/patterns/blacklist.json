@@ -32,9 +32,15 @@
     },
     "base64_execute": {
       "category": "core_language_patterns",
-      "regex": "base64_decode.*eval|base64_decode.*exec",
+      "regex": "base64.*-d|base64.*decode|base64.*exec|base64.*eval",
       "risk_level": "critical",
       "description": "Base64 encoded execution"
+    },
+    "curl_download": {
+      "category": "core_language_patterns",
+      "regex": "curl.*-o|curl.*--output|wget.*-O|wget.*--output-document",
+      "risk_level": "high",
+      "description": "Curl/Wget file download"
     },
     "powershell_exec": {
       "category": "core_language_patterns",
