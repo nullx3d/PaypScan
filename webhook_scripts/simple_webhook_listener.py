@@ -339,6 +339,12 @@ class SimpleWebhookListener:
             logger.warning("⚠️ Slack webhook URL not configured - notifications will not be sent")
         logger.info("⏳ Listening for events... (Press Ctrl+C to stop)")
         
+        # Health check variables
+        last_health_check = time.time()
+        health_check_interval = 300  # 5 minutes
+        consecutive_errors = 0
+        max_consecutive_errors = 5
+        
         try:
             while True:
                 # Get webhook events
@@ -357,6 +363,42 @@ class SimpleWebhookListener:
                             self.analyze_webhook_event(event)
                         
                         self.last_event_count = current_count
+                
+                # Health check every 5 minutes
+                current_time = time.time()
+                if current_time - last_health_check > health_check_interval:
+                    try:
+                        # Test webhook connection
+                        events_data = self.get_webhook_events()
+                        if events_data:
+                            logger.info("✅ Health check: Webhook connection OK")
+                            consecutive_errors = 0
+                        else:
+                            consecutive_errors += 1
+                            logger.warning(f"⚠️ Health check: Webhook connection failed ({consecutive_errors}/{max_consecutive_errors})")
+                        
+                        # Test Slack connection
+                        if SLACK_WEBHOOK_URL and SLACK_WEBHOOK_URL != "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK":
+                            try:
+                                test_message = {"text": "🔄 Health check - PaypScan is running"}
+                                response = requests.post(SLACK_WEBHOOK_URL, json=test_message, timeout=5)
+                                if response.status_code == 200:
+                                    logger.info("✅ Health check: Slack connection OK")
+                                else:
+                                    logger.warning(f"⚠️ Health check: Slack connection failed ({response.status_code})")
+                            except Exception as e:
+                                logger.warning(f"⚠️ Health check: Slack connection error ({e})")
+                        
+                        last_health_check = current_time
+                        
+                        # Restart if too many consecutive errors
+                        if consecutive_errors >= max_consecutive_errors:
+                            logger.error("🚨 Too many consecutive errors - restarting listener")
+                            return self.run()  # Restart
+                            
+                    except Exception as e:
+                        logger.error(f"Health check error: {e}")
+                        consecutive_errors += 1
                 
                 # Wait 5 seconds
                 time.sleep(5)
