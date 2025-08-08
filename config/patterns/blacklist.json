@@ -2,19 +2,19 @@
   "patterns": {
     "eval_injection": {
       "category": "core_language_patterns",
-      "regex": "eval\\(.*\\$\\{.*\\}\\)",
+      "regex": "eval\\s*\\(",
       "risk_level": "critical",
       "description": "Eval function injection"
     },
     "exec_injection": {
       "category": "core_language_patterns",
-      "regex": "exec\\(.*\\$\\{.*\\}\\)",
+      "regex": "exec\\s*\\(",
       "risk_level": "critical",
       "description": "Exec function injection"
     },
     "system_command": {
       "category": "core_language_patterns",
-      "regex": "system\\(.*\\$\\{.*\\}\\)",
+      "regex": "system\\s*\\(",
       "risk_level": "critical",
       "description": "System command injection"
     },
