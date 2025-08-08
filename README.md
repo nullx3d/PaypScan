@@ -300,7 +300,7 @@ curl https://your-ngrok-url.ngrok-free.app/events
 
 ## 🛡️ Security Patterns
 
-The tool detects **1000+ dangerous patterns** across **10 major security categories**:
+The tool detects **256 dangerous patterns** across **10 major security categories**:
 
 ### 🔥 Core Language Patterns
 - **PowerShell**: `Invoke-Expression`, `iex`, `powershell -Command`, `powershell -EncodedCommand`
@@ -369,28 +369,33 @@ The tool detects **1000+ dangerous patterns** across **10 major security categor
 - **Flutter**: Dart code injection, platform channel abuse
 - **Mobile Malware**: App repackaging, malicious payload injection
 
-### 🔌 IoT Security
-- **Device Exploitation**: Firmware manipulation, hardware backdoors
-- **Smart Home**: Device hijacking, automation abuse
-- **Industrial IoT**: SCADA system manipulation, PLC programming
-- **Medical Devices**: Patient data access, device control bypass
-- **Automotive**: CAN bus manipulation, ECU reprogramming
-- **Wearable Security**: Health data access, device synchronization abuse
+### 📊 Data Exfiltration Patterns
+- **Network Transfer**: FTP, HTTP POST, DNS tunneling, ICMP tunneling
+- **Cloud Storage**: AWS S3, Azure Blob, GCP Storage abuse
+- **Database Dumps**: MySQL, PostgreSQL, SQLite data extraction
+- **File Compression**: Tar, ZIP, GZIP for data packaging
+- **Encryption Bypass**: OpenSSL, GPG for data obfuscation
+- **Steganography**: Hidden data in images, files, network traffic
+- **Covert Channels**: Timing attacks, side channels, memory dumps
+- **Credential Harvesting**: Password theft, PII extraction
 
-### 💰 Cryptocurrency Mining
-- **Mining Malware**: Coinhive, XMRig, cryptojacking detection
-- **Pool Attacks**: Mining pool manipulation, hash rate theft
-- **Wallet Theft**: Private key extraction, wallet.dat access
-- **Blockchain Attacks**: 51% attacks, double-spending attempts
-- **DeFi Exploits**: Smart contract manipulation, flash loan attacks
-- **NFT Security**: Token manipulation, marketplace abuse
-- **Exchange Attacks**: Trading bot manipulation, order book abuse
+### 🏗️ Infrastructure as Code Security
+- **Terraform**: AWS/Azure/GCP provider injection, state manipulation
+- **Ansible**: Playbook injection, vault password exposure
+- **Puppet**: Manifest injection, Hiera data manipulation
+- **Chef**: Recipe injection, databag manipulation
+- **SaltStack**: State injection, pillar data abuse
+- **CloudFormation**: Template injection, parameter manipulation
+- **ARM Templates**: Azure resource injection, parameter abuse
+- **Kubernetes**: YAML injection, deployment manipulation
 
 ### 🔄 CI/CD Pipeline Abuse
 - **Jenkins Security**: Pipeline script injection, credential exposure
 - **GitHub Actions**: Workflow injection, secrets exposure
 - **Azure DevOps**: Pipeline injection, variables exposure
 - **Environment Variables**: Build script injection, deployment manipulation
+- **Docker/Kubernetes**: Container build injection, deployment manipulation
+- **Terraform/Ansible**: Infrastructure code injection, configuration abuse
 
 
 

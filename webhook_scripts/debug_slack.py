@@ -38,15 +38,15 @@ def test_slack_notification():
         }
         
         response = requests.post(SLACK_WEBHOOK_URL, json=message)
-        
-        if response.status_code == 200:
+    
+    if response.status_code == 200:
             logger.info("✅ Slack test notification sent successfully")
             return True
-        else:
+    else:
             logger.error(f"❌ Slack notification failed: {response.status_code}")
             return False
-            
-    except Exception as e:
+        
+except Exception as e:
         logger.error(f"❌ Slack notification error: {e}")
         return False
 
