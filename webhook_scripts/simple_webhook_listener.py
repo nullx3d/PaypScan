@@ -242,7 +242,7 @@ class SimpleWebhookListener:
             return False
 
     def get_webhook_events(self):
-        """Gets webhook events using long polling - more reliable than short polling"""
+        """Gets webhook events with improved error handling and retry logic"""
         max_retries = 3
         self.connection_attempts += 1
         
@@ -250,35 +250,24 @@ class SimpleWebhookListener:
             try:
                 # Force new connection for each request
                 with requests.Session() as temp_session:
-                    temp_session.timeout = 35  # 35 saniye timeout (long polling + buffer)
+                    temp_session.timeout = 30
                     temp_session.headers.update({
                         'Connection': 'close',  # Force new connection
                         'Accept-Encoding': 'identity',  # Disable compression
-                        'User-Agent': 'PaypScan-Listener-LongPoll/1.0'
+                        'User-Agent': 'PaypScan-Listener/1.0'
                     })
                     
                     start_time = time.time()
-                    logger.debug(f"⏳ Long polling request #{self.connection_attempts} (attempt {attempt + 1})")
-                    
-                    # Use long polling endpoint instead of regular events endpoint
-                    response = temp_session.get(f"{self.webhook_url}/events/wait")
+                    response = temp_session.get(f"{self.webhook_url}/events")
                     end_time = time.time()
                     
-                    logger.debug(f"📡 Long polling response #{self.connection_attempts} (attempt {attempt + 1}) - Response time: {end_time - start_time:.2f}s")
+                    logger.debug(f"📡 Event request #{self.connection_attempts} (attempt {attempt + 1}) - Response time: {end_time - start_time:.2f}s")
                     
                     if response.status_code == 200:
-                        data = response.json()
-                        new_events = data.get('new_events', [])
-                        
-                        if new_events:
-                            logger.info(f"✅ Long polling: {len(new_events)} new events found")
-                            self.successful_connections += 1
-                            self.last_event_time = time.time()
-                            return {'events': new_events}  # Return in expected format
-                        else:
-                            logger.debug(f"⏰ Long polling timeout - no new events (attempt {attempt + 1})")
-                            self.successful_connections += 1
-                            return {'events': []}  # Empty events
+                        logger.debug(f"✅ Webhook events retrieved successfully (attempt {attempt + 1})")
+                        self.successful_connections += 1
+                        self.last_event_time = time.time()
+                        return response.json()
                     else:
                         logger.error(f"Failed to get webhook events: {response.status_code} (attempt {attempt + 1})")
                         self.failed_connections += 1
@@ -549,7 +538,8 @@ class SimpleWebhookListener:
                     # Memory cleanup
                     self.cleanup_memory()  # ✅ Periodic memory cleanup
                     
-                    # No heartbeat needed with long polling - connection stays alive naturally
+                    # Heartbeat system
+                    self.send_heartbeat()  # 💓 Keep connection alive
                     
                     # Detailed status logging (every 5 minutes)
                     if time.time() - last_successful_check > 300:  # 5 minutes
@@ -564,8 +554,8 @@ class SimpleWebhookListener:
                         logger.info("📊 END STATUS REPORT")
                         last_successful_check = time.time()  # Reset timer
                     
-                    # Wait 10 seconds (long polling handles the waiting)
-                    time.sleep(10)
+                    # Wait 5 seconds
+                    time.sleep(5)
                     
                 except KeyboardInterrupt:
                     logger.info("🛑 Listener stopped by user")

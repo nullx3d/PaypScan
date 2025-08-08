@@ -101,4 +101,36 @@ class AzureDevOpsClient:
                 return None
         except Exception as e:
             logger.error(f"Error getting build details: {e}")
+            return None
+
+    def get_yaml_content(self, definition_id: int, yaml_filename: str) -> Optional[str]:
+        """Get YAML content from Azure DevOps"""
+        try:
+            # Get repository info from pipeline definition
+            definition = self.get_pipeline_definition(definition_id)
+            if not definition:
+                logger.error(f"Could not get pipeline definition: {definition_id}")
+                return None
+            
+            # Get repository info
+            repository = definition.get('repository', {})
+            repo_id = repository.get('id')
+            repo_name = repository.get('name')
+            
+            if not repo_id:
+                logger.error(f"No repository found in pipeline definition: {definition_id}")
+                return None
+            
+            # Get YAML file content
+            url = f'{self.base_url}/_apis/git/repositories/{repo_id}/items?path={yaml_filename}&api-version={self.api_version}'
+            
+            response = requests.get(url, auth=self.auth)
+            if response.status_code == 200:
+                return response.text
+            else:
+                logger.error(f"Get YAML content failed: {response.status_code}")
+                return None
+                
+        except Exception as e:
+            logger.error(f"Error getting YAML content: {e}")
             return None 

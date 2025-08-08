@@ -16,9 +16,10 @@ A real-time security scanner that monitors  DevOps pipelines for dangerous patte
 - **🛡️ 250+ Security Patterns**: Detect dangerous code patterns automatically
 - **📱 Slack Alerts**: Real-time notifications via Slack
 - **📊 Risk Scoring**: Prioritize threats with intelligent scoring
-- **🔄 Webhook Integration**: Seamless Azure DevOps integration
+- **🔄 WebSocket Integration**: Real-time connection with no timeout issues
 - **💾 Database Storage**: Track and analyze security findings
 - **🛠️ Modular Architecture**: Easy to extend and customize
+- **⚡ Connection Stability**: WebSocket-based real-time communication
 
 ## 🏗️ Current Architecture
 
@@ -480,9 +481,31 @@ python main.py --definition-id 123
 python main.py --verbose
 ```
 
-### Webhook Listener (Real-time Monitoring)
+### WebSocket Listener (Real-time Monitoring) ⭐ NEW
 
-#### Option 1: Production Setup (Recommended)
+#### Option 1: WebSocket Production Setup (Recommended)
+```bash
+# 1. Start WebSocket server
+cd webhook_scripts
+python webhook_server_websocket.py
+
+# 2. Start ngrok (in another terminal)
+ngrok http 8001
+# Copy the HTTPS URL (e.g., https://abc123.ngrok-free.app)
+
+# 3. Configure Azure DevOps Webhook
+# Go to Azure DevOps → Project Settings → Service Hooks
+# Click "Create subscription"
+# Select "Build completed" event
+# Set webhook URL: https://your-ngrok-url.ngrok-free.app/webhook
+# Test the connection
+
+# 4. Start WebSocket Listener (in another terminal)
+cd webhook_scripts
+python websocket_listener.py
+```
+
+#### Option 2: Legacy HTTP Setup (Deprecated)
 ```bash
 # 1. Start Gunicorn webhook server
 cd webhook_scripts
@@ -504,7 +527,7 @@ cd webhook_scripts
 WEBHOOK_SERVER_URL=http://localhost:8002 python simple_webhook_listener.py
 ```
 
-#### Option 2: Development Setup
+#### Option 3: Development Setup
 ```bash
 # 1. Start ngrok
 ngrok http 5000
@@ -526,7 +549,7 @@ cd webhook_scripts
 python simple_webhook_listener.py
 ```
 
-#### Option 3: Automated Startup (Experimental)
+#### Option 4: Automated Startup (Experimental)
 ```bash
 # Single command to start everything
 python start_payscan.py

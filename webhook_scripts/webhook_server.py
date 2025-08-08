@@ -191,43 +191,6 @@ def ping():
     
     return response
 
-@app.route('/events/wait', methods=['GET'])
-def wait_for_events():
-    """Long polling endpoint - waits for new events"""
-    timeout = 30  # 30 saniye timeout
-    start_time = time.time()
-    last_event_count = len(webhook_events)
-    
-    logger.info(f"⏳ Long polling started - waiting for new events (timeout: {timeout}s)")
-    
-    while time.time() - start_time < timeout:
-        current_count = len(webhook_events)
-        if current_count > last_event_count:
-            new_events = webhook_events[last_event_count:]
-            logger.info(f"📡 Long polling: {len(new_events)} new events found")
-            
-            response = jsonify({
-                "total_events": current_count,
-                "new_events": new_events
-            })
-            response.headers['Connection'] = 'close'
-            response.headers['Content-Type'] = 'application/json'
-            response.headers['Cache-Control'] = 'no-cache'
-            return response
-        
-        time.sleep(1)  # Check every second
-    
-    # Timeout - return empty response
-    logger.debug("⏰ Long polling timeout - no new events")
-    response = jsonify({
-        "total_events": len(webhook_events),
-        "new_events": []
-    })
-    response.headers['Connection'] = 'close'
-    response.headers['Content-Type'] = 'application/json'
-    response.headers['Cache-Control'] = 'no-cache'
-    return response
-
 def analyze_azure_devops_event(data):
     """Analyzes Azure DevOps events"""
     

@@ -147,4 +147,13 @@ analyzers_backup.zip
 ignore/
 
 # Ignore start script
-start_payscan.py 
+start_payscan.py
+
+# Ignore documentation files
+PAYPSCAN_PROBLEM_SOLUTION_GUIDE.txt
+PAYPSCAN_SCRIPT_ANALYSIS.txt
+PAYPSCAN_SIMPLE_GUIDE.txt
+
+# Ignore old HTTP-based scripts (kept for reference)
+webhook_scripts/webhook_server.py
+webhook_scripts/simple_webhook_listener.py 
