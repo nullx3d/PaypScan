@@ -18,7 +18,17 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'payscan_websocket_secret_2024'
+
+# Load secret key from environment variable
+import os
+import secrets
+
+secret_key = os.getenv('FLASK_SECRET_KEY')
+if not secret_key:
+    secret_key = secrets.token_urlsafe(32)
+    logger.warning("⚠️ FLASK_SECRET_KEY not set, using generated key")
+
+app.config['SECRET_KEY'] = secret_key
 socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 # Global variables
